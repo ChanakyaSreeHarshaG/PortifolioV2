@@ -1,0 +1,106 @@
+G. CHANAKYA SREE HARSHA - PERSONAL DATA & PROFESSIONAL PORTFOLIO
+
+=========================================
+GENERAL PROFILE & BIO
+=========================================
+Full Name: G. Chanakya Sree Harsha
+Professional Title: Data Analyst, SQL & Power BI Developer
+Short Bio: "I turn messy data into decisions that actually make sense."
+Summary: G. Chanakya Sree Harsha is a Computer Science Graduate (B.Tech, 2025) with hands-on experience transforming raw data into actionable business insights through SQL, Python, Power BI, and data warehousing projects. He specializes in building analytics solutions like Enterprise Data Warehouses using Medallion Architecture, Financial Performance Dashboards, and Marketing Analytics solutions. He has strong competencies in data modeling, ETL/ELT workflows, KPI calculations, cohort analysis, and statistical data analysis.
+
+=========================================
+CONTACT DETAILS
+=========================================
+Email Address: chanakyasreeharsha@gmail.com
+Phone Number: +91 9121451468
+Current Location: Hyderabad, India
+Preferred Job Locations: Hyderabad, Bangalore, Pune, Delhi/NCR
+GitHub Profile: https://github.com/ChanakyaSreeHarshaG
+LinkedIn Profile: https://www.linkedin.com/in/chanakyasreeharsha
+Resume Path: /Resume/chanakyaSreeHarsha.pdf
+
+=========================================
+CORE SKILLS
+=========================================
+* Programming & Querying: SQL, T-SQL (Transact-SQL), Python, DAX (Data Analysis Expressions), Power Query
+* Python Libraries: Pandas, NumPy
+* Business Intelligence & Visualization: Power BI, Tableau, Advanced Excel
+* Data Engineering Concepts: ETL, Data Warehousing, Star Schema, Snowflake Schema, Medallion Architecture (Bronze -> Silver -> Gold layers), Exploratory Data Analysis (EDA)
+* Cloud & Version Control: AWS S3, Git, GitHub
+* Artificial Intelligence & Machine Learning (Self-Initiated): Deep Learning, Natural Language Processing (NLP), LSTM networks, Machine Learning
+* Analytical Concepts: Statistical Data Analysis, Business Intelligence (BI), Data Visualization, Business Metrics/KPI tracking
+
+=========================================
+WORK EXPERIENCE
+=========================================
+Company: Automotive Robotics India (ARi)
+Role: Data Analytics Intern
+Duration: April 2025 – July 2025
+Location: Hyderabad, India
+Key Contributions & Achievements:
+* Analyzed operational datasets using Python and SQL to support stakeholder reporting, improving reporting accuracy by approximately 25%.
+* Enhanced data reliability by reducing missing values through data cleaning, preprocessing, and validation workflows.
+* Optimized ETL pipelines and automated Power BI dashboards, reducing manual reporting effort by nearly 40%.
+
+=========================================
+PROJECTS
+=========================================
+
+1. Enterprise Data Warehouse — Medallion Architecture (January 2026)
+* Description: Designed and implemented a SQL-based Enterprise Data Warehouse using the Medallion Architecture pattern.
+* Data Flow: Ingested raw transactional records from CRM/ERP systems into the Bronze layer, conformed and cleaned data in the Silver layer, and modeled conformed Star Schema fact/dimension tables in the Gold layer for corporate sales analytics.
+* Metrics: Integrates incremental load ETL procedures with auditing.
+* Technologies: SQL Server, T-SQL, ETL, Star Schema, Data Warehousing, Medallion Architecture.
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/SQl-Data_Warehouse_Project
+
+2. Social Media Ad Campaign Dashboard (June 2026)
+* Description: Created an end-to-end Power BI marketing dashboard analyzing ad campaigns in a simulated Meta environment.
+* Features: Models central Fact tables and Dimensions (Campaigns, Ad Sets, Time, Platforms) into a Star Schema. Calculates metrics like Cost per Click (CPC), Click-through Rate (CTR), Cost per Acquisition (CPA), and Return on Ad Spend (ROAS).
+* Metrics: Average ROAS of 4.2x, CPC of $0.18.
+* Technologies: Power BI, Power Query, DAX, Data Modeling, Star Schema, Marketing Analytics.
+* Dashboard Link: https://app.powerbi.com/groups/me/reports/a598e58c-a636-4eaa-9510-ae8a25e6dddb/9777a38c9b4384394b2b?experience=power-bi
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/Social_Media_Ad_Campaign_Dashboard
+
+3. Financial Performance Intelligence Dashboard (June 2026)
+* Description: Power BI dashboard tracking transactional counts, amounts, fees, and tax distributions across segments and states.
+* Features: Star Schema design, geography map-based visual analytics, and segment-wise fee audits.
+* Technologies: Power BI, DAX, Power Query, Data Modeling, Star Schema, Financial Analytics.
+* Dashboard Link: https://app.powerbi.com/groups/me/reports/791875ae-53d8-4c7c-bd41-61c3c54ed9cd/7b820328ab5a8e1804b9?experience=power-bi
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/Financial-Performance-Intelligence-Dashboard
+
+4. Customer Churn Prediction (May 2026 – June 2026)
+* Description: Analyzed 3.9K+ records to identify customer churn risk. Covers Python Jupyter EDA, 10 advanced SQL questions, and an interactive dashboard.
+* Technologies: Python, Pandas, NumPy, SQL Server, Power BI, EDA, Statistical Analysis.
+* Dashboard Link: https://app.powerbi.com/groups/me/reports/9fdd4630-f352-461d-ae29-d27c093d2029?pbi_source=desktop
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/customer_chrun_prediction
+
+5. EDA & Advanced Analytics on Data Warehouse (May 2026)
+* Description: Set of T-SQL audit and analytics scripts operating on the Gold layer of the sales data warehouse.
+* Technologies: T-SQL, SQL Server, Data Analytics, EDA, Database Querying.
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/EDA-data_warehouse_project-
+
+=========================================
+CERTIFICATIONS
+=========================================
+* Oracle Cloud Infrastructure 2025 Data Science Professional (Oracle Credential 1Z0-1110-25)
+* Data Analytics with Python (Issued by NPTEL)
+* Python Data Structures (Issued by Coursera / University of Michigan)
+* Programming in Java (Issued by NPTEL)
+* IELTS (International English Language Testing System) - Overall Band Score of 7.0
+* GRE General Test Score Report (Issued by ETS)
+
+=========================================
+EDUCATION
+=========================================
+* B.Tech in Computer Science
+  - School: Malla Reddy Deemed to be University
+  - Duration: September 2021 – May 2025
+  - Details: Full Time Graduate
+* Class XII — CISCE (ICSE/ISC)
+  - School: Sri Chaitanya Junior College, Hydernagar
+  - Duration: Graduated 2021
+  - Grade/Score: 70%
+* Class X — Telangana State Board
+  - School: Sri Chaitanya Techno School, Hyderabad
+  - Duration: Graduated 2019
+  - Grade/Score: 90%
