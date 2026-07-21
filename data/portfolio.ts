@@ -52,7 +52,7 @@ export const personalInfo = {
   title: "Data Analyst Portfolio",
   roles: ["Data Analyst", "SQL & Power BI Developer"],
   bio: "I turn messy data into decisions that actually make sense. B.Tech CS Graduate from Malla Reddy University (2025). Ex-Data Analytics Intern at Automotive Robotics India (ARi). Open to work — Data Analyst roles.",
-  resumePath: "/Resume/chanakyaSreeHarsha.pdf",
+  resumePath: "/Resume/chanakyasreeharsha.pdf",
   email: "chanakyasreeharsha@gmail.com",
   phone: "+91 9121451468",
   location: "Hyderabad, India",
