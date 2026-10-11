@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 const navItems = [
@@ -99,21 +99,12 @@ export function Navbar() {
           <ul className="nav-links">
             {navItems.map((item) => {
               const isRoute = item.href.startsWith('/');
-              const isRoadmap = item.href === '/roadmaps';
 
               if (isRoute) {
                 return (
                   <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={`nav-link inline-flex items-center gap-1.5 ${
-                        isRoadmap
-                          ? 'px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold border border-teal-500/25 hover:bg-teal-500/20 hover:border-teal-500 transition-all'
-                          : ''
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                      {isRoadmap && <Sparkles className="w-3.5 h-3.5 text-teal-500" />}
+                    <Link href={item.href} className="nav-link">
+                      {item.label}
                     </Link>
                   </li>
                 );
@@ -161,10 +152,9 @@ export function Navbar() {
                 <Link
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="mobile-menu-link flex items-center justify-between font-semibold text-teal-600 dark:text-teal-400"
+                  className="mobile-menu-link"
                 >
-                  <span>{item.label}</span>
-                  <Sparkles className="w-4 h-4 text-teal-500" />
+                  {item.label}
                 </Link>
               </li>
             );
