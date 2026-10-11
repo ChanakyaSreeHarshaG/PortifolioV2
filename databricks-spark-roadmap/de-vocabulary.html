@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>200 Core Data Engineering Vocabulary | Terms, Definitions &amp; Use Cases</title>
+<meta name="description" content="A complete, searchable reference of 200 essential data engineering terms, concepts, architectures, and use cases across Spark, Kafka, Delta Lake, Airflow, and Cloud.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-a: #eafaf1; --bg-b: #eef3ff; --bg-c: #fcf6eb;
+    --o1: #059669; --o2: #10b981; --o3: #3b82f6;
+    --glass: rgba(255,255,255,0.74);
+    --glass-strong: rgba(255,255,255,0.9);
+    --glass-line: rgba(255,255,255,0.9);
+    --edge: rgba(5,150,105,0.18);
+    --shadow: 0 8px 32px -12px rgba(5,150,105,0.22);
+    --ink: #111827; --muted: #4b5563;
+    --accent: #059669; --accent-ink: #ffffff; --accent-2: #2563eb; --amber: #d97706;
+    --orb-op: 0.32;
+    --nav-bg: rgba(255,255,255,0.8);
+    --use-case-bg: rgba(5,150,105,0.07);
+    --use-case-border: #059669;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-a: #061411; --bg-b: #0c1427; --bg-c: #161208;
+      --glass: rgba(20,32,28,0.6); --glass-strong: rgba(25,44,38,0.8);
+      --glass-line: rgba(255,255,255,0.12); --edge: rgba(52,211,153,0.25);
+      --shadow: 0 8px 32px -12px rgba(0,0,0,0.7);
+      --ink: #f0fdf4; --muted: #9ca3af;
+      --accent: #34d399; --accent-ink: #042f1a; --accent-2: #60a5fa; --amber: #fbbf24;
+      --orb-op: 0.38;
+      --nav-bg: rgba(10,24,20,0.8);
+      --use-case-bg: rgba(52,211,153,0.1);
+      --use-case-border: #34d399;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-a: #061411; --bg-b: #0c1427; --bg-c: #161208;
+    --glass: rgba(20,32,28,0.6); --glass-strong: rgba(25,44,38,0.8);
+    --glass-line: rgba(255,255,255,0.12); --edge: rgba(52,211,153,0.25);
+    --shadow: 0 8px 32px -12px rgba(0,0,0,0.7);
+    --ink: #f0fdf4; --muted: #9ca3af;
+    --accent: #34d399; --accent-ink: #042f1a; --accent-2: #60a5fa; --amber: #fbbf24;
+    --orb-op: 0.38;
+    --nav-bg: rgba(10,24,20,0.8);
+    --use-case-bg: rgba(52,211,153,0.1);
+    --use-case-border: #34d399;
+  }
+  :root[data-theme="light"] {
+    --bg-a: #eafaf1; --bg-b: #eef3ff; --bg-c: #fcf6eb;
+    --glass: rgba(255,255,255,0.74); --glass-strong: rgba(255,255,255,0.9);
+    --glass-line: rgba(255,255,255,0.9); --edge: rgba(5,150,105,0.18);
+    --shadow: 0 8px 32px -12px rgba(5,150,105,0.22);
+    --ink: #111827; --muted: #4b5563;
+    --accent: #059669; --accent-ink: #ffffff; --accent-2: #2563eb; --amber: #d97706;
+    --orb-op: 0.32;
+    --nav-bg: rgba(255,255,255,0.8);
+    --use-case-bg: rgba(5,150,105,0.07);
+    --use-case-border: #059669;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg-a); scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--ink);
+    background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+    font-family: "Plus Jakarta Sans", ui-sans-serif, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--orb-op); }
+  .o1 { width: 480px; height: 480px; background: var(--o1); top: -120px; left: -100px; }
+  .o2 { width: 440px; height: 440px; background: var(--o2); top: 38%; right: -140px; }
+  .o3 { width: 400px; height: 400px; background: var(--o3); bottom: -120px; left: 20%; }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--glass-line);
+    padding: 12px 24px;
+  }
+  .nav-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .nav-link {
+    font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+    transition: color 0.15s ease;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--accent); }
+  .theme-btn {
+    border: 1px solid var(--edge); background: var(--glass-strong); color: var(--ink);
+    border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); transform: scale(1.02); }
+
+  .wrap { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 40px 24px 72px; }
+  a { color: var(--accent); }
+  header { margin-bottom: 30px; padding-bottom: 24px; border-bottom: 1px solid var(--glass-line); }
+  .eyebrow, h1, h2.track, h3, .num, .tag, .pill, .filter-chip { font-family: "JetBrains Mono", monospace; }
+  .eyebrow { margin: 0 0 14px; font-size: 12px; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
+  h1 { margin: 0 0 14px; font-size: clamp(28px, 5.5vw, 42px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+  header > p:not(.eyebrow) { margin: 0 0 20px; max-width: 68ch; color: var(--muted); font-size: 16px; line-height: 1.6; }
+
+  .search-container { margin: 20px 0 20px; }
+  .search-bar {
+    width: 100%; padding: 14px 20px; border-radius: 14px;
+    border: 1px solid var(--edge); background: var(--glass-strong);
+    color: var(--ink); font-size: 15px; font-family: inherit;
+    box-shadow: var(--shadow); outline: none; transition: border-color 0.2s ease;
+  }
+  .search-bar:focus { border-color: var(--accent); }
+
+  .category-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .filter-chip {
+    padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--edge); background: var(--glass); color: var(--muted);
+    cursor: pointer; transition: all 0.15s ease;
+  }
+  .filter-chip:hover, .filter-chip.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .vocab-card {
+    background: var(--glass); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-line); border-radius: 16px; padding: 20px;
+    box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .vocab-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .vocab-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+  .term-num { font-size: 12px; font-weight: 700; color: var(--accent); font-family: "JetBrains Mono", monospace; }
+  .term-cat { font-size: 11px; color: var(--muted); font-family: "JetBrains Mono", monospace; letter-spacing: 0.04em; }
+  .term-name { font-size: 17px; font-weight: 700; margin: 0 0 8px; color: var(--ink); line-height: 1.3; }
+  .term-def { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0 0 12px; }
+  .term-usecase {
+    background: var(--use-case-bg); border-left: 3px solid var(--use-case-border);
+    padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 12.5px; color: var(--ink); line-height: 1.45;
+  }
+
+  footer { margin-top: 50px; padding-top: 24px; border-top: 1px solid var(--glass-line); font-size: 13.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">⚡ Databricks &amp; Spark</a>
+      <a href="powerbi-roadmap.html" class="nav-link">📊 Power BI Roadmap</a>
+      <a href="sql-interview-master.html" class="nav-link">💡 174+ SQL Questions</a>
+      <a href="de-vocabulary.html" class="nav-link active">📚 200 DE Vocabulary</a>
+    </div>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">🌓</span> <span id="themeLabel">Theme</span>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">COMPLETE ENCYCLOPEDIA · CURATED BY DATAWITH_RAI</p>
+    <h1>200 Core Data Engineering Vocabulary</h1>
+    <p>A reference of <strong>200 core data engineering terms, distributed concepts, architectures, and real-world use cases</strong>. Essential for cracking data engineering, platform engineering, and lakehouse interviews.</p>
+
+    <!-- Search Input -->
+    <div class="search-container">
+      <input type="text" id="vocabSearch" class="search-bar" placeholder="🔍 Search any concept, term, or use case (e.g. 'Watermarking', 'Catalyst', 'Medallion', 'AQE', 'DLQ', 'Kafka')...">
+    </div>
+
+    <!-- Category Filters -->
+    <div class="category-filter" id="catFilterContainer">
+      <button class="filter-chip active" data-cat="all">All (200)</button>
+      <button class="filter-chip" data-cat="Domain Concepts">Domain Concepts</button>
+      <button class="filter-chip" data-cat="Storage & Optimization">Storage &amp; Optimization</button>
+      <button class="filter-chip" data-cat="Spark & Distributed">Spark &amp; Execution</button>
+      <button class="filter-chip" data-cat="Joins & Shuffles">Joins &amp; Windowing</button>
+      <button class="filter-chip" data-cat="Streaming & Kafka">Streaming &amp; Kafka</button>
+      <button class="filter-chip" data-cat="ETL & Orchestration">ETL &amp; Airflow</button>
+      <button class="filter-chip" data-cat="Quality & Governance">Quality &amp; Governance</button>
+      <button class="filter-chip" data-cat="SQL & Databases">SQL &amp; ACID</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="vocab-grid" id="vocabGrid">
+      <!-- Generated via JS -->
+    </div>
+  </main>
+
+  <footer>
+    <span>200 Core Data Engineering Terms Reference · Prepared for GitHub Pages hosting with real-time search and domain filters.</span>
+  </footer>
+</div>
+
+<script>
+const terms = [
+  // 1-14: Domain Concepts
+  { n: 1, name: "CDC (Change Data Capture)", cat: "Domain Concepts", def: "Identifies and captures data changes in a database for real-time streaming.", uc: "Syncing operational PostgreSQL tables to Snowflake instantly." },
+  { n: 2, name: "Watermarking", cat: "Streaming & Kafka", def: "Handling late-arriving stream data by tracking event-time thresholds.", uc: "Dropping or aggregating IoT sensor events delayed by network partitions." },
+  { n: 3, name: "Backfilling", cat: "ETL & Orchestration", def: "Rerun historical data processing tasks for past dates or missing intervals.", uc: "Repopulating a new analytics feature table for the previous 2 years." },
+  { n: 4, name: "Staging", cat: "Domain Concepts", def: "Temporary storage zone for raw data before transformation and cleansing.", uc: "Landing raw JSON logs from S3 into an intermediate staging table." },
+  { n: 5, name: "Schema", cat: "Domain Concepts", def: "Structural definition and data types outlining how data is organized.", uc: "Enforcing strict columns for user profile tables." },
+  { n: 6, name: "Schema Evolution", cat: "Storage & Optimization", def: "Automatically adapting table structures when incoming data fields change.", uc: "Adding a new `device_os` column when mobile apps update." },
+  { n: 7, name: "Schema Registry", cat: "Streaming & Kafka", def: "Centralized repository storing and versioning data schemas (e.g., Avro, Protobuf).", uc: "Validating Kafka producer compatibility before serialization." },
+  { n: 8, name: "Data Contract", cat: "Quality & Governance", def: "API-like agreement between data producers and consumers on quality and format.", uc: "Preventing upstream teams from renaming columns without notice." },
+  { n: 9, name: "Star Schema", cat: "Domain Concepts", def: "Dimensional model with a central fact table surrounded by dimension tables.", uc: "Fast OLAP reporting for retail sales and store locations." },
+  { n: 10, name: "Snowflake Schema", cat: "Domain Concepts", def: "Normalized dimensional model where dimension tables are further branched.", uc: "Saving storage space by normalizing product category hierarchies." },
+  { n: 11, name: "Medallion Architecture", cat: "Domain Concepts", def: "Data lake structure organizing data into Bronze (raw), Silver (cleansed), and Gold (aggregated) layers.", uc: "Incremental data refinement in Databricks / Delta Lake." },
+  { n: 12, name: "Data Lake", cat: "Domain Concepts", def: "Centralized repository storing structured and unstructured data at scale in raw formats.", uc: "Storing raw clickstream logs and audio recordings." },
+  { n: 13, name: "Data Warehouse", cat: "Domain Concepts", def: "Optimized relational repository designed for high-performance analytical queries.", uc: "Powering executive dashboards in Snowflake or BigQuery." },
+  { n: 14, name: "Data Lakehouse", cat: "Domain Concepts", def: "Architecture combining data lake storage flexibility with warehouse ACID transactions.", uc: "Running BI queries directly on cheap Parquet files via Delta/Iceberg." },
+  { n: 15, name: "Data Mesh", cat: "Domain Concepts", def: "Decentralized architectural paradigm treating data as a domain-owned product.", uc: "Allowing Payments team to independently manage and serve payment data." },
+  { n: 16, name: "Data Fabric", cat: "Domain Concepts", def: "Unified architecture automating data discovery, governance, and integration across clouds.", uc: "Managing multi-cloud data access policies seamlessly." },
+  { n: 17, name: "Data Modeling", cat: "Domain Concepts", def: "Designing how data entities relate, flow, and get stored in databases.", uc: "Mapping customer, order, and product relationships for e-commerce." },
+  { n: 18, name: "Fact Table", cat: "Domain Concepts", def: "Central table in a dimensional model containing quantitative metrics and foreign keys.", uc: "Recording individual sales transactions with amounts and quantities." },
+  { n: 19, name: "Dimension Table", cat: "Domain Concepts", def: "Contextual table describing business entities (who, what, where, when).", uc: "Storing customer names, addresses, and demographic details." },
+  { n: 20, name: "Slowly Changing Dimensions (SCD)", cat: "Domain Concepts", def: "Strategies for handling dimension attribute changes over time.", uc: "Tracking customer address updates without breaking historical sales reports." },
+  { n: 21, name: "SCD Type 1", cat: "Domain Concepts", def: "Overwrites old attribute values with new ones; no historical tracking.", uc: "Correcting a customer's misspelled last name." },
+  { n: 22, name: "SCD Type 2", cat: "Domain Concepts", def: "Creates a new row with validity dates and version numbers for changes.", uc: "Tracking customer state moves over multiple years." },
+  { n: 23, name: "SCD Type 3", cat: "Domain Concepts", def: "Stores previous and current values in separate columns within the same row.", uc: "Keeping current and previous customer email addresses." },
+  { n: 24, name: "Surrogate Key", cat: "SQL & Databases", def: "System-generated artificial primary key (e.g., auto-incrementing integer or UUID).", uc: "Independent row identifier in data warehouse dimension tables." },
+  { n: 25, name: "Natural Key", cat: "SQL & Databases", def: "Business-meaningful unique identifier existing in the real world.", uc: "Using Social Security Number or Email Address as an identifier." },
+  { n: 26, name: "Composite Key", cat: "SQL & Databases", def: "Primary key formed by combining two or more columns to ensure uniqueness.", uc: "order_id + item_id forming a unique order line item key." },
+  { n: 27, name: "Primary Key", cat: "SQL & Databases", def: "Column or set of columns uniquely identifying every row in a table.", uc: "Enforcing uniqueness on user_id in a users table." },
+  { n: 28, name: "Foreign Key", cat: "SQL & Databases", def: "Constraint linking a column in one table to the primary key of another.", uc: "Connecting orders table customer_id to the customers table." },
+
+  // 29-42: Storage, Performance & Optimization
+  { n: 29, name: "Partitioning", cat: "Storage & Optimization", def: "Splitting large tables into discrete folders or partitions based on column values.", uc: "Partitioning log files by year/month/day for faster query scans." },
+  { n: 30, name: "Bucketing", cat: "Storage & Optimization", def: "Distributing table data into a fixed number of hash-based files within partitions.", uc: "Optimizing bucket joins on user_id without full shuffles." },
+  { n: 31, name: "Salting", cat: "Storage & Optimization", def: "Adding random suffixes to skewed keys to distribute them across workers.", uc: "Mitigating hot-spotting on null user IDs during Spark joins." },
+  { n: 32, name: "Clustering / Liquid Clustering", cat: "Storage & Optimization", def: "Sorting data physically within files based on specific column values.", uc: "Z-ordering data in Delta Lake tables for rapid range queries." },
+  { n: 33, name: "Indexing", cat: "Storage & Optimization", def: "Creating lookup data structures (e.g. B-Trees) to accelerate row retrieval speed.", uc: "B-Tree index on timestamp columns for rapid time-range filters." },
+  { n: 34, name: "Sharding", cat: "Storage & Optimization", def: "Horizontal partitioning of data across multiple database instances.", uc: "Splitting global user tables across regional database clusters." },
+  { n: 35, name: "Replication", cat: "Storage & Optimization", def: "Copying data across multiple database nodes for high availability and failover.", uc: "Maintaining read-replicas for heavy reporting queries." },
+  { n: 36, name: "Data Skew", cat: "Spark & Distributed", def: "Uneven distribution of data across partitions causing worker bottlenecks.", uc: "90% of traffic hitting a single celebrity ID in social media analytics." },
+  { n: 37, name: "Predicate Pushdown", cat: "Storage & Optimization", def: "Pushing filter conditions down to storage or source engines to minimize data scan.", uc: "Filtering rows directly inside Parquet readers before loading into RAM." },
+  { n: 38, name: "Partition Pruning", cat: "Storage & Optimization", def: "Skipping entire table partitions that do not match query filter criteria.", uc: "Scanning only date=2026-06-01 when query specifies that day." },
+  { n: 39, name: "Column Pruning", cat: "Storage & Optimization", def: "Loading only requested columns from storage while ignoring unused ones.", uc: "Selecting only email from a table with 50 wide columns." },
+  { n: 40, name: "Query Optimization", cat: "Storage & Optimization", def: "Rewriting or planning SQL queries to execute with minimal CPU and I/O cost.", uc: "Changing subqueries to joins for faster data warehouse execution." },
+  { n: 41, name: "AQE (Adaptive Query Execution)", cat: "Spark & Distributed", def: "Runtime query optimization in Spark that re-optimizes plans based on shuffle stats.", uc: "Dynamically converting sort-merge joins into broadcast hash joins." },
+  { n: 42, name: "Catalyst Optimizer", cat: "Spark & Distributed", def: "Rule-based and cost-based query optimization framework in Apache Spark.", uc: "Optimizing DataFrame query trees before physical execution." },
+
+  // 43-56: Execution, Spark & Distributed Systems
+  { n: 43, name: "Tungsten", cat: "Spark & Distributed", def: "Spark execution engine project focusing on bare-metal hardware efficiency.", uc: "Off-heap memory management and code generation for CPU speedup." },
+  { n: 44, name: "Lazy Evaluation", cat: "Spark & Distributed", def: "Delaying execution of transformations until an action is triggered.", uc: "Building complex Spark transformation lineages without intermediate disk writes." },
+  { n: 45, name: "DAG (Directed Acyclic Graph)", cat: "Spark & Distributed", def: "Directed Acyclic Graph representing task dependency workflows without loops.", uc: "Spark execution plans and Airflow pipeline scheduling dependencies." },
+  { n: 46, name: "Data Lineage", cat: "Quality & Governance", def: "End-to-end tracking of data origins, transformations, and consumption paths.", uc: "Auditing compliance by tracing a metric back to raw CRM tables." },
+  { n: 47, name: "Checkpointing", cat: "Spark & Distributed", def: "Saving intermediate RDD or streaming states to reliable storage to truncate lineages.", uc: "Preventing StackOverflow errors in iterative graph processing." },
+  { n: 48, name: "Caching", cat: "Spark & Distributed", def: "Storing datasets in memory (RAM) across cluster nodes for fast iterative reuse.", uc: "Keeping machine learning training data features in memory." },
+  { n: 49, name: "Persistence", cat: "Spark & Distributed", def: "Saving datasets to memory or disk with configurable storage levels (MEMORY_AND_DISK).", uc: "Spilling RDDs to disk when RAM is insufficient." },
+  { n: 50, name: "Serialization", cat: "Spark & Distributed", def: "Converting objects or data structures into byte streams for network transmission.", uc: "Marshalling objects via Kryo serializer across Spark executor nodes." },
+  { n: 51, name: "Apache Spark", cat: "Spark & Distributed", def: "Unified open-source cluster computing framework for large-scale data processing.", uc: "ETL processing of petabytes of clickstream data." },
+  { n: 52, name: "Spark Architecture", cat: "Spark & Distributed", def: "Master-worker architecture consisting of a Driver program and multiple Executors.", uc: "Coordinating distributed tasks across 100 worker nodes." },
+  { n: 53, name: "Spark Driver", cat: "Spark & Distributed", def: "Process running the main() function, creating SparkContext and dividing jobs into tasks.", uc: "Translating user PySpark code into execution stages." },
+  { n: 54, name: "Spark Executor", cat: "Spark & Distributed", def: "Worker node process responsible for running individual tasks and storing cached data.", uc: "Executing map and filter tasks in parallel across cluster RAM." },
+  { n: 55, name: "Spark Cluster Manager", cat: "Spark & Distributed", def: "External service allocating cluster resources (YARN, Kubernetes, Standalone).", uc: "Spawning Spark driver and executor pods inside Kubernetes." },
+  { n: 56, name: "Spark Job", cat: "Spark & Distributed", def: "Parallel computation consisting of multiple stages triggered by an action.", uc: "Running a .count() or .write() command on a DataFrame." },
+
+  // 57-70: Spark Execution & Transformations
+  { n: 57, name: "Spark Stage", cat: "Spark & Distributed", def: "Collection of tasks executing the same code in parallel, separated by shuffles.", uc: "Grouping map tasks before a wide shuffle join operation." },
+  { n: 58, name: "Spark Task", cat: "Spark & Distributed", def: "Unit of work assigned to a single executor core operating on a data partition.", uc: "Processing partition #4 of a large Parquet dataset." },
+  { n: 59, name: "Spark RDD", cat: "Spark & Distributed", def: "Resilient Distributed Dataset; fault-tolerant collection of elements partitioned across nodes.", uc: "Low-level custom functional transformations on unstructured text." },
+  { n: 60, name: "Spark DataFrame", cat: "Spark & Distributed", def: "Distributed collection of data organized into named columns (schema-aware).", uc: "High-level structured analytics on tabular log data." },
+  { n: 61, name: "Spark Dataset", cat: "Spark & Distributed", def: "Type-safe, object-oriented programming interface extension of DataFrames.", uc: "Strongly typed Scala/Java domain object processing." },
+  { n: 62, name: "PySpark", cat: "Spark & Distributed", def: "Python API for Apache Spark enabling Python-based big data pipelines.", uc: "Building data transformation scripts using pandas-like syntax at scale." },
+  { n: 63, name: "Spark SQL", cat: "Spark & Distributed", def: "Spark module for working with structured data using standard ANSI SQL queries.", uc: "Running SQL queries directly on Delta Lake tables." },
+  { n: 64, name: "Spark Streaming", cat: "Streaming & Kafka", def: "Scalable fault-tolerant stream processing engine built on micro-batches.", uc: "Processing real-time clickstreams every 5 seconds." },
+  { n: 65, name: "Structured Streaming", cat: "Streaming & Kafka", def: "Stream processing engine built on Spark SQL and Catalyst optimizer.", uc: "Unified batch and streaming ETL pipelines." },
+  { n: 66, name: "Micro-Batching", cat: "Streaming & Kafka", def: "Processing streaming data in small continuous time intervals (e.g., every 2s).", uc: "Near real-time ingestion from Kafka topics into data lakes." },
+  { n: 67, name: "Continuous Processing", cat: "Streaming & Kafka", def: "Low-latency stream processing mode providing millisecond-level end-to-end latency.", uc: "Fraud detection alert triggers requiring instant response." },
+  { n: 68, name: "Transformation", cat: "Spark & Distributed", def: "Lazy operation creating a new dataset from an existing one (e.g., map, filter).", uc: "Filtering out null values from a user transaction stream." },
+  { n: 69, name: "Action", cat: "Spark & Distributed", def: "Operation triggering execution of the DAG and returning results (e.g., collect, write).", uc: "Writing processed DataFrame results to S3 storage." },
+  { n: 70, name: "Narrow Transformation", cat: "Spark & Distributed", def: "Transformation where each partition of the parent dataset is used by at most one child partition.", uc: ".filter() or .map() operations without network shuffles." },
+
+  // 71-84: Joins, Shuffles & Windowing
+  { n: 71, name: "Wide Transformation", cat: "Joins & Shuffles", def: "Transformation where data from multiple parent partitions is shuffled across nodes.", uc: ".groupByKey() or .join() operations requiring data exchange." },
+  { n: 72, name: "Shuffle", cat: "Joins & Shuffles", def: "Process of redistributing data across cluster nodes, crossing partition boundaries.", uc: "Re-partitioning large datasets by key for aggregations." },
+  { n: 73, name: "Shuffle Partition", cat: "Joins & Shuffles", def: "Number of partitions created when data is re-distributed during a shuffle phase.", uc: "Tuning spark.sql.shuffle.partitions from 200 to 2000 for heavy joins." },
+  { n: 74, name: "Broadcast Join", cat: "Joins & Shuffles", def: "Optimization where a small table is copied to all worker nodes to eliminate shuffles.", uc: "Joining a massive 1B row facts table with a 500-row country lookup table." },
+  { n: 75, name: "Sort-Merge Join", cat: "Joins & Shuffles", def: "Join algorithm that sorts both datasets by join key and merges them.", uc: "Joining two massive tables that are too large to broadcast." },
+  { n: 76, name: "Hash Join", cat: "Joins & Shuffles", def: "Join algorithm building an in-memory hash table on the smaller dataset.", uc: "Standard relational database inner join operations." },
+  { n: 77, name: "Coalesce", cat: "Joins & Shuffles", def: "Reduces the number of partitions in a DataFrame without a full shuffle.", uc: "Merging 100 small output files into 5 before writing to S3." },
+  { n: 78, name: "Repartition", cat: "Joins & Shuffles", def: "Increases or decreases partition count using a full shuffle across the cluster.", uc: "Evenly redistributing skewed data across 50 new partitions." },
+  { n: 79, name: "Window Function", cat: "Joins & Shuffles", def: "Calculations performed across a set of table rows related to the current row.", uc: "Calculating running totals or moving averages over time." },
+  { n: 80, name: "Tumbling Window", cat: "Joins & Shuffles", def: "Fixed-size, non-overlapping, contiguous time windows for stream aggregation.", uc: "Counting website clicks in strict 10-minute intervals." },
+  { n: 81, name: "Sliding Window", cat: "Joins & Shuffles", def: "Fixed-size, overlapping time windows moving forward by a specified slide duration.", uc: "Calculating average CPU load over a 1-hour window updated every 5 minutes." },
+  { n: 82, name: "Session Window", cat: "Joins & Shuffles", def: "Dynamic time windows grouped by periods of user activity separated by gaps.", uc: "Tracking user shopping sessions ending after 30 minutes of inactivity." },
+  { n: 83, name: "Event Time", cat: "Streaming & Kafka", def: "The time when an event actually occurred on the client device or source.", uc: "Recording the exact timestamp a mobile button was clicked." },
+  { n: 84, name: "Processing Time", cat: "Streaming & Kafka", def: "The time when an event is received and processed by the streaming pipeline server.", uc: "Monitoring pipeline processing latency metrics." },
+
+  // 85-98: Streaming Semantics & Reliability
+  { n: 85, name: "Ingestion Time", cat: "Streaming & Kafka", def: "The timestamp when data is recorded into the message broker or storage layer.", uc: "Timestamping when Kafka received an incoming producer message." },
+  { n: 86, name: "Late-Arriving Data", cat: "Streaming & Kafka", def: "Events arriving at the stream processor after the watermarked time threshold.", uc: "Offline mobile app transactions syncing hours after purchase." },
+  { n: 87, name: "Late Data Handling", cat: "Streaming & Kafka", def: "Strategies (side outputs, allowed lateness) for processing delayed records.", uc: "Routing late records into a side correction table." },
+  { n: 88, name: "Out-of-Order Events", cat: "Streaming & Kafka", def: "Events arriving out of chronological sequence due to network jitter.", uc: "IoT sensor log #3 arriving before log #2." },
+  { n: 89, name: "Event-Time Processing", cat: "Streaming & Kafka", def: "Processing stream data based on when events occurred rather than arrival time.", uc: "Accurate hourly billing regardless of network transmission delays." },
+  { n: 90, name: "Exactly-Once Processing", cat: "Streaming & Kafka", def: "Processing guarantee ensuring each record affects results exactly once, no duplicates.", uc: "Financial transactions where double-charging must be prevented." },
+  { n: 91, name: "At-Least-Once Processing", cat: "Streaming & Kafka", def: "Processing guarantee where records may be processed multiple times upon retries.", uc: "Logging click events where duplicate counts are tolerable." },
+  { n: 92, name: "At-Most-Once Processing", cat: "Streaming & Kafka", def: "Processing guarantee where records might be lost and never re-processed.", uc: "High-throughput metric telemetry where sample loss is acceptable." },
+  { n: 93, name: "Idempotency", cat: "Streaming & Kafka", def: "Property where performing an operation multiple times produces the same result.", uc: "Upserting records using business natural keys instead of blind appends." },
+  { n: 94, name: "Deduplication", cat: "Streaming & Kafka", def: "Removing duplicate records from a dataset using unique identifiers or watermarks.", uc: "Dropping duplicate payment webhook deliveries." },
+  { n: 95, name: "Apache Kafka", cat: "Streaming & Kafka", def: "Distributed event streaming platform capable of handling high-throughput pub/sub feeds.", uc: "Central nervous system streaming microservice logs and orders." },
+  { n: 96, name: "Kafka Topic", cat: "Streaming & Kafka", def: "Categorized stream feed channel where Kafka records are published.", uc: "user-signups topic storing incoming registration events." },
+  { n: 97, name: "Kafka Partition", cat: "Streaming & Kafka", def: "Ordered, immutable sequence of records within a Kafka topic allowing parallel scale.", uc: "Distributing topic messages across 12 broker partitions." },
+  { n: 98, name: "Kafka Producer", cat: "Streaming & Kafka", def: "Client application publishing data records to Kafka topics.", uc: "Web server pushing user checkout events into Kafka." },
+
+  // 99-112: Kafka & Architecture
+  { n: 99, name: "Kafka Consumer", cat: "Streaming & Kafka", def: "Client application subscribing to and reading records from Kafka topics.", uc: "Microservice reading orders to fulfill shipments." },
+  { n: 100, name: "Consumer Group", cat: "Streaming & Kafka", def: "Set of consumers working together to consume a topic, sharing partition loads.", uc: "Scaling out 5 worker pods reading from a high-volume topic." },
+  { n: 101, name: "Kafka Offset", cat: "Streaming & Kafka", def: "Sequential integer ID assigned to each message within a Kafka partition.", uc: "Tracking consumer reading progress for commit checkpoints." },
+  { n: 102, name: "Consumer Lag", cat: "Streaming & Kafka", def: "Difference between latest producer offset and current consumer offset.", uc: "Monitoring alerting thresholds when consumers fall behind real-time." },
+  { n: 103, name: "Event Streaming", cat: "Streaming & Kafka", def: "Continuous flow and real-time processing of data streams from event sources.", uc: "Real-time fraud detection on credit card swipes." },
+  { n: 104, name: "Message Broker", cat: "Streaming & Kafka", def: "Intermediary software translating and routing messages between publishers and subscribers.", uc: "RabbitMQ or Kafka managing decoupled service communications." },
+  { n: 105, name: "DLQ (Dead Letter Queue)", cat: "Streaming & Kafka", def: "Storage queue where malformed or unprocessable messages are routed for inspection.", uc: "Capturing JSON parser error payloads without crashing consumer pipelines." },
+  { n: 106, name: "Retry Queue", cat: "Streaming & Kafka", def: "Queue holding temporarily failed messages to attempt reprocessing later.", uc: "Re-trying third-party API calls experiencing temporary timeout errors." },
+  { n: 107, name: "Event-Driven Architecture", cat: "Streaming & Kafka", def: "Software architecture where services communicate asynchronously via produced events.", uc: "Triggering email notifications when an order is placed event fires." },
+  { n: 108, name: "Event Sourcing", cat: "Streaming & Kafka", def: "Storing state changes as an immutable sequence of historical events.", uc: "Bank account ledgers built by replaying every deposit and withdrawal." },
+  { n: 109, name: "CQRS", cat: "Domain Concepts", def: "Command Query Responsibility Segregation; splitting read and write data models.", uc: "Optimizing high-throughput write databases separately from search read models." },
+  { n: 110, name: "Pub/Sub", cat: "Streaming & Kafka", def: "Publish-Subscribe messaging pattern decoupling message senders and receivers.", uc: "Google Cloud Pub/Sub broadcasting telemetry to multiple analytics sinks." },
+  { n: 111, name: "Apache Flink", cat: "Streaming & Kafka", def: "Stateful stream processing framework designed for low-latency computation.", uc: "Complex event processing for real-time cybersecurity threat detection." },
+  { n: 112, name: "Apache Beam", cat: "ETL & Orchestration", def: "Unified programming model for defining batch and streaming data processing pipelines.", uc: "Writing pipeline logic once and running on Flink, Spark, or Dataflow." },
+
+  // 113-126: Cloud Streams & ETL
+  { n: 113, name: "Amazon Kinesis", cat: "Streaming & Kafka", def: "Managed AWS service for real-time data streaming and analytics at scale.", uc: "Collecting server application log streams in AWS." },
+  { n: 114, name: "Azure Event Hubs", cat: "Streaming & Kafka", def: "Big data streaming platform and event ingestion service in Microsoft Azure.", uc: "Ingesting millions of telemetry events from connected cars." },
+  { n: 115, name: "Real-Time Processing", cat: "Streaming & Kafka", def: "Processing data instantly with sub-second latency as events occur.", uc: "Instant stock trading algorithmic buy/sell triggers." },
+  { n: 116, name: "Batch Processing", cat: "ETL & Orchestration", def: "Processing large volumes of data collected over scheduled time intervals.", uc: "Nightly end-of-day financial reconciliation reports." },
+  { n: 117, name: "Lambda Architecture", cat: "Domain Concepts", def: "Data processing architecture combining batch layer and speed streaming layer.", uc: "Providing low-latency real-time views merged with accurate batch views." },
+  { n: 118, name: "Kappa Architecture", cat: "Domain Concepts", def: "Simplified streaming-only architecture treating batch processing as stream replay.", uc: "Processing all historical and live data entirely through Kafka and Flink." },
+  { n: 119, name: "Stream Processing", cat: "Streaming & Kafka", def: "Continuous computational processing of data records in motion.", uc: "Real-time anomaly detection in IoT turbine sensors." },
+  { n: 120, name: "Stream-Table Join", cat: "Joins & Shuffles", def: "Joining a real-time event stream with a static or changing dimensional reference table.", uc: "Enriching live credit card clickstreams with customer account metadata." },
+  { n: 121, name: "ETL", cat: "ETL & Orchestration", def: "Extract, Transform, Load; traditional data pipeline pattern moving data to warehouses.", uc: "Extracting CRM data, cleansing in Spark, and loading into Snowflake." },
+  { n: 122, name: "ELT", cat: "ETL & Orchestration", def: "Extract, Load, Transform; modern pattern loading raw data first, transforming inside storage.", uc: "Landing raw S3 CSVs into Snowflake and running dbt SQL transformations." },
+  { n: 123, name: "Data Ingestion", cat: "ETL & Orchestration", def: "Transporting data from source systems into a destination storage layer.", uc: "Pulling Facebook Ads API JSON payloads into S3." },
+  { n: 124, name: "Data Extraction", cat: "ETL & Orchestration", def: "Reading and exporting data from source operational databases or APIs.", uc: "Exporting daily transactional tables from MySQL." },
+  { n: 125, name: "Data Transformation", cat: "ETL & Orchestration", def: "Cleaning, reshaping, casting, and enriching data formats for analysis.", uc: "Converting currency rates and masking PII fields." },
+  { n: 126, name: "Data Loading", cat: "ETL & Orchestration", def: "Writing processed data into a target data warehouse, lake, or database.", uc: "Bulk loading Parquet files into Google BigQuery." },
+
+  // 127-140: Pipelines, Orchestration & Airflow
+  { n: 127, name: "Data Pipeline", cat: "ETL & Orchestration", def: "Automated series of steps moving and transforming data from source to destination.", uc: "Hourly ingestion and transformation pipeline feeding BI dashboards." },
+  { n: 128, name: "Data Workflow", cat: "ETL & Orchestration", def: "Sequenced collection of dependent tasks making up a data operation.", uc: "Ingest -> Clean -> Validate -> Aggregate workflow." },
+  { n: 129, name: "Data Orchestration", cat: "ETL & Orchestration", def: "Automated coordination, scheduling, and monitoring of data pipelines.", uc: "Triggering downstream jobs only after upstream tables finish loading." },
+  { n: 130, name: "Workflow DAG", cat: "ETL & Orchestration", def: "Directed acyclic graph defining task execution order in orchestrators.", uc: "Airflow DAG defining dependent ETL tasks." },
+  { n: 131, name: "Apache Airflow", cat: "ETL & Orchestration", def: "Open-source platform to programmatically author, schedule, and monitor workflows.", uc: "Managing thousands of daily enterprise data pipelines." },
+  { n: 132, name: "DAG Scheduling", cat: "ETL & Orchestration", def: "Configuring time-based cron intervals or triggers for workflow runs.", uc: "Running financial pipelines every day at midnight UTC." },
+  { n: 133, name: "Airflow Operator", cat: "ETL & Orchestration", def: "Template for single task building blocks (Python, Bash, Spark, Snowflake).", uc: "Using SnowflakeOperator to execute DDL scripts." },
+  { n: 134, name: "Airflow Sensor", cat: "ETL & Orchestration", def: "Specialized operator waiting for a specific condition or event to occur.", uc: "S3KeySensor waiting for an incoming file to arrive before proceeding." },
+  { n: 135, name: "Airflow XCom", cat: "ETL & Orchestration", def: "Cross-communication mechanism allowing tasks to exchange small metadata payloads.", uc: "Passing generated batch IDs from ingestion task to transformation task." },
+  { n: 136, name: "Airflow Task", cat: "ETL & Orchestration", def: "An instance of an operator representing a single unit of work in a DAG.", uc: "Executing a database vacuum command node." },
+  { n: 137, name: "Task Dependency", cat: "ETL & Orchestration", def: "Upstream and downstream relationships controlling execution order (>> or <<).", uc: "Ensuring extraction completes before transformation starts." },
+  { n: 138, name: "Retry Policy", cat: "ETL & Orchestration", def: "Configuration specifying how many times and how often to retry failed tasks.", uc: "Retrying flaky API calls 3 times with exponential backoff." },
+  { n: 139, name: "SLA (Service Level Agreement)", cat: "Quality & Governance", def: "Service Level Agreement defining expected time limits for task completion.", uc: "Alerting on-call engineers if morning reports fail to finish by 6 AM." },
+  { n: 140, name: "Pipeline Monitoring", cat: "Quality & Governance", def: "Tracking health, execution time, failures, and throughput of data workflows.", uc: "Datadog / PagerDuty alerts triggered on DAG failures." },
+
+  // 141-168: Quality, Governance & Security
+  { n: 141, name: "Data Quality", cat: "Quality & Governance", def: "Measure of data fitness based on accuracy, completeness, and consistency.", uc: "Ensuring customer email fields contain valid @ symbols." },
+  { n: 142, name: "Data Validation", cat: "Quality & Governance", def: "Checking incoming data against predefined business rules and constraints.", uc: "Rejecting transactions with negative purchase amounts." },
+  { n: 143, name: "Data Profiling", cat: "Quality & Governance", def: "Analyzing datasets to collect statistics, value distributions, and null ratios.", uc: "Scanning new source tables to understand data types and uniqueness." },
+  { n: 144, name: "Data Observability", cat: "Quality & Governance", def: "Comprehensive monitoring of data health, lineage, freshness, and anomalies.", uc: "Detecting unexpected table row count drops via Monte Carlo." },
+  { n: 145, name: "Data Freshness", cat: "Quality & Governance", def: "Measure of how recently data tables or pipelines were updated.", uc: "Verifying dashboard tables were updated within the last 2 hours." },
+  { n: 146, name: "Data Completeness", cat: "Quality & Governance", def: "Ensuring no expected records or mandatory column values are missing.", uc: "Confirming all 50 state districts reported voting numbers." },
+  { n: 147, name: "Data Accuracy", cat: "Quality & Governance", def: "Degree to which data correctly represents the real-world entity values.", uc: "Verifying product prices match official ERP price lists." },
+  { n: 148, name: "Data Consistency", cat: "Quality & Governance", def: "Ensuring data values across multiple tables and systems do not contradict.", uc: "Order totals in billing matching warehouse payment receipts." },
+  { n: 149, name: "Data Integrity", cat: "Quality & Governance", def: "Maintaining structural and logical accuracy throughout the data lifecycle.", uc: "Enforcing foreign key constraints to prevent orphaned child records." },
+  { n: 150, name: "Data Drift", cat: "Quality & Governance", def: "Unannounced changes in data distribution, schema, or semantics over time.", uc: "Detecting when input feature scales shift in machine learning models." },
+  { n: 151, name: "Data Anomaly Detection", cat: "Quality & Governance", def: "Automatically identifying abnormal spikes, drops, or outlier values in datasets.", uc: "Catching sudden 500% spikes in hourly API error logs." },
+  { n: 152, name: "Data Reconciliation", cat: "Quality & Governance", def: "Comparing source and destination row counts and totals to ensure no loss.", uc: "Matching daily source DB row counts with warehouse load summaries." },
+  { n: 153, name: "Data Testing", cat: "Quality & Governance", def: "Automated verification of pipeline code logic and data transformations.", uc: "Running unit tests on custom dbt SQL macros." },
+  { n: 154, name: "Unit Testing", cat: "Quality & Governance", def: "Testing individual functions or SQL transformations in isolation.", uc: "Testing a currency conversion Python function with mock inputs." },
+  { n: 155, name: "Integration Testing", cat: "Quality & Governance", def: "Testing multiple pipeline components working together end-to-end.", uc: "Verifying ingestion, transformation, and loading in a staging environment." },
+  { n: 156, name: "Regression Testing", cat: "Quality & Governance", def: "Ensuring recent code changes did not break existing pipeline features.", uc: "Running test suites after updating Spark dependency libraries." },
+  { n: 157, name: "Great Expectations", cat: "Quality & Governance", def: "Popular Python data validation and profiling open-source framework.", uc: "Asserting column value ranges and uniqueness expectations in pipelines." },
+  { n: 159, name: "Metadata", cat: "Quality & Governance", def: "Data about data (schemas, ownership, timestamps, descriptions, sizes).", uc: "Storing table creation timestamps and column data types." },
+  { n: 160, name: "Metadata Management", cat: "Quality & Governance", def: "Systematic collection, organization, and maintenance of metadata.", uc: "Maintaining enterprise-wide data dictionaries." },
+  { n: 161, name: "Data Catalog", cat: "Quality & Governance", def: "Searchable inventory of enterprise datasets, owners, and definitions.", uc: "Analysts searching Atlan/Alation for verified customer revenue tables." },
+  { n: 162, name: "Data Governance", cat: "Quality & Governance", def: "Policies, procedures, and standards ensuring secure and compliant data usage.", uc: "Enforcing corporate data retention and privacy compliance rules." },
+  { n: 163, name: "Data Security", cat: "Quality & Governance", def: "Protecting data stores and pipelines from unauthorized access and breaches.", uc: "Implementing database firewalls and network VPC isolation." },
+  { n: 164, name: "Data Privacy", cat: "Quality & Governance", def: "Ensuring sensitive personal information is handled according to legal regulations.", uc: "Complying with GDPR and CCPA user data deletion requests." },
+  { n: 165, name: "Data Masking", cat: "Quality & Governance", def: "Obfuscating sensitive data elements for non-privileged users.", uc: "Hiding credit card digits as ****-****-****-1234 in staging environments." },
+  { n: 166, name: "Data Encryption", cat: "Quality & Governance", def: "Encoding data at rest and in transit using cryptographic keys.", uc: "Encrypting S3 buckets using AWS KMS customer managed keys." },
+  { n: 167, name: "Access Control", cat: "Quality & Governance", def: "Restricting who can view or modify data systems and tables.", uc: "Granting marketing analysts read access while blocking HR tables." },
+  { n: 168, name: "RBAC (Role-Based Access Control)", cat: "Quality & Governance", def: "Granting permissions based on organizational user roles.", uc: "Assigning database permissions to the DataScientist security group." },
+
+  // 169-182: Security, Compliance & SQL
+  { n: 169, name: "IAM", cat: "Quality & Governance", def: "Identity and Access Management; framework managing user identities and privileges.", uc: "Managing cloud service account IAM roles for AWS Lambda execution." },
+  { n: 170, name: "PII (Personally Identifiable Information)", cat: "Quality & Governance", def: "Names, SSNs, phone numbers, emails requiring special legal protection.", uc: "Tokenizing and hashing user records for privacy compliance." },
+  { n: 171, name: "Data Retention", cat: "Quality & Governance", def: "Policy specifying how long data must be stored before archiving or deletion.", uc: "Automatically purging raw server logs after 90 days." },
+  { n: 172, name: "Data Classification", cat: "Quality & Governance", def: "Categorizing data based on sensitivity, confidentiality, and regulatory impact.", uc: "Tagging tables as Public, Internal, Confidential, or Restricted." },
+  { n: 173, name: "Data Discovery", cat: "Quality & Governance", def: "Process of collecting, profiling, and finding datasets across an organization.", uc: "Discovering legacy sales tables during data migration projects." },
+  { n: 174, name: "MDM (Master Data Management)", cat: "Domain Concepts", def: "Creating a single authoritative 'golden record' for core business entities.", uc: "Unifying customer profiles scattered across 5 different regional CRMs." },
+  { n: 175, name: "Reference Data", cat: "Domain Concepts", def: "Static or slowly changing categorization data used across systems.", uc: "Country codes, currency types, and postal abbreviation lookup tables." },
+  { n: 176, name: "Data Stewardship", cat: "Quality & Governance", def: "Operational accountability for data quality, definitions, and usage policies.", uc: "Finance domain steward approving financial data dictionary updates." },
+  { n: 177, name: "Data Lifecycle", cat: "Quality & Governance", def: "Stages of data from creation and ingestion through archival and deletion.", uc: "Transitioning hot storage data to cold Glacier backup storage." },
+  { n: 178, name: "Data Provenance", cat: "Quality & Governance", def: "Chronological history documenting origin and custody of data assets.", uc: "Verifying legal authenticity and chain of custody for audit records." },
+  { n: 179, name: "Audit Trail", cat: "Quality & Governance", def: "Recorded log of system activities, queries, and data access modifications.", uc: "Tracking who accessed sensitive health records and when." },
+  { n: 180, name: "Compliance", cat: "Quality & Governance", def: "Adhering to government, industry, and legal regulations (HIPAA, SOX, GDPR).", uc: "Generating compliance reports for banking financial audits." },
+  { n: 181, name: "SQL", cat: "SQL & Databases", def: "Structured Query Language; standard programming language for relational databases.", uc: "Querying customer purchase history in Snowflake." },
+  { n: 182, name: "CTE (Common Table Expression)", cat: "SQL & Databases", def: "Temporary named result set defined within SQL queries using WITH clause.", uc: "Structuring readable multi-step analytical SQL queries." },
+
+  // 183-200: SQL Advanced, ACID & Infrastructure
+  { n: 183, name: "Recursive CTE", cat: "SQL & Databases", def: "CTE referencing itself iteratively to traverse hierarchical graph data.", uc: "Querying employee manager organizational trees or bill of materials." },
+  { n: 184, name: "Window Functions (SQL)", cat: "SQL & Databases", def: "Calculations across rows related to the current row without grouping collapse.", uc: "Computing row rankings (ROW_NUMBER(), RANK()) over partitioned data." },
+  { n: 185, name: "Joins", cat: "SQL & Databases", def: "Combining rows from multiple tables based on related column conditions.", uc: "Inner, Left, Right, and Full Outer joins linking tables." },
+  { n: 186, name: "Cross Join", cat: "SQL & Databases", def: "Produces the Cartesian product of two tables (every row combined with every row).", uc: "Generating date-matrix combinations for reporting grids." },
+  { n: 187, name: "Self Join", cat: "SQL & Databases", def: "Joining a table to itself to compare records within the same dataset.", uc: "Finding employees earning more than their assigned department managers." },
+  { n: 188, name: "Query Execution Plan", cat: "Storage & Optimization", def: "Step-by-step roadmap the database engine uses to execute a SQL query.", uc: "Identifying whether a query performs full table scans or index seeks." },
+  { n: 189, name: "EXPLAIN Plan", cat: "Storage & Optimization", def: "SQL command used to inspect the underlying query execution plan.", uc: "Debugging slow-running queries by analyzing operator cost estimates." },
+  { n: 190, name: "Query Optimization (SQL)", cat: "Storage & Optimization", def: "Refactoring indexes, joins, and filters to improve database query execution speed.", uc: "Adding covering indexes to reduce execution time from 10s to 50ms." },
+  { n: 191, name: "Normalization", cat: "SQL & Databases", def: "Organizing relational database tables to reduce data redundancy and anomalies (3NF).", uc: "Converting unformatted flat spreadsheets into 3NF relational schemas." },
+  { n: 192, name: "Denormalization", cat: "SQL & Databases", def: "Adding redundant columns or joining tables to speed up read performance.", uc: "Pre-joining order and customer details into a reporting wide table." },
+  { n: 193, name: "OLTP", cat: "SQL & Databases", def: "Online Transaction Processing; databases optimized for fast transactional inserts/updates.", uc: "E-commerce checkout cart databases (PostgreSQL, MySQL)." },
+  { n: 194, name: "OLAP", cat: "SQL & Databases", def: "Online Analytical Processing; systems optimized for complex analytical queries.", uc: "Multi-dimensional business intelligence aggregations (Snowflake, BigQuery)." },
+  { n: 195, name: "ACID", cat: "SQL & Databases", def: "Atomicity, Consistency, Isolation, Durability; guarantees for reliable transactions.", uc: "Ensuring bank balance transfers either fully succeed or completely rollback." },
+  { n: 196, name: "BASE", cat: "SQL & Databases", def: "Basically Available, Soft state, Eventually consistent; CAP theorem tradeoff model.", uc: "Distributed NoSQL database architectures (Cassandra, DynamoDB)." },
+  { n: 197, name: "Transactions", cat: "SQL & Databases", def: "Sequence of database operations executed as a single logical unit of work.", uc: "Executing multi-table updates inside a BEGIN...COMMIT block." },
+  { n: 198, name: "PostgreSQL", cat: "SQL & Databases", def: "Powerful open-source enterprise relational database management system.", uc: "Storing core application state and user data." },
+  { n: 199, name: "NoSQL", cat: "SQL & Databases", def: "Non-relational databases designed for unstructured data, high scale, and flexibility.", uc: "Storing dynamic user session documents in MongoDB or DynamoDB." },
+  { n: 200, name: "Terraform (IaC)", cat: "ETL & Orchestration", def: "Tool for provisioning and managing cloud infrastructure declaratively using code.", uc: "Provisioning AWS S3 buckets, IAM roles, and Snowflake warehouses automatically." }
+];
+
+function renderVocab(cat = 'all', search = '') {
+  const container = document.getElementById('vocabGrid');
+  const searchLower = search.toLowerCase();
+
+  const filtered = terms.filter(t => {
+    const matchesCat = cat === 'all' || t.cat.toLowerCase() === cat.toLowerCase();
+    const matchesSearch = !search || t.name.toLowerCase().includes(searchLower) || t.def.toLowerCase().includes(searchLower) || t.uc.toLowerCase().includes(searchLower);
+    return matchesCat && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:var(--muted);">No terms matched your search.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map(t => `
+    <div class="vocab-card">
+      <div>
+        <div class="vocab-header">
+          <span class="term-num">#${t.n.toString().padStart(3, '0')}</span>
+          <span class="term-cat">${t.cat}</span>
+        </div>
+        <h3 class="term-name">${t.name}</h3>
+        <p class="term-def">${t.def}</p>
+      </div>
+      <div class="term-usecase">
+        <strong>💡 Use Case:</strong> ${t.uc}
+      </div>
+    </div>
+  `).join('');
+}
+
+renderVocab();
+
+// Filter Chips
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const cat = chip.dataset.cat;
+    const search = document.getElementById('vocabSearch').value;
+    renderVocab(cat, search);
+  });
+});
+
+// Search input
+document.getElementById('vocabSearch').addEventListener('input', (e) => {
+  const search = e.target.value;
+  const activeChip = document.querySelector('.filter-chip.active');
+  const cat = activeChip ? activeChip.dataset.cat : 'all';
+  renderVocab(cat, search);
+});
+
+// Theme Toggle
+const toggleBtn = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeLabel = document.getElementById('themeLabel');
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeIcon.textContent = '🌙';
+    themeLabel.textContent = 'Dark';
+  } else if (theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeIcon.textContent = '☀️';
+    themeLabel.textContent = 'Light';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    themeIcon.textContent = prefersDark ? '🌙' : '☀️';
+    themeLabel.textContent = 'System';
+  }
+}
+
+const savedTheme = localStorage.getItem('de_theme') || 'auto';
+applyTheme(savedTheme === 'auto' ? null : savedTheme);
+
+toggleBtn.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  let next = 'dark';
+  if (current === 'dark') next = 'light';
+  else if (current === 'light') next = 'dark';
+  else {
+    next = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark';
+  }
+  localStorage.setItem('de_theme', next);
+  applyTheme(next);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Interview Master Archive | 174 Company Questions + 50 Solved Problems</title>
+<meta name="description" content="Complete SQL interview preparation repository featuring 174 real questions across 9 tech companies (Capgemini, Deloitte, Infosys, Cognizant, NTT Data, etc.) and 50 solved hands-on problems with query patterns.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-a: #edf2f7; --bg-b: #f0f4ff; --bg-c: #e9f5f0;
+    --o1: #2563eb; --o2: #7c3aed; --o3: #059669;
+    --glass: rgba(255,255,255,0.72);
+    --glass-strong: rgba(255,255,255,0.88);
+    --glass-line: rgba(255,255,255,0.88);
+    --edge: rgba(37,99,235,0.15);
+    --shadow: 0 8px 32px -12px rgba(30,58,138,0.25);
+    --ink: #111827; --muted: #4b5563;
+    --accent: #2563eb; --accent-ink: #ffffff; --accent-2: #059669; --amber: #d97706;
+    --orb-op: 0.35;
+    --nav-bg: rgba(255,255,255,0.8);
+    --code-bg: #f8fafc;
+    --code-border: #e2e8f0;
+    --table-header: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-a: #090d16; --bg-b: #130e24; --bg-c: #061715;
+      --glass: rgba(22,28,45,0.58); --glass-strong: rgba(29,37,60,0.76);
+      --glass-line: rgba(255,255,255,0.12); --edge: rgba(129,140,248,0.22);
+      --shadow: 0 8px 32px -12px rgba(0,0,0,0.7);
+      --ink: #f1f5f9; --muted: #94a3b8;
+      --accent: #60a5fa; --accent-ink: #0b1329; --accent-2: #34d399; --amber: #fbbf24;
+      --orb-op: 0.38;
+      --nav-bg: rgba(14,19,32,0.8);
+      --code-bg: #111827;
+      --code-border: #1f2937;
+      --table-header: #1e293b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-a: #090d16; --bg-b: #130e24; --bg-c: #061715;
+    --glass: rgba(22,28,45,0.58); --glass-strong: rgba(29,37,60,0.76);
+    --glass-line: rgba(255,255,255,0.12); --edge: rgba(129,140,248,0.22);
+    --shadow: 0 8px 32px -12px rgba(0,0,0,0.7);
+    --ink: #f1f5f9; --muted: #94a3b8;
+    --accent: #60a5fa; --accent-ink: #0b1329; --accent-2: #34d399; --amber: #fbbf24;
+    --orb-op: 0.38;
+    --nav-bg: rgba(14,19,32,0.8);
+    --code-bg: #111827;
+    --code-border: #1f2937;
+    --table-header: #1e293b;
+  }
+  :root[data-theme="light"] {
+    --bg-a: #edf2f7; --bg-b: #f0f4ff; --bg-c: #e9f5f0;
+    --glass: rgba(255,255,255,0.72); --glass-strong: rgba(255,255,255,0.88);
+    --glass-line: rgba(255,255,255,0.88); --edge: rgba(37,99,235,0.15);
+    --shadow: 0 8px 32px -12px rgba(30,58,138,0.25);
+    --ink: #111827; --muted: #4b5563;
+    --accent: #2563eb; --accent-ink: #ffffff; --accent-2: #059669; --amber: #d97706;
+    --orb-op: 0.35;
+    --nav-bg: rgba(255,255,255,0.8);
+    --code-bg: #f8fafc;
+    --code-border: #e2e8f0;
+    --table-header: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg-a); scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--ink);
+    background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+    font-family: "Plus Jakarta Sans", ui-sans-serif, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--orb-op); }
+  .o1 { width: 480px; height: 480px; background: var(--o1); top: -120px; left: -100px; }
+  .o2 { width: 440px; height: 440px; background: var(--o2); top: 38%; right: -140px; }
+  .o3 { width: 400px; height: 400px; background: var(--o3); bottom: -120px; left: 20%; }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--glass-line);
+    padding: 12px 24px;
+  }
+  .nav-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .nav-link {
+    font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+    transition: color 0.15s ease;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--accent); }
+  .theme-btn {
+    border: 1px solid var(--edge); background: var(--glass-strong); color: var(--ink);
+    border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); transform: scale(1.02); }
+
+  .wrap { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 40px 24px 72px; }
+  a { color: var(--accent); }
+  header { margin-bottom: 30px; padding-bottom: 24px; border-bottom: 1px solid var(--glass-line); }
+  .eyebrow, h1, h2.track, h3, .num, .tag, .pill, .tab-btn { font-family: "JetBrains Mono", monospace; }
+  .eyebrow { margin: 0 0 14px; font-size: 12px; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
+  h1 { margin: 0 0 14px; font-size: clamp(28px, 5.5vw, 42px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+  header > p:not(.eyebrow) { margin: 0 0 20px; max-width: 68ch; color: var(--muted); font-size: 16px; line-height: 1.6; }
+
+  /* Interactive Controls */
+  .search-container { margin: 20px 0 26px; display: flex; gap: 12px; flex-direction: column; }
+  .search-bar {
+    width: 100%; padding: 14px 20px; border-radius: 14px;
+    border: 1px solid var(--edge); background: var(--glass-strong);
+    color: var(--ink); font-size: 15px; font-family: inherit;
+    box-shadow: var(--shadow); outline: none; transition: border-color 0.2s ease;
+  }
+  .search-bar:focus { border-color: var(--accent); }
+
+  .tab-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .tab-btn {
+    padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--edge); background: var(--glass);
+    color: var(--muted); transition: all 0.2s ease;
+  }
+  .tab-btn:hover { color: var(--ink); border-color: var(--accent); }
+  .tab-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+  .company-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter-chip {
+    padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--edge); background: var(--glass-strong); color: var(--muted);
+    cursor: pointer; transition: all 0.15s ease;
+  }
+  .filter-chip:hover, .filter-chip.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+  /* Cards & Lists */
+  .q-card {
+    background: var(--glass); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-line); border-radius: 16px; padding: 20px;
+    margin-bottom: 14px; box-shadow: var(--shadow); transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .q-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .q-badge-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .badge { font-size: 11.5px; font-family: "JetBrains Mono", monospace; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+  .badge-company { background: rgba(37,99,235,0.14); color: var(--accent); }
+  .badge-category { background: rgba(5,150,105,0.14); color: var(--accent-2); }
+  .q-text { font-size: 16px; font-weight: 700; margin: 0 0 10px; color: var(--ink); line-height: 1.4; }
+  
+  .q-details { font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+  .code-block {
+    background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 10px;
+    padding: 12px 16px; font-family: "JetBrains Mono", monospace; font-size: 13px;
+    color: var(--ink); overflow-x: auto; margin: 12px 0;
+  }
+  .result-table {
+    width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0;
+    background: var(--glass-strong); border-radius: 8px; overflow: hidden;
+  }
+  .result-table th, .result-table td { padding: 8px 12px; border: 1px solid var(--code-border); text-align: left; }
+  .result-table th { background: var(--table-header); font-weight: 700; }
+  .callout-tip {
+    background: rgba(37,99,235,0.08); border-left: 3px solid var(--accent);
+    padding: 8px 14px; border-radius: 0 8px 8px 0; font-size: 13.5px; margin-top: 10px;
+  }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 24px; }
+  .stat-box {
+    background: var(--glass-strong); border: 1px solid var(--edge); border-radius: 12px;
+    padding: 12px; text-align: center;
+  }
+  .stat-num { font-size: 22px; font-weight: 800; color: var(--accent); font-family: "JetBrains Mono", monospace; }
+  .stat-lbl { font-size: 11.5px; color: var(--muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+
+  footer { margin-top: 50px; padding-top: 24px; border-top: 1px solid var(--glass-line); font-size: 13.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">⚡ Databricks &amp; Spark</a>
+      <a href="powerbi-roadmap.html" class="nav-link">📊 Power BI Roadmap</a>
+      <a href="sql-interview-master.html" class="nav-link active">💡 174+ SQL Questions</a>
+      <a href="de-vocabulary.html" class="nav-link">📚 200 DE Vocabulary</a>
+    </div>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">🌓</span> <span id="themeLabel">Theme</span>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">FINAL 9-COMPANY MASTER REPOSITORY · 2026 EDITION</p>
+    <h1>SQL Interview Master Archive</h1>
+    <p>A comprehensive repository combining <strong>174 company-specific interview questions</strong> extracted from Capgemini, Deloitte, Infosys, Cognizant, Saama, NTT Data, LTIMindtree, Accenture, and Grid Dynamics, alongside <strong>50 solved core problems with runnable code, schema flows, and patterns</strong>.</p>
+  
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num">174</div><div class="stat-lbl">Company Qs</div></div>
+      <div class="stat-box"><div class="stat-num">9</div><div class="stat-lbl">Tech Firms</div></div>
+      <div class="stat-box"><div class="stat-num">50</div><div class="stat-lbl">Solved Queries</div></div>
+      <div class="stat-box"><div class="stat-num">8</div><div class="stat-lbl">Core Patterns</div></div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Search by keyword (e.g., 'SCD Type 2', 'DENSE_RANK', 'duplicate', 'Snowflake', 'Pentaho', 'ACID')...">
+    </div>
+
+    <!-- Top Tabs -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="tab-companies">🏢 174 Company Master Archive</button>
+      <button class="tab-btn" data-tab="tab-patterns">⚡ Pattern Cheat Sheet</button>
+      <button class="tab-btn" data-tab="tab-solved">🧠 50 Solved Problems</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: 174 COMPANY ARCHIVE -->
+    <div id="tab-companies" class="tab-content">
+      <div class="company-filter" id="companyFilters">
+        <button class="filter-chip active" data-filter="all">All (174)</button>
+        <button class="filter-chip" data-filter="Capgemini">Capgemini (25)</button>
+        <button class="filter-chip" data-filter="Deloitte">Deloitte (9)</button>
+        <button class="filter-chip" data-filter="Infosys">Infosys (21)</button>
+        <button class="filter-chip" data-filter="Cognizant">Cognizant (18)</button>
+        <button class="filter-chip" data-filter="Saama Technologies">Saama Tech (19)</button>
+        <button class="filter-chip" data-filter="NTT DATA">NTT DATA (29)</button>
+        <button class="filter-chip" data-filter="LTIMindtree">LTIMindtree (7)</button>
+        <button class="filter-chip" data-filter="Accenture">Accenture (5)</button>
+        <button class="filter-chip" data-filter="Grid Dynamics">Grid Dynamics (41)</button>
+      </div>
+
+      <div id="companyCardsContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 2: PATTERN CHEAT SHEET -->
+    <div id="tab-patterns" class="tab-content" style="display: none;">
+      <div class="q-card">
+        <h3 style="margin-top:0;">The 8 Essential Live-Coding Patterns</h3>
+        <p class="q-details">90% of live coding SQL interview questions boil down to these fundamental architectural patterns. Recognize the wording, and the solution structure follows immediately:</p>
+        
+        <table class="result-table">
+          <thead>
+            <tr><th>Pattern</th><th>How it sounds in interview</th><th>Canonical Solution Template</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nth Highest Value</strong></td>
+              <td>"Find 2nd/3rd highest salary", "Top score"</td>
+              <td><code>DENSE_RANK() OVER (ORDER BY col DESC) = N</code></td>
+            </tr>
+            <tr>
+              <td><strong>Top-N Per Group</strong></td>
+              <td>"Top 3 earners per department", "Best seller in region"</td>
+              <td><code>ROW_NUMBER() OVER (PARTITION BY dept ORDER BY score DESC) &lt;= N</code></td>
+            </tr>
+            <tr>
+              <td><strong>Finding Duplicates</strong></td>
+              <td>"Identify duplicate emails / customer rows"</td>
+              <td><code>GROUP BY key_col HAVING COUNT(*) &gt; 1</code></td>
+            </tr>
+            <tr>
+              <td><strong>Deleting Duplicates</strong></td>
+              <td>"Keep the earliest ID and delete remainder"</td>
+              <td><code>ROW_NUMBER() OVER (PARTITION BY key ORDER BY id); DELETE rn &gt; 1</code></td>
+            </tr>
+            <tr>
+              <td><strong>Running Total / Moving Avg</strong></td>
+              <td>"Cumulative revenue", "7-day rolling average"</td>
+              <td><code>SUM(amt) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)</code></td>
+            </tr>
+            <tr>
+              <td><strong>Gaps &amp; Islands</strong></td>
+              <td>"3+ consecutive login days", "Missing IDs in sequence"</td>
+              <td><code>date - CAST(ROW_NUMBER() OVER (...) AS INT) AS grp</code></td>
+            </tr>
+            <tr>
+              <td><strong>Row-Over-Row Change</strong></td>
+              <td>"Month-over-month growth %", "Price change"</td>
+              <td><code>LAG(revenue, 1) OVER (ORDER BY month)</code></td>
+            </tr>
+            <tr>
+              <td><strong>Cohorts &amp; Sessions</strong></td>
+              <td>"Customer retention by signup month", "Sessionize clicks"</td>
+              <td><code>LAG() gap check + running SUM() of session change flags</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: 50 SOLVED PROBLEMS -->
+    <div id="tab-solved" class="tab-content" style="display: none;">
+      <div id="solvedProblemsContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>SQL Interview Master Archive · Curated from real technical and client rounds across Capgemini, Deloitte, Infosys, Cognizant, Saama, NTT Data, LTIMindtree, Accenture &amp; Grid Dynamics. Fully static and GitHub Pages ready.</span>
+  </footer>
+</div>
+
+<script>
+// Data store for the 174 Company Master Questions
+const companyQuestions = [
+  // Capgemini (25)
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "Can you write a query to find the third-highest salary without using a subquery?", tip: "Use DENSE_RANK() OVER (ORDER BY salary DESC) in a CTE or LIMIT 1 OFFSET 2." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is the difference between RANK() and DENSE_RANK()?", tip: "RANK leaves gaps after ties (1,2,2,4); DENSE_RANK assigns consecutive ranks (1,2,2,3)." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "Can you write a query to identify duplicate records?", tip: "SELECT email, COUNT(*) FROM t GROUP BY email HAVING COUNT(*) > 1;" },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "How would you delete duplicate records while retaining one record?", tip: "Use ROW_NUMBER() partitioned by unique key ordered by ID, then DELETE WHERE rn > 1." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "Why would you use ROW_NUMBER() instead of RANK() for deleting duplicate records?", tip: "ROW_NUMBER guarantees strictly unique sequence numbers (1,2,3) even for tied duplicate rows." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is a surrogate key?", tip: "System-generated artificial integer or UUID with no intrinsic business meaning." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is a natural key?", tip: "Business-meaningful real-world identifier, such as SSN, email, or tax ID." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is a materialized view?", tip: "A precomputed stored query result physically written to disk, refreshed periodically." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is a temporary table and what is its usage?", tip: "Session-scoped transient table automatically dropped when user session terminates." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "How would you generate unique team vs opposite-team combinations without repeating reverse combinations?", tip: "SELECT t1.name, t2.name FROM teams t1 INNER JOIN teams t2 ON t1.name < t2.name;" },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What SQL-side optimization techniques have you followed?", tip: "Avoid SELECT *, filter early in WHERE, index join columns, avoid functions on indexed fields." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "Can you explain Stream Lookup vs Database Lookup? What is the difference?", tip: "Stream lookup buffers reference data in RAM; Database lookup executes repeated queries against DB." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is the difference between SCD and CDC? (MOST COMMON QUESTION)", tip: "CDC captures raw transactional changes in source DB; SCD manages how historical dimension changes are stored in target warehouse." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "In CDC, can we track history?", tip: "CDC captures the stream of change logs (inserts, updates, deletes), which can be preserved downstream." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is Merge Rows / Merge Join?", tip: "Join algorithm that requires both incoming streams to be sorted on the join key first." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is the difference between Group By and Memory Group By in ETL?", tip: "Memory Group By does not require pre-sorted inputs but is limited by JVM heap memory." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "How do you remove duplicate records in Pentaho / PDI?", tip: "Sort Rows step followed by Unique Rows step." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is the Merge Rows (diff) component?", tip: "Compares two sorted streams and tags rows as identical, changed, new, or deleted." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "How would you compare data from two input steps using Merge Rows (diff)?", tip: "Ensure identical sorting on match keys before passing to Merge Rows (diff)." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is the difference between lookup components and joins in PDI, and when to use each?", tip: "Lookup is for 1-to-1 dimension enrichment; Join supports full relational operations (Outer, Cartesians)." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What are the SCD types? (MOST COMMON QUESTION)", tip: "Type 0 (fixed), Type 1 (overwrite), Type 2 (new row with start/end date & is_current), Type 3 (new column)." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is the difference between a fact table and a factless fact table?", tip: "Fact tables contain quantitative numerical metrics; factless fact tables record events (e.g. attendance) with only foreign keys." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is a surrogate key and what is a natural key? (MOST COMMON QUESTION)", tip: "Natural key comes from source; surrogate key isolates data warehouse dimensions from source system changes." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What is incremental load and how do you achieve it in Pentaho? (MOST COMMON QUESTION)", tip: "Load only new/modified rows using a high-watermark timestamp or CDC flag." },
+  { company: "Capgemini", round: "L1 — Technical Interview", q: "What SQL-side and PDI-side optimization techniques have you followed?", tip: "Batch commits, connection pooling, indexing source keys, pushing transformations down to SQL." },
+
+  // Deloitte (9)
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "What are the different join types?", tip: "INNER, LEFT, RIGHT, FULL OUTER, CROSS, SELF, and ANTI joins." },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "Given two tables and their columns, what would the output rows be for the different joins?", tip: "Be ready to calculate exact row counts when tables contain duplicate and NULL join keys." },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "How do you find the third-highest salary?", tip: "WITH r AS (SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) as rnk FROM emp) SELECT DISTINCT salary FROM r WHERE rnk = 3;" },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "How do you use LEAD and LAG functions?", tip: "LEAD accesses subsequent rows; LAG accesses previous rows in the ordered window." },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "What is the difference between RANK, DENSE_RANK, and ROW_NUMBER?", tip: "ROW_NUMBER gives unique sequential numbers; RANK skips after ties; DENSE_RANK never skips." },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "What are the types of views in Snowflake?", tip: "Standard views, Secure views (hide definition & internal optimization), and Materialized views." },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "What is a materialized view? Give an example.", tip: "Precomputed table in Snowflake automatically maintained in background by serverless compute." },
+  { company: "Deloitte", round: "Technical — SQL / Snowflake", q: "How do you handle a long-running query?", tip: "Inspect Query Profile for spilling to local/remote storage, pruning efficiency, and warehouse resizing." },
+  { company: "Deloitte", round: "Technical / Project Interview", q: "How do you optimize a data pipeline for better performance and scalability?", tip: "Partition pruning, clustering keys, horizontal warehouse scaling, and ELT pushdown." },
+
+  // Infosys (21)
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Explain Slowly Changing Dimension Type 2 (SCD Type 2).", tip: "Preserves full historical audit by creating a new record with valid_from, valid_to, and is_active flag." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "How do additional fields/additional columns come into Type 2?", tip: "Schema evolution in warehouse; adding metadata columns for tracking changed attributes." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "What is the difference between a Surrogate Key, Primary Key, and Foreign Key?", tip: "PK uniquely identifies row; FK links to referenced PK; Surrogate Key is internal warehouse synthetic PK." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Can you explain Materialized Views in Snowflake?", tip: "Automatically refreshed background cached results; ideal for repeated queries on slow-changing tables." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "What optimization techniques do you use in Snowflake?", tip: "Cluster keys, search optimization service, multi-cluster auto-scaling, and query profiling." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Find the 5th highest salary.", tip: "DENSE_RANK() = 5." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Find the 5th highest salary for each department.", tip: "DENSE_RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) = 5." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Who sold the costliest product?", tip: "SELECT salesperson FROM sales JOIN products USING(product_id) ORDER BY price DESC LIMIT 1;" },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Find the customer who purchased the costliest product.", tip: "Join customers, orders, and products filtered where price = (SELECT MAX(price) FROM products)." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Find the customers who placed at least one order in every month of 2025.", tip: "GROUP BY customer_id HAVING COUNT(DISTINCT EXTRACT(MONTH FROM order_date)) = 12." },
+  { company: "Infosys", round: "L1 — Technical Interview", q: "Explain procedural SQL syntax / PL-SQL.", tip: "Extensions adding variables, IF-THEN branching, loops, cursors, and exception handling." },
+  { company: "Infosys", round: "Final Client Round", q: "Can you give me an example of one dummy record with SCD Type 2?", tip: "Customer 101, City 'Dallas', ValidFrom '2024-01-01', ValidTo '2025-05-01', IsCurrent 0; new record with City 'Austin', IsCurrent 1." },
+  { company: "Infosys", round: "Final Client Round", q: "How would you implement row-level security so regional managers only see their own region's customers?", tip: "Create mapping table user_role_map, use CURRENT_USER() in a secure view or row access policy." },
+  { company: "Infosys", round: "Final Client Round", q: "If a transaction-intensive job consumes high CPU/memory and slows other teams in Snowflake, what do you do?", tip: "Isolate the job onto a dedicated Virtual Warehouse; avoid sharing warehouses between ETL and BI." },
+  { company: "Infosys", round: "Final Client Round", q: "How to ensure referential integrity when transaction source succeeds but dimension source fails?", tip: "Assign default dummy surrogate key (-1 / 'Unknown') for missing dimension keys, then backfill." },
+  { company: "Infosys", round: "Final Client Round", q: "What Snowflake system tables do you use to analyze slow queries across teams?", tip: "SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY and WAREHOUSE_METERING_HISTORY." },
+
+  // Cognizant (18)
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "What is the logical execution order of SQL clauses?", tip: "FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT" },
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "Find candidates possessing all three required skills: MySQL, Python, and Tableau.", tip: "WHERE skill IN ('MySQL','Python','Tableau') GROUP BY candidate_id HAVING COUNT(DISTINCT skill) = 3;" },
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "Calculate join record counts for duplicate keys across INNER, LEFT, and FULL joins.", tip: "Multiplication rule: if Table 1 has M rows and Table 2 has N rows for key K, join yields M*N rows." },
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "If one additional NULL record is added to both tables, how do join counts change?", tip: "INNER join count does NOT change (NULL does not match NULL). LEFT & FULL joins gain extra unmatched rows." },
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "Generate all possible unique match pairings between 5 cricket teams.", tip: "SELECT t1.name, t2.name FROM teams t1 INNER JOIN teams t2 ON t1.name < t2.name;" },
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "Count new customers making their first-ever purchase in each month.", tip: "First find MIN(order_date) per customer in a CTE, then GROUP BY purchase_month." },
+  { company: "Cognizant", round: "L1 — SQL Data Engineer", q: "Return all seats belonging to a consecutive group of 3 or more vacant seats.", tip: "Gaps & islands pattern using seat_number - ROW_NUMBER() grouping." },
+  { company: "Cognizant", round: "L2 — SQL Data Engineer", q: "Calculate lifetime_upgrade and lifetime_downgrade per customer from monthly recharge.", tip: "Compare recharge with LAG(recharge); MAX(CASE WHEN current > prev THEN 1 ELSE 0 END)." },
+  { company: "Cognizant", round: "L2 — SQL Data Engineer", q: "Find employees who joined earlier than their manager and earn a higher salary than their manager.", tip: "Self-join employees e to employees m ON e.manager_id = m.emp_id WHERE e.join_date < m.join_date AND e.salary > m.salary." },
+  { company: "Cognizant", round: "L2 — SQL Data Engineer", q: "Generate match summary: Team, Matches Played, Matches Won, and Matches Lost.", tip: "Union Team_A and Team_B records into uniform team rows, then aggregate results." },
+  { company: "Cognizant", round: "L2 — SQL Data Engineer", q: "ETL job normally takes 30 mins, but takes 1 hour after adding a new column. Why?", tip: "Column may contain wide text/LOB data preventing memory fitting, or invalidated index causing full table scans." },
+
+  // Saama Technologies (19)
+  { company: "Saama Technologies", round: "Round 1 — L1", q: "If you have customer and order tables and want only customers who made orders, which join?", tip: "INNER JOIN (or SELECT * FROM customers WHERE EXISTS (SELECT 1 FROM orders ...))." },
+  { company: "Saama Technologies", round: "Round 1 — L1", q: "If you use a LEFT JOIN, what happens?", tip: "All customers are returned; customers with no orders show NULL for order columns." },
+  { company: "Saama Technologies", round: "Round 1 — L1", q: "Difference between View and Materialized View?", tip: "View is a virtual query executed each time; Materialized view stores physical cached data." },
+  { company: "Saama Technologies", round: "Round 1 — L1", q: "Explain Star Schema vs Snowflake Schema.", tip: "Star has denormalized dimensions (1 join away); Snowflake has normalized dimension hierarchies." },
+  { company: "Saama Technologies", round: "Round 1 — L1", q: "Difference between OLTP and OLAP?", tip: "OLTP is write/transaction optimized (normalized 3NF); OLAP is read/analytics optimized (denormalized star schema)." },
+  { company: "Saama Technologies", round: "Round 2 — L2", q: "Given policy_history with multiple statuses over time, derive previous, current, duration, and final status.", tip: "Use LAG(status) for previous, status for current, DATEDIFF(next_date, current_date) for duration, and FIRST_VALUE/LAST_VALUE." },
+
+  // NTT DATA (29)
+  { company: "NTT DATA", round: "Technical / ETL", q: "If the source has 1,000,000 records but target has only 950,000, how would you investigate?", tip: "Check rejected/bad records log, filter conditions in ETL, duplicate key drops, or join dropouts." },
+  { company: "NTT DATA", round: "Technical / ETL", q: "What is shuffling in distributed data computing?", tip: "Physical transfer and re-partitioning of data across cluster network nodes during joins and group-bys." },
+  { company: "NTT DATA", round: "Technical / ETL", q: "How would you resolve a join that causes excessive shuffling?", tip: "Use Broadcast Join for small lookup tables, or pre-bucket/cluster both tables on the join key." },
+  { company: "NTT DATA", round: "Technical / ETL", q: "What is a broadcast join?", tip: "Driver replicates the entire small table to RAM on every worker executor, eliminating network shuffle." },
+  { company: "NTT DATA", round: "Client Technical", q: "What are the ACID properties in SQL and Delta Lake?", tip: "Atomicity, Consistency, Isolation, Durability. Delta Lake achieves ACID via transaction log JSON files." },
+  { company: "NTT DATA", round: "Client Technical", q: "What is schema enforcement vs schema evolution?", tip: "Enforcement rejects writes with mismatched columns; evolution dynamically updates table schema with new columns." },
+  { company: "NTT DATA", round: "Client Technical", q: "What is time travel in Delta Lake?", tip: "Querying historical table versions using TIMESTAMP AS OF or VERSION AS OF from the transaction log." },
+
+  // LTIMindtree (7)
+  { company: "LTIMindtree", round: "Technical Round", q: "Given two tables with NULLs and duplicate values, what will be the inner join count?", tip: "NULL rows never match NULL rows; duplicates multiply (N * M)." },
+  { company: "LTIMindtree", round: "Technical Round", q: "Find top 3 customers who spent maximum amount.", tip: "SELECT customer_id, SUM(amount) FROM tx GROUP BY customer_id ORDER BY 2 DESC LIMIT 3;" },
+  { company: "LTIMindtree", round: "Technical Round", q: "Which SCD type is used when existing records are updated directly without history?", tip: "SCD Type 1 (direct overwrite)." },
+  { company: "LTIMindtree", round: "Technical Round", q: "How would you validate results of an optimized SQL query against the original query?", tip: "Use EXCEPT / MINUS in both directions to verify identical result sets and compare EXPLAIN costs." },
+
+  // Accenture (5)
+  { company: "Accenture", round: "Technical Assessment", q: "What are the different types of views in Snowflake?", tip: "Standard views, secure views (hides underlying SQL & query profile logic), materialized views." },
+  { company: "Accenture", round: "Technical Assessment", q: "How would you optimize a slow-performing database?", tip: "Add missing indexes, rewrite non-sargable queries, update statistics, partition large tables." },
+
+  // Grid Dynamics (41)
+  { company: "Grid Dynamics", round: "Technical Interview", q: "If both tables have duplicate join keys, what happens during the join?", tip: "A Cartesian product of matching rows is produced, leading to exponential row explosion." },
+  { company: "Grid Dynamics", round: "Technical Interview", q: "How do you identify whether duplicate rows came from the left or right table?", tip: "Inspect primary keys of each table in the output; duplicate left keys with single right key indicates left-side duplicates." },
+  { company: "Grid Dynamics", round: "Technical Interview", q: "What is the difference between EXISTS and IN?", tip: "EXISTS stops scanning as soon as a single match is found (short-circuit) and handles NULLs safely; IN evaluates the full list." },
+  { company: "Grid Dynamics", round: "Technical Interview", q: "What happens if multiple source records match the same target record during a MERGE?", tip: "Database raises a non-deterministic update error ('MERGE failed because target row matched multiple source rows')." },
+  { company: "Grid Dynamics", round: "Technical Interview", q: "How would you extract an ID from a semi-structured JSON column in Snowflake?", tip: "Use colon operator: json_col:customer_id::INT or FLATTEN() function." },
+  { company: "Grid Dynamics", round: "Technical Interview", q: "What is the difference between partitioning and bucketing in Hive?", tip: "Partitioning creates directory folders per unique key value; bucketing splits data into a fixed number of hash files." }
+];
+
+// 50 Solved Problems Data
+const solvedQuestions = [
+  { num: 1, title: "SQL Command Types (DDL, DML, DCL, TCL)", cat: "Fundamentals", 
+    q: "What are the main types of SQL commands and why do their categories matter?", 
+    ans: "SQL commands are grouped by what they do: DDL (Data Definition - CREATE, ALTER, DROP, TRUNCATE), DML (Data Manipulation - INSERT, UPDATE, DELETE, MERGE), DQL (Query - SELECT), DCL (Control - GRANT, REVOKE), and TCL (Transaction - COMMIT, ROLLBACK).",
+    tip: "Common follow-up: Is TRUNCATE DDL or DML? Answer: DDL, because it operates on the table object structure/pages directly, bypassing row-level triggers."
+  },
+  { num: 2, title: "Primary Key vs Foreign Key", cat: "Fundamentals",
+    q: "What is the difference between a primary key and a foreign key?",
+    ans: "A Primary Key uniquely identifies a row in its table (NOT NULL + UNIQUE). A Foreign Key points to the Primary Key of another table to maintain referential integrity.",
+    code: "CREATE TABLE employees (\n  emp_id INT PRIMARY KEY,\n  dept_id INT REFERENCES departments(dept_id)\n);"
+  },
+  { num: 5, title: "DELETE vs TRUNCATE vs DROP", cat: "Fundamentals",
+    q: "Compare DELETE, TRUNCATE, and DROP across transaction logs, WHERE clauses, and speed.",
+    ans: "DELETE is DML, row-by-row, supports WHERE, fires triggers, and is slower. TRUNCATE is DDL, deallocates entire data pages, no WHERE clause, resets auto-increment, much faster. DROP is DDL, removes the entire table structure from metadata.",
+    tip: "PostgreSQL and SQL Server allow TRUNCATE inside a transaction and can be rolled back; MySQL and Oracle commit implicitly."
+  },
+  { num: 6, title: "WHERE vs HAVING", cat: "Fundamentals",
+    q: "What is the difference between WHERE and HAVING in query execution?",
+    ans: "WHERE filters raw individual rows before grouping occurs. HAVING filters aggregated groups after GROUP BY.",
+    code: "SELECT dept_id, AVG(salary) AS avg_sal\nFROM employees\nWHERE salary > 50000 -- row filter before grouping\nGROUP BY dept_id\nHAVING AVG(salary) > 70000; -- group filter after grouping"
+  },
+  { num: 8, title: "NULL Handling & The NOT IN Trap", cat: "Fundamentals",
+    q: "How does SQL treat NULL and why does NOT IN fail when a subquery returns NULL?",
+    ans: "NULL represents unknown. In 3-valued logic, NULL = NULL evaluates to UNKNOWN. If a subquery used with NOT IN returns even a single NULL, the entire NOT IN evaluates to UNKNOWN and returns 0 rows! Always use NOT EXISTS instead.",
+    code: "-- Dangerous:\nWHERE dept_id NOT IN (SELECT dept_id FROM employees)\n-- Safe:\nWHERE NOT EXISTS (SELECT 1 FROM employees e WHERE e.dept_id = d.dept_id)"
+  },
+  { num: 19, title: "Find Second-Highest Salary", cat: "Hands-on Query",
+    q: "Write a query to find the second-highest salary handling ties properly.",
+    ans: "Use DENSE_RANK() so tied top salaries do not skip rank 2.",
+    code: "WITH ranked AS (\n  SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk\n  FROM employees\n)\nSELECT DISTINCT salary AS second_highest_salary\nFROM ranked\nWHERE rnk = 2;"
+  },
+  { num: 22, title: "Top-N Earners Per Department", cat: "Window Functions",
+    q: "Find the top 3 earners in each department.",
+    ans: "Partition by department and order by salary descending inside ROW_NUMBER().",
+    code: "WITH ranked AS (\n  SELECT dept_id, name, salary,\n         ROW_NUMBER() OVER (PARTITION BY dept_id ORDER BY salary DESC, emp_id) AS rn\n  FROM employees\n  WHERE dept_id IS NOT NULL\n)\nSELECT dept_id, name, salary, rn\nFROM ranked\nWHERE rn <= 3\nORDER BY dept_id, rn;"
+  },
+  { num: 24, title: "Delete Duplicate Records While Retaining One", cat: "Hands-on Query",
+    q: "Write an idempotent query to delete duplicate customer emails keeping the lowest ID.",
+    ans: "Use a CTE or derived table with ROW_NUMBER() partitioned by email.",
+    code: "DELETE FROM customers\nWHERE id IN (\n  SELECT id FROM (\n    SELECT id, ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn\n    FROM customers\n  ) t WHERE rn > 1\n);"
+  },
+  { num: 25, title: "Running Total & Window Frame Clauses", cat: "Window Functions",
+    q: "Calculate cumulative sales by date using explicit window frame syntax.",
+    ans: "Explicitly declare ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW to prevent default RANGE peer grouping when dates tie.",
+    code: "SELECT sale_date, amount,\n       SUM(amount) OVER (\n         ORDER BY sale_date\n         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS running_total\nFROM sales\nORDER BY sale_date;"
+  },
+  { num: 27, title: "Gaps & Islands: 3+ Consecutive Login Days", cat: "Advanced Query",
+    q: "Identify users who logged in on 3 or more consecutive days.",
+    ans: "The classic date minus row number trick. For consecutive days, date and row_number advance synchronously, keeping their difference constant.",
+    code: "WITH numbered AS (\n  SELECT user_id, login_date,\n         ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_date) AS rn\n  FROM (SELECT DISTINCT user_id, login_date FROM logins) d\n),\ngrouped AS (\n  SELECT user_id, login_date,\n         login_date - CAST(rn AS INT) AS grp\n  FROM numbered\n)\nSELECT user_id, MIN(login_date) AS streak_start, MAX(login_date) AS streak_end, COUNT(*) AS days\nFROM grouped\nGROUP BY user_id, grp\nHAVING COUNT(*) >= 3;"
+  },
+  { num: 30, title: "Month-Over-Month % Growth with LAG()", cat: "Window Functions",
+    q: "Calculate month-over-month revenue change and growth percentage.",
+    ans: "Read previous month revenue with LAG() and guard against division by zero using NULLIF.",
+    code: "SELECT month, revenue,\n       LAG(revenue) OVER (ORDER BY month) AS prev_revenue,\n       revenue - LAG(revenue) OVER (ORDER BY month) AS change,\n       ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY month)) \n       / NULLIF(LAG(revenue) OVER (ORDER BY month), 0), 1) AS pct_change\nFROM monthly_sales\nORDER BY month;"
+  },
+  { num: 39, title: "Recursive CTE Org Chart Hierarchy", cat: "Advanced Query",
+    q: "Walk an employee-manager hierarchy to display reporting levels.",
+    ans: "Anchor member selects root manager; recursive member joins back to CTE.",
+    code: "WITH RECURSIVE org AS (\n  SELECT emp_id, name, manager_id, 1 AS level\n  FROM employees WHERE manager_id IS NULL -- Anchor\n  UNION ALL\n  SELECT e.emp_id, e.name, e.manager_id, o.level + 1\n  FROM employees e\n  JOIN org o ON e.manager_id = o.emp_id -- Recursive step\n)\nSELECT name, level FROM org ORDER BY level, name;"
+  },
+  { num: 43, title: "Non-Sargable Queries in WHERE Clauses", cat: "Performance",
+    q: "Why should you never wrap an indexed column in a function in WHERE?",
+    ans: "Wrapping an indexed column in a function (e.g. WHERE YEAR(order_date) = 2026) forces a full table scan because index keys cannot be walked directly. Rewrite to a range comparison.",
+    code: "-- Slow (Non-Sargable):\nWHERE YEAR(order_date) = 2026\n-- Fast (Sargable):\nWHERE order_date >= '2026-01-01' AND order_date < '2027-01-01'"
+  },
+  { num: 46, title: "ACID Properties & Transaction Guarantees", cat: "Transactions",
+    q: "Explain Atomicity, Consistency, Isolation, and Durability.",
+    ans: "Atomicity: all steps succeed or none do (rollback on failure). Consistency: database transitions between valid states preserving all integrity constraints. Isolation: concurrent transactions execute without cross-contamination. Durability: committed writes survive system power cuts."
+  }
+];
+
+function renderCompanyCards(filter = 'all', search = '') {
+  const container = document.getElementById('companyCardsContainer');
+  const searchLower = search.toLowerCase();
+  
+  const filtered = companyQuestions.filter(item => {
+    const matchesFilter = filter === 'all' || item.company.toLowerCase() === filter.toLowerCase();
+    const matchesSearch = !search || item.q.toLowerCase().includes(searchLower) || item.tip.toLowerCase().includes(searchLower) || item.company.toLowerCase().includes(searchLower);
+    return matchesFilter && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="q-card"><p style="text-align:center; color:var(--muted);">No questions match your query.</p></div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map((item, idx) => `
+    <div class="q-card">
+      <div class="q-badge-row">
+        <span class="badge badge-company">${item.company}</span>
+        <span class="badge badge-category">${item.round}</span>
+      </div>
+      <p class="q-text">${item.q}</p>
+      ${item.tip ? `<div class="callout-tip">💡 <strong>Key Technical Takeaway:</strong> ${item.tip}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderSolvedProblems(search = '') {
+  const container = document.getElementById('solvedProblemsContainer');
+  const searchLower = search.toLowerCase();
+
+  const filtered = solvedQuestions.filter(item => {
+    return !search || item.title.toLowerCase().includes(searchLower) || item.q.toLowerCase().includes(searchLower) || item.ans.toLowerCase().includes(searchLower);
+  });
+
+  container.innerHTML = filtered.map(item => `
+    <div class="q-card">
+      <div class="q-badge-row">
+        <span class="badge badge-company">Q${item.num} · ${item.cat}</span>
+      </div>
+      <p class="q-text">${item.title}: ${item.q}</p>
+      <div class="q-details"><p>${item.ans}</p></div>
+      ${item.code ? `<pre class="code-block"><code>${item.code}</code></pre>` : ''}
+      ${item.tip ? `<div class="callout-tip">💡 <strong>Interview Pro-Tip:</strong> ${item.tip}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// Initial renders
+renderCompanyCards();
+renderSolvedProblems();
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).style.display = 'block';
+  });
+});
+
+// Filter Chips
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const filter = chip.dataset.filter;
+    const search = document.getElementById('searchInput').value;
+    renderCompanyCards(filter, search);
+  });
+});
+
+// Search input
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const search = e.target.value;
+  const activeChip = document.querySelector('.filter-chip.active');
+  const filter = activeChip ? activeChip.dataset.filter : 'all';
+  renderCompanyCards(filter, search);
+  renderSolvedProblems(search);
+});
+
+// Theme Toggle
+const toggleBtn = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeLabel = document.getElementById('themeLabel');
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeIcon.textContent = '🌙';
+    themeLabel.textContent = 'Dark';
+  } else if (theme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeIcon.textContent = '☀️';
+    themeLabel.textContent = 'Light';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    themeIcon.textContent = prefersDark ? '🌙' : '☀️';
+    themeLabel.textContent = 'System';
+  }
+}
+
+const savedTheme = localStorage.getItem('de_theme') || 'auto';
+applyTheme(savedTheme === 'auto' ? null : savedTheme);
+
+toggleBtn.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  let next = 'dark';
+  if (current === 'dark') next = 'light';
+  else if (current === 'light') next = 'dark';
+  else {
+    next = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark';
+  }
+  localStorage.setItem('de_theme', next);
+  applyTheme(next);
+});
+</script>
+</body>
+</html>

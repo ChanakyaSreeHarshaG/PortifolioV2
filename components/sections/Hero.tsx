@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { FileText } from 'lucide-react';
 import { Github, Linkedin } from '../ui/Icons';
@@ -8,40 +8,6 @@ import { ParticleCanvas } from '../ui/ParticleCanvas';
 import { personalInfo } from '@/data/portfolio';
 
 export function Hero() {
-  const [displayText, setDisplayText] = useState('');
-  const [roleIdx, setRoleIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  useEffect(() => {
-    const roles = personalInfo.roles;
-    const currentRole = roles[roleIdx];
-    let timer: NodeJS.Timeout;
-
-    const tick = () => {
-      if (isDeleting) {
-        setDisplayText(currentRole.substring(0, charIdx - 1));
-        setCharIdx((prev) => prev - 1);
-      } else {
-        setDisplayText(currentRole.substring(0, charIdx + 1));
-        setCharIdx((prev) => prev + 1);
-      }
-    };
-
-    if (!isDeleting && charIdx === currentRole.length) {
-      timer = setTimeout(() => setIsDeleting(true), 1800);
-    } else if (isDeleting && charIdx === 0) {
-      timer = setTimeout(() => {
-        setIsDeleting(false);
-        setRoleIdx((prev) => (prev + 1) % roles.length);
-      }, 400);
-    } else {
-      timer = setTimeout(tick, isDeleting ? 30 : 70);
-    }
-
-    return () => clearTimeout(timer);
-  }, [charIdx, isDeleting, roleIdx]);
-
   return (
     <section id="hero" className="hero-section">
       <ParticleCanvas />
@@ -62,22 +28,20 @@ export function Hero() {
         </div>
         
         <div className="hero-right">
-          <div className="hero-status-container">
-            <span className="hero-status-line"></span>
-            <span className="hero-status-text">Available for work · 2026</span>
-            <span className="pulse-dot-green-standalone"></span>
-          </div>
-
           <h1 className="hero-h1">{personalInfo.name}</h1>
           
           <div className="typewriter-box">
-            <span className="typewriter-cursor" id="typewriter">
-              {displayText}
+            <span className="font-space-grotesk text-xl font-semibold text-teal">
+              Business Analyst · Data & Analytics
             </span>
           </div>
           
           <p className="hero-bio">
-            {personalInfo.bio}
+            I’m a Computer Science graduate with experience working on data analysis, SQL, Power BI, and business reporting. I enjoy turning raw data and business requirements into clear insights, reports, and practical solutions.
+          </p>
+          
+          <p className="text-sm text-slate-400 font-mono mt-2 mb-4">
+            Currently working as a Business Analyst · Hyderabad, India
           </p>
           
           <div className="hero-ctas">

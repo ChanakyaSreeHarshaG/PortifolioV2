@@ -10,6 +10,7 @@ const navItems = [
   { label: 'Skills', href: '#skills' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
+  { label: 'Roadmaps', href: '/guides/databricks-spark-roadmap' },
   { label: 'Certifications', href: '#certifications' },
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
@@ -64,15 +65,17 @@ export function Navbar() {
   };
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const targetId = href.replace('#', '');
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      const topOffset = targetElement.offsetTop - 80;
-      window.scrollTo({
-        top: topOffset,
-        behavior: 'smooth',
-      });
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const targetId = href.replace('#', '');
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const topOffset = targetElement.offsetTop - 80;
+        window.scrollTo({
+          top: topOffset,
+          behavior: 'smooth',
+        });
+      }
     }
     setMobileMenuOpen(false);
   };

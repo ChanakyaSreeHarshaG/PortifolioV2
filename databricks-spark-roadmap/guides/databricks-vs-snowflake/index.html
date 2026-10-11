@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Databricks vs Snowflake — Which One Should You Actually Learn? | @techwithprateek</title>
+<meta name="description" content="A clear, interactive breakdown of Databricks vs Snowflake — what each is built for, how their components differ, and which one to learn first based on your target data role.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-a: #e8eeff; --bg-b: #f4f0ff; --bg-c: #e6f7f1;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.35;
+    --glass: rgba(255,255,255,0.62); --glass-strong: rgba(255,255,255,0.78);
+    --glass-line: rgba(255,255,255,0.85); --edge: rgba(24,86,255,0.14);
+    --shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --bg: #e8eeff; --bg-alt: rgba(255,255,255,0.66); --text: #141414; --text-muted: #4a5163;
+    --border: rgba(24,86,255,0.14); --accent: #1856ff; --accent-soft: rgba(255,255,255,0.7);
+    --card-shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --db: #ff5f46; --db-soft: #ffece8; --sf: #29b5e8; --sf-soft: #e7f7fd;
+    --accent-2: #07ca6b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg-a: #0a0e1c; --bg-b: #120d24; --bg-c: #07181a;
+      --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.4;
+      --glass: rgba(24,30,48,0.55); --glass-strong: rgba(30,38,60,0.72);
+      --glass-line: rgba(255,255,255,0.14); --edge: rgba(130,160,255,0.2);
+      --shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+      --bg: #0a0e1c; --bg-alt: rgba(24,30,48,0.6); --text: #eef0f7; --text-muted: #a3acc2;
+      --border: rgba(130,160,255,0.2); --accent: #6d8dff; --accent-soft: rgba(109,141,255,0.16);
+      --card-shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+      --db-soft: #3a1f1a; --sf-soft: #10262e;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-a: #0a0e1c; --bg-b: #120d24; --bg-c: #07181a;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.4;
+    --glass: rgba(24,30,48,0.55); --glass-strong: rgba(30,38,60,0.72);
+    --glass-line: rgba(255,255,255,0.14); --edge: rgba(130,160,255,0.2);
+    --shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+    --bg: #0a0e1c; --bg-alt: rgba(24,30,48,0.6); --text: #eef0f7; --text-muted: #a3acc2;
+    --border: rgba(130,160,255,0.2); --accent: #6d8dff; --accent-soft: rgba(109,141,255,0.16);
+    --card-shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+    --db-soft: #3a1f1a; --sf-soft: #10262e;
+  }
+  :root[data-theme="light"] {
+    --bg-a: #e8eeff; --bg-b: #f4f0ff; --bg-c: #e6f7f1;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.35;
+    --glass: rgba(255,255,255,0.62); --glass-strong: rgba(255,255,255,0.78);
+    --glass-line: rgba(255,255,255,0.85); --edge: rgba(24,86,255,0.14);
+    --shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --bg: #e8eeff; --bg-alt: rgba(255,255,255,0.66); --text: #141414; --text-muted: #4a5163;
+    --border: rgba(24,86,255,0.14); --accent: #1856ff; --accent-soft: rgba(255,255,255,0.7);
+    --card-shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --db: #ff5f46; --db-soft: #ffece8; --sf: #29b5e8; --sf-soft: #e7f7fd;
+    --accent-2: #07ca6b;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--text);
+    background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+    font-family: "Plus Jakarta Sans", ui-sans-serif, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--orb-op); }
+  .o1 { width: 460px; height: 460px; background: var(--o1); top: -120px; left: -100px; }
+  .o2 { width: 420px; height: 420px; background: var(--o2); top: 38%; right: -140px; }
+  .o3 { width: 380px; height: 380px; background: var(--o3); bottom: -120px; left: 20%; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: saturate(180%) blur(14px); -webkit-backdrop-filter: saturate(180%) blur(14px);
+    background: var(--glass-strong);
+    border-bottom: 1px solid var(--glass-line);
+  }
+  .topbar-inner {
+    max-width: 1040px; margin: 0 auto; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-back { text-decoration: none; font-size: 13.5px; font-weight: 600; color: var(--text-muted); }
+  .nav-back:hover { color: var(--accent); }
+  .brand { font-weight: 700; font-size: 0.95rem; white-space: nowrap; }
+  .brand .db { color: var(--db); }
+  .brand .vs { color: var(--text-muted); font-weight: 500; }
+  .brand .sf { color: var(--sf); }
+  .theme-toggle {
+    border: 1px solid var(--border); background: var(--bg-alt); color: var(--text);
+    border-radius: 99px; width: 34px; height: 34px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px 60px; }
+  .hero { padding: 48px 0 20px; }
+  .eyebrow {
+    display: inline-block; font-size: 0.78rem; font-weight: 600; letter-spacing: .04em;
+    color: var(--accent); background: var(--accent-soft); padding: 5px 12px; border-radius: 99px;
+    margin-bottom: 18px; text-transform: uppercase; font-family: "JetBrains Mono", monospace;
+  }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 8px; letter-spacing: -0.02em; }
+  .subtitle { font-size: 1.05rem; color: var(--text-muted); margin: 0 0 18px; max-width: 700px; }
+  .handle { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+  .handle b { color: var(--text); }
+
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 8px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
+    font-size: 0.92rem; font-weight: 600; padding: 12px 22px; border-radius: 99px;
+    transition: transform .15s ease, opacity .15s ease; cursor: pointer; font-family: inherit;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: var(--card-shadow); }
+  .btn-secondary { background: var(--bg-alt); color: var(--text); border: 1.5px solid var(--border); }
+
+  .callout {
+    background: var(--bg-alt); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 10px; padding: 16px 18px; margin: 18px 0; font-size: 0.95rem; color: var(--text-muted);
+  }
+  .callout b { color: var(--text); }
+
+  section { padding: 32px 0; }
+  .section-title { font-size: 1.4rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .section-sub { color: var(--text-muted); margin: 0 0 22px; font-size: 0.92rem; }
+
+  .role-picker { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .role-btn {
+    flex: 1 1 200px; text-align: left; cursor: pointer; font-family: inherit;
+    background: var(--bg-alt); border: 1.5px solid var(--border); border-radius: 14px;
+    padding: 14px 16px; color: var(--text); transition: border-color .15s ease, transform .15s ease;
+  }
+  .role-btn:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .role-btn.active { border-color: var(--accent); background: var(--accent-soft); }
+  .role-btn .r-label { font-weight: 700; font-size: 0.94rem; display: block; margin-bottom: 2px; }
+  .role-btn .r-sub { font-size: 0.8rem; color: var(--text-muted); }
+
+  .recommendation {
+    border-radius: 16px; border: 1px solid var(--border); background: var(--bg-alt);
+    box-shadow: var(--card-shadow); padding: 22px 24px; transition: border-color .2s ease;
+  }
+  .recommendation.empty { color: var(--text-muted); font-size: 0.92rem; text-align: center; padding: 26px 24px; }
+  .rec-pick { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .rec-pick .badge {
+    font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: .03em;
+    padding: 6px 12px; border-radius: 8px; color: #fff;
+  }
+  .rec-pick .badge.db { background: var(--db); }
+  .rec-pick .badge.sf { background: var(--sf); }
+  .rec-pick .badge.both { background: linear-gradient(90deg, var(--db), var(--sf)); }
+  .rec-pick .arrow { color: var(--text-muted); font-size: 0.85rem; }
+  .rec-text { font-size: 0.94rem; color: var(--text); margin: 0; }
+
+  .idea-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .idea-card {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px 20px; box-shadow: var(--card-shadow);
+  }
+  .idea-card.sf { border-top: 3px solid var(--sf); }
+  .idea-card.db { border-top: 3px solid var(--db); }
+  .idea-card h4 { margin: 0 0 8px; font-size: 0.98rem; }
+  .idea-card p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+
+  .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+  .platform-col-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .platform-col-head .p-icon {
+    width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .platform-col-head.db .p-icon { background: var(--db-soft); }
+  .platform-col-head.sf .p-icon { background: var(--sf-soft); }
+  .platform-col-head h3 { margin: 0; font-size: 1.1rem; }
+  .platform-col-head .p-sub { font-size: 0.8rem; color: var(--text-muted); }
+
+  .comp-item {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 8px; overflow: hidden; cursor: pointer;
+  }
+  .comp-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; gap: 10px; }
+  .comp-head .c-name { font-weight: 600; font-size: 0.9rem; }
+  .comp-head .chevron { color: var(--text-muted); transition: transform .2s ease; font-size: 0.8rem; flex-shrink: 0; }
+  .comp-item.open .chevron { transform: rotate(180deg); }
+  .comp-body { max-height: 0; overflow: hidden; transition: max-height .25s ease; }
+  .comp-item.open .comp-body { max-height: 200px; }
+  .comp-body-inner { padding: 0 16px 14px; font-size: 0.85rem; color: var(--text-muted); }
+
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; background: var(--bg-alt); box-shadow: var(--card-shadow); }
+  .cmp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 560px; }
+  .cmp-table th { text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--border); font-size: 0.76rem; text-transform: uppercase; letter-spacing: .03em; color: var(--text-muted); }
+  .cmp-table th.sf-col { color: var(--sf); }
+  .cmp-table th.db-col { color: var(--db); }
+  .cmp-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .cmp-table tr:last-child td { border-bottom: none; }
+  .cmp-table td.dim { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+  .analogy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .analogy-card { border-radius: 16px; padding: 22px; box-shadow: var(--card-shadow); border: 1px solid var(--border); }
+  .analogy-card.sf { background: var(--sf-soft); }
+  .analogy-card.db { background: var(--db-soft); }
+  .analogy-card .a-emoji { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+  .analogy-card h4 { margin: 0 0 6px; font-size: 1.02rem; }
+  .analogy-card p { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
+
+  .advice-box {
+    background: linear-gradient(135deg, var(--accent-soft), transparent); border-radius: 16px;
+    padding: 32px 24px; text-align: center; border: 1px solid var(--border);
+  }
+  .advice-box h3 { margin-top: 0; font-size: 1.3rem; }
+  .quote {
+    text-align: center; font-size: 1.05rem; font-style: italic; color: var(--text);
+    max-width: 680px; margin: 0 auto; padding: 8px 0;
+  }
+
+  footer { text-align: center; padding: 40px 0 60px; color: var(--text-muted); font-size: 0.85rem; }
+  footer a { color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <a href="../../index.html" class="nav-back">← Back to Roadmaps</a>
+      <div class="brand"><span class="db">Databricks</span> <span class="vs">vs</span> <span class="sf">Snowflake</span></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Data Platform Comparison</span>
+    <h1>Databricks vs Snowflake — Which One Should You Actually Learn?</h1>
+    <p class="subtitle">They get lumped together because both live in the cloud and both let you run SQL. What they're actually <em>built for</em> is different — and the right one to learn first depends entirely on which data role you're aiming for.</p>
+    <p class="handle">by <a href="https://www.instagram.com/techwithprateek" target="_blank" rel="noopener"><b>@techwithprateek</b></a> · a 2-minute mental model, not a debate</p>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://www.youtube.com/watch?v=0Hd5vYqin7w&t=3176s" target="_blank" rel="noopener">🧱 Databricks Course</a>
+      <a class="btn btn-primary" href="https://www.youtube.com/watch?v=mP3QbYURT9k" target="_blank" rel="noopener">❄️ Snowflake Course</a>
+      <a class="btn btn-secondary" href="https://www.instagram.com/techwithprateek" target="_blank" rel="noopener">📸 Follow for more</a>
+    </div>
+
+    <div class="callout">
+      <b>The confusion, cleared up in one line:</b> Snowflake is a <b>data warehouse</b> — a place to store and query clean, structured data with SQL. Databricks is a <b>data + AI platform</b> — a place to build pipelines, clean messy data, and train ML models, built on Apache Spark.
+    </div>
+  </section>
+
+  <section id="picker">
+    <h2 class="section-title">Start Here — Pick Your Lane</h2>
+    <p class="section-sub">Tap the role closest to what you're aiming for. The recommendation updates instantly.</p>
+    <div class="role-picker" id="rolePicker"></div>
+    <div class="recommendation empty" id="recommendation">Pick a role above to get your recommendation.</div>
+  </section>
+
+  <section>
+    <h2 class="section-title">The One Idea That Explains Almost Everything</h2>
+    <p class="section-sub">Both tools separate <b>storage</b> (where data sits) from <b>compute</b> (the power that processes it) — the modern cloud pattern that lets both scale up and down and charge per second of use. The real difference is what happens on top of that separation.</p>
+    <div class="idea-grid">
+      <div class="idea-card sf">
+        <h4>❄️ Snowflake</h4>
+        <p>Built from day one purely for fast SQL analytics on structured, tabular data. It hides all the infrastructure — you write SQL, it runs.</p>
+      </div>
+      <div class="idea-card db">
+        <h4>🧱 Databricks</h4>
+        <p>Built on <b>Apache Spark</b>, a distributed engine originally made to crunch huge, messy datasets — structured, semi-structured, unstructured — using code (Python/SQL/Scala), not just SQL.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="components">
+    <h2 class="section-title">Inside Each Platform</h2>
+    <p class="section-sub">Tap a component to see what it actually does.</p>
+    <div class="platform-grid">
+      <div>
+        <div class="platform-col-head db">
+          <div class="p-icon">🧱</div>
+          <div><h3>Databricks</h3><div class="p-sub">Runs on your cloud's storage (S3 / ADLS) + compute (VMs)</div></div>
+        </div>
+        <div id="dbComponents"></div>
+      </div>
+      <div>
+        <div class="platform-col-head sf">
+          <div class="p-icon">❄️</div>
+          <div><h3>Snowflake</h3><div class="p-sub">Manages its own infrastructure end to end</div></div>
+        </div>
+        <div id="sfComponents"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Side by Side, at a Glance</h2>
+    <div class="table-scroll">
+      <table class="cmp-table" id="cmpTable"></table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">The Analogy That Sticks</h2>
+    <div class="analogy-grid">
+      <div class="analogy-card sf">
+        <span class="a-emoji">📚</span>
+        <h4>Snowflake is a librarian</h4>
+        <p>Organizes clean data and hands it to you through SQL. Fast, simple — plug in a BI tool and you're done.</p>
+      </div>
+      <div class="analogy-card db">
+        <span class="a-emoji">🛠️</span>
+        <h4>Databricks is a workshop</h4>
+        <p>Raw materials go in. Pipelines, notebooks, and ML models come out.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="advice-box">
+      <h3>💡 Biggest Advice</h3>
+      <p class="quote">"Data Analyst → start with Snowflake. Data Engineer → start with Databricks. Working at a big company → you'll probably end up using both."</p>
+    </div>
+  </section>
+
+  <footer>
+    Guide replica for GitHub Pages · <a href="../../index.html">Databricks Roadmap</a> · <a href="../../powerbi-roadmap.html">Power BI Roadmap</a> · <a href="../../sql-interview-master.html">SQL Master Archive</a>
+  </footer>
+</div>
+
+<script>
+const ROLES = [
+  {
+    id: "analyst", label: "📊 Data Analyst", sub: "SQL, dashboards, BI",
+    pick: "Snowflake", badge: "sf",
+    reason: "Your day-to-day is writing SQL, building dashboards, and answering business questions — Snowflake was built exactly for that. You'll be productive fast without ever touching Spark, Python, or cluster configs.",
+  },
+  {
+    id: "engineer", label: "🛠️ Data Engineer", sub: "Pipelines, Spark, ML",
+    pick: "Databricks", badge: "db",
+    reason: "Your job is moving and transforming raw, often messy data into something clean and usable — that's Spark's whole reason for existing. Databricks gives you notebooks, pipelines, orchestration, and governance in one place.",
+  },
+  {
+    id: "both", label: "🏢 Big Company / Not Sure", sub: "Likely need both eventually",
+    pick: "Both — in that order", badge: "both",
+    reason: "Most companies run both together: Databricks does the heavy engineering and ML work upstream, Snowflake sits downstream as the clean, fast layer analysts query.",
+  },
+];
+
+const DB_COMPONENTS = [
+  ["Notebooks", "A Jupyter-style coding environment (Python, SQL, Scala) where engineers write pipelines and data scientists train models, in the same place."],
+  ["Delta Lake", "Makes raw files behave like proper database tables — reliable, no half-written or corrupt data. The foundation of the lakehouse."],
+  ["Workflows", "Schedules and chains pipelines/notebooks to run automatically — e.g. run this every night at 2am."],
+  ["Unity Catalog", "One place to control who can see and use which data, plus tracks where every table came from."],
+  ["SQL Warehouse", "The part that feels like Snowflake: a SQL editor and dashboards for people who just want to query, not code."],
+  ["MLflow", "Tracks machine learning experiments and manages models from training to deployment."],
+  ["DatabricksIQ", "Built-in AI assistant that helps write and debug code."],
+];
+
+const SF_COMPONENTS = [
+  ["Virtual Warehouse", "Snowflake's unit of compute, sized like a T-shirt (X-Small to XX-Large) — you never touch a server or cluster config."],
+  ["Storage / Compute Split", "Data sits once in cloud storage; spin up multiple independent warehouses to query it simultaneously without slowdown."],
+  ["Pure SQL", "No coding notebook by default — write SQL, get instant results, and build dashboards."],
+  ["Elastic, Pay-Per-Second", "A warehouse auto-suspends when idle and auto-resumes on a query, so you never pay for compute sitting around."],
+  ["Zero-Copy Cloning & Time Travel", "Clone a database instantly without duplicating storage, or query data as it existed minutes or days ago."],
+  ["Fully Managed Infra", "Snowflake runs its own infrastructure end to end — zero maintenance."],
+];
+
+const CMP_ROWS = [
+  ["Built on", "Its own proprietary engine", "Apache Spark (open source)"],
+  ["Best at", "Structured data + SQL analytics", "Structured + unstructured data, pipelines, ML"],
+  ["Main interface", "SQL editor / dashboards", "Notebooks (code) + SQL editor"],
+  ["Who uses it daily", "Analysts, BI teams", "Data engineers, ML/data scientists"],
+  ["Coding required", "Rarely — mostly SQL", "Often — Python/Scala/SQL"],
+  ["Machine learning", "Limited, via integrations", "Native (MLflow, built in)"],
+  ["Setup effort", "Very low, fully managed", "Low–medium, more configurable"],
+];
+
+function renderRolePicker() {
+  const el = document.getElementById("rolePicker");
+  el.innerHTML = ROLES.map(r => `
+    <button class="role-btn" data-id="${r.id}">
+      <span class="r-label">${r.label}</span>
+      <span class="r-sub">${r.sub}</span>
+    </button>
+  `).join("");
+  el.querySelectorAll(".role-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      el.querySelectorAll(".role-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      showRecommendation(btn.dataset.id);
+    });
+  });
+}
+
+function showRecommendation(id) {
+  const r = ROLES.find(x => x.id === id);
+  const el = document.getElementById("recommendation");
+  el.classList.remove("empty");
+  el.innerHTML = `
+    <div class="rec-pick">
+      <span class="badge ${r.badge}">${r.pick}</span>
+      <span class="arrow">← recommended for ${r.label.replace(/^\S+\s/, "")}</span>
+    </div>
+    <p class="rec-text">${r.reason}</p>
+  `;
+}
+
+function renderComponents(list, targetId) {
+  const el = document.getElementById(targetId);
+  el.innerHTML = list.map(([name, desc], i) => `
+    <div class="comp-item" data-i="${i}">
+      <div class="comp-head">
+        <span class="c-name">${name}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="comp-body"><div class="comp-body-inner">${desc}</div></div>
+    </div>
+  `).join("");
+  el.querySelectorAll(".comp-item").forEach(item => {
+    item.querySelector(".comp-head").addEventListener("click", () => {
+      item.classList.toggle("open");
+    });
+  });
+}
+
+function renderTable() {
+  const el = document.getElementById("cmpTable");
+  el.innerHTML = `
+    <thead>
+      <tr><th></th><th class="sf-col">❄️ Snowflake</th><th class="db-col">🧱 Databricks</th></tr>
+    </thead>
+    <tbody>
+      ${CMP_ROWS.map(([dim, sf, db]) => `
+        <tr><td class="dim">${dim}</td><td>${sf}</td><td>${db}</td></tr>
+      `).join("")}
+    </tbody>
+  `;
+}
+
+function initTheme() {
+  const THEME_KEY = "de_theme";
+  const saved = localStorage.getItem(THEME_KEY);
+  const btn = document.getElementById("themeToggle");
+  function apply(mode) {
+    if (mode === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    else if (mode === "light") document.documentElement.setAttribute("data-theme", "light");
+    else document.documentElement.removeAttribute("data-theme");
+    btn.textContent = (mode || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "☀️" : "🌙";
+  }
+  apply(saved);
+  btn.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const next = current === "dark" ? "light" : "dark";
+    localStorage.setItem(THEME_KEY, next);
+    apply(next);
+  });
+}
+
+renderRolePicker();
+renderComponents(DB_COMPONENTS, "dbComponents");
+renderComponents(SF_COMPONENTS, "sfComponents");
+renderTable();
+initTheme();
+</script>
+</body>
+</html>

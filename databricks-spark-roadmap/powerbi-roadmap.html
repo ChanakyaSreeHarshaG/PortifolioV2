@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI &amp; DAX Roadmap | Microsoft PL-300 &amp; Enterprise Analytics</title>
+<meta name="description" content="A comprehensive 6-week Power BI roadmap for the Microsoft PL-300 Data Analyst exam and senior BI interviews, with topics, videos, and in-depth interview questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-a: #fffaf0; --bg-b: #fbf5e6; --bg-c: #f0f7f4;
+    --o1: #f2994a; --o2: #f2c94c; --o3: #27ae60;
+    --glass: rgba(255,255,255,0.72);
+    --glass-strong: rgba(255,255,255,0.88);
+    --glass-line: rgba(255,255,255,0.9);
+    --edge: rgba(242,153,74,0.2);
+    --shadow: 0 8px 32px -12px rgba(180,110,30,0.22);
+    --ink: #181818; --muted: #4e5563;
+    --accent: #d97706; --accent-ink: #ffffff; --accent-2: #059669; --amber: #b45309;
+    --play-bg: rgba(20,22,28,0.65);
+    --orb-op: 0.32;
+    --nav-bg: rgba(255,255,255,0.8);
+    --code-bg: #f8fafc;
+    --code-border: #e2e8f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-a: #0c0f17; --bg-b: #19140a; --bg-c: #091712;
+      --glass: rgba(26,30,42,0.58); --glass-strong: rgba(33,38,54,0.78);
+      --glass-line: rgba(255,255,255,0.12); --edge: rgba(242,153,74,0.25);
+      --shadow: 0 8px 32px -12px rgba(0,0,0,0.65);
+      --ink: #f3f4f8; --muted: #a3abbb;
+      --accent: #f59e0b; --accent-ink: #0d1117; --accent-2: #34d399; --amber: #fbbf24;
+      --play-bg: rgba(0,0,0,0.6); --orb-op: 0.38;
+      --nav-bg: rgba(15,18,28,0.8);
+      --code-bg: #141824;
+      --code-border: #2d3748;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-a: #0c0f17; --bg-b: #19140a; --bg-c: #091712;
+    --glass: rgba(26,30,42,0.58); --glass-strong: rgba(33,38,54,0.78);
+    --glass-line: rgba(255,255,255,0.12); --edge: rgba(242,153,74,0.25);
+    --shadow: 0 8px 32px -12px rgba(0,0,0,0.65);
+    --ink: #f3f4f8; --muted: #a3abbb;
+    --accent: #f59e0b; --accent-ink: #0d1117; --accent-2: #34d399; --amber: #fbbf24;
+    --play-bg: rgba(0,0,0,0.6); --orb-op: 0.38;
+    --nav-bg: rgba(15,18,28,0.8);
+    --code-bg: #141824;
+    --code-border: #2d3748;
+  }
+  :root[data-theme="light"] {
+    --bg-a: #fffaf0; --bg-b: #fbf5e6; --bg-c: #f0f7f4;
+    --glass: rgba(255,255,255,0.72); --glass-strong: rgba(255,255,255,0.88);
+    --glass-line: rgba(255,255,255,0.9); --edge: rgba(242,153,74,0.2);
+    --shadow: 0 8px 32px -12px rgba(180,110,30,0.22);
+    --ink: #181818; --muted: #4e5563;
+    --accent: #d97706; --accent-ink: #ffffff; --accent-2: #059669; --amber: #b45309;
+    --play-bg: rgba(20,22,28,0.65); --orb-op: 0.32;
+    --nav-bg: rgba(255,255,255,0.8);
+    --code-bg: #f8fafc;
+    --code-border: #e2e8f0;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg-a); scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--ink);
+    background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+    font-family: "Plus Jakarta Sans", ui-sans-serif, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--orb-op); }
+  .o1 { width: 480px; height: 480px; background: var(--o1); top: -120px; left: -100px; }
+  .o2 { width: 440px; height: 440px; background: var(--o2); top: 38%; right: -140px; }
+  .o3 { width: 400px; height: 400px; background: var(--o3); bottom: -120px; left: 20%; }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--glass-line);
+    padding: 12px 24px;
+  }
+  .nav-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .nav-link {
+    font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+    transition: color 0.15s ease;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--accent); }
+  .theme-btn {
+    border: 1px solid var(--edge); background: var(--glass-strong); color: var(--ink);
+    border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); transform: scale(1.02); }
+
+  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 72px; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--glass-line); }
+  .eyebrow, h1, h2.track, h3, .num, .tag, .pill, .go, .chips li, .cta .sub { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .eyebrow { margin: 0 0 14px; font-size: 12px; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
+  h1 { margin: 0 0 14px; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; }
+  header > p:not(.eyebrow) { margin: 0 0 24px; max-width: 65ch; color: var(--muted); font-size: 16.5px; line-height: 1.6; }
+
+  .cta { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 600; text-decoration: none; padding: 13px 22px; border-radius: 12px; line-height: 1.2; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
+  .cta svg { flex: none; }
+  .cta .sub { font-weight: 400; opacity: 0.9; font-size: 12.5px; }
+
+  h2.track { margin: 44px 0 14px; font-size: 20px; letter-spacing: -0.01em; display: flex; flex-direction: column; gap: 4px; }
+  h2.track .domain { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--accent-2); }
+
+  .glass, .phase, .vcard, .rcard, .q-card {
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--glass-line);
+    box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .phase { border-radius: 20px; padding: 26px; margin-bottom: 24px; }
+  .phase-head { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .pill { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); }
+  .pill-teal { background: var(--accent-2); }
+  h3 { margin: 0 0 8px; font-size: 21px; letter-spacing: -0.01em; }
+  .phase-desc { margin: 0 0 14px; color: var(--muted); line-height: 1.6; font-size: 15px; max-width: 65ch; }
+  .chips-label { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .chips { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li { font-size: 12px; padding: 6px 11px; border-radius: 999px; background: var(--glass-strong); border: 1px solid var(--edge); }
+
+  .vlist { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .vcard { display: grid; text-decoration: none; color: inherit; border-radius: 16px; overflow: hidden; background: var(--glass-strong); grid-template-columns: 200px 1fr; gap: 18px; padding: 12px; align-items: center; }
+  .thumb { position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; background: #000; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .play svg { width: 48px; }
+  .body { display: flex; flex-direction: column; gap: 6px; padding: 4px 8px 4px 0; }
+  .card-head { display: flex; align-items: baseline; gap: 10px; }
+  .num { font-size: 12px; font-weight: 700; color: var(--accent); }
+  .tag { font-size: 11.5px; color: var(--muted); letter-spacing: 0.04em; }
+  .name { margin: 0; font-size: 15.5px; font-weight: 700; line-height: 1.35; }
+  .oneline { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+  .go { font-size: 12.5px; font-weight: 700; color: var(--accent); }
+
+  /* Interview Section Styles */
+  .interview-header {
+    margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--edge);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .interview-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .interview-badge { font-size: 11px; background: rgba(242,153,74,0.18); color: var(--accent); padding: 3px 8px; border-radius: 6px; font-weight: 700; }
+
+  .qa-accordion { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .q-card {
+    border-radius: 14px; padding: 14px 18px; background: var(--glass-strong);
+    border: 1px solid var(--edge); cursor: pointer; transition: all 0.2s ease;
+  }
+  .q-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .q-summary {
+    display: flex; justify-content: space-between; align-items: center; font-size: 14.5px;
+    font-weight: 700; color: var(--ink); list-style: none; user-select: none;
+  }
+  .q-summary::-webkit-details-marker { display: none; }
+  .q-toggle-icon { font-size: 14px; transition: transform 0.2s ease; color: var(--accent); }
+  details[open] .q-toggle-icon { transform: rotate(180deg); }
+  
+  .q-answer { margin-top: 12px; font-size: 14px; line-height: 1.65; color: var(--muted); border-top: 1px solid var(--edge); padding-top: 12px; }
+  .q-answer strong { color: var(--ink); }
+  .q-code {
+    background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 8px;
+    padding: 10px 14px; font-family: "JetBrains Mono", monospace; font-size: 12.5px;
+    color: var(--ink); overflow-x: auto; margin: 10px 0;
+  }
+  .q-tip {
+    background: rgba(245,158,11,0.08); border-left: 3px solid var(--accent);
+    padding: 8px 12px; border-radius: 0 6px 6px 0; margin-top: 8px; font-size: 13px;
+  }
+
+  .rgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+  .rcard { display: flex; flex-direction: column; padding: 20px; gap: 8px; text-decoration: none; color: inherit; border-radius: 16px; }
+
+  @media (max-width: 560px) {
+    .vcard { grid-template-columns: 1fr; }
+    .body { padding: 0 4px 6px; }
+    .phase { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">⚡ Databricks &amp; Spark</a>
+      <a href="powerbi-roadmap.html" class="nav-link active">📊 Power BI Roadmap</a>
+      <a href="sql-interview-master.html" class="nav-link">💡 174+ SQL Questions</a>
+      <a href="de-vocabulary.html" class="nav-link">📚 200 DE Vocabulary</a>
+    </div>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">🌓</span> <span id="themeLabel">Theme</span>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">MICROSOFT CERTIFIED: POWER BI DATA ANALYST (PL-300) · 6 WEEKS</p>
+    <h1>Power BI &amp; DAX Master Roadmap</h1>
+    <p>A structured 6-week curriculum going from raw data transformation to high-performance enterprise analytics. Complete with curated video masterclasses, architecture best practices, and real scenario-based interview questions.</p>
+    <a class="cta" href="#track-prep">
+      <span>Start Week 1: Power Query &amp; M Engine<br><span class="sub">Includes real interview Q&amp;A for every phase</span></span>
+    </a>
+  </header>
+
+  <main>
+    <!-- TRACK 1 -->
+    <h2 class="track" id="track-prep">Phase 1: Ingestion &amp; Data Prep<span class="domain">Exam Domain: Prepare the Data (25–30%)</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 1</span></div>
+      <h3>Power Query (M Code) &amp; ETL Foundations</h3>
+      <p class="phase-desc">Transform dirty transactional feeds into lean, analytics-ready tables. Master M language transformations, query folding, and automated parameterization.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips">
+        <li>Power Query M Basics</li>
+        <li>Query Folding</li>
+        <li>Merge vs Append</li>
+        <li>Unpivot Columns</li>
+        <li>Column Quality &amp; Profiling</li>
+        <li>Parameterized Queries</li>
+        <li>Custom Columns vs Conditional Columns</li>
+      </ul>
+
+      <div class="vlist">
+        <a class="vcard" href="https://www.youtube.com/watch?v=sU_u3q2j7iE" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="https://img.youtube.com/vi/sU_u3q2j7iE/hqdefault.jpg" alt="Power Query Tutorial" loading="lazy">
+            <div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+          </div>
+          <div class="body">
+            <div class="card-head"><span class="num">01</span><span class="tag">Guy in a Cube</span></div>
+            <p class="name">Power Query Full Masterclass – Transformations &amp; Query Folding</p>
+            <p class="oneline">Data shaping, merging techniques, and understanding the Mashup (M) engine internals.</p>
+            <span class="go">Watch on YouTube →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="interview-header">
+        <span class="interview-title">🎯 Interview-Level Scenario Questions</span>
+        <span class="interview-badge">High Frequency</span>
+      </div>
+      <div class="qa-accordion">
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q1: What is Query Folding in Power Query, why is it vital, and what breaks it?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong> Query Folding is the ability of Power Query to translate user transformation steps into a single native query (such as native T-SQL or Snowflake SQL) and execute it on the source database server rather than pulling all raw rows into Power BI local memory.</p>
+            <p><strong>Why it matters:</strong> Dramatically speeds up scheduled refreshes, reduces memory pressure, and is an absolute prerequisite for <em>Incremental Refresh</em>.</p>
+            <p><strong>What breaks query folding:</strong></p>
+            <ul>
+              <li>Transformations on flat files (CSV, Excel) that have no native query engine.</li>
+              <li>Complex M functions like <code>Table.Buffer()</code>, custom Python/R scripts, or non-foldable index additions.</li>
+              <li>Applying non-foldable steps early in the query: once folding breaks, all subsequent steps must be processed in client memory.</li>
+            </ul>
+            <div class="q-tip">💡 <strong>Interview Pro-Tip:</strong> Always check query folding by right-clicking the last step in Applied Steps and verifying if <em>"View Native Query"</em> is enabled.</div>
+          </div>
+        </details>
+
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q2: What is the architectural difference between Merge Queries and Append Queries?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong></p>
+            <ul>
+              <li><strong>Merge Queries:</strong> Combines tables horizontally (equivalent to a SQL <code>JOIN</code>) based on one or more matching key columns. Supports Left Outer, Right Outer, Full Outer, Inner, Left Anti, and Right Anti joins.</li>
+              <li><strong>Append Queries:</strong> Combines tables vertically (equivalent to SQL <code>UNION ALL</code>) stacking rows from multiple tables having matching column headers.</li>
+            </ul>
+            <div class="q-tip">💡 <strong>Gotcha:</strong> If you merge wide tables in Power Query instead of creating a star schema relationship in the data model, you inflate memory consumption and lose VertiPaq dictionary compression advantages.</div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- TRACK 2 -->
+    <h2 class="track">Phase 2: Modeling &amp; Relationships<span class="domain">Exam Domain: Model the Data (30–35%)</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 2</span></div>
+      <h3>Star Schema, Cardinality &amp; The VertiPaq Engine</h3>
+      <p class="phase-desc">Design scalable dimensional models. Avoid snowflake traps, eliminate circular dependencies, and master active vs inactive relationships.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips">
+        <li>Star Schema vs Snowflake Schema</li>
+        <li>Fact vs Dimension Tables</li>
+        <li>Factless Fact Tables</li>
+        <li>1-to-Many vs Many-to-Many</li>
+        <li>Active vs Inactive Relationships</li>
+        <li>USERELATIONSHIP function</li>
+        <li>Bi-directional Cross Filtering Pitfalls</li>
+        <li>VertiPaq Columnar Compression</li>
+      </ul>
+
+      <div class="vlist">
+        <a class="vcard" href="https://www.youtube.com/watch?v=0k5Ew_YI_vI" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="https://img.youtube.com/vi/0k5Ew_YI_vI/hqdefault.jpg" alt="Data Modeling Tutorial" loading="lazy">
+            <div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+          </div>
+          <div class="body">
+            <div class="card-head"><span class="num">02</span><span class="tag">SQLBI / Marco Russo</span></div>
+            <p class="name">Data Modeling for Power BI – Star Schema Best Practices</p>
+            <p class="oneline">Why Star Schema is king in Power BI, resolving many-to-many relationships, and VertiPaq efficiency.</p>
+            <span class="go">Watch on YouTube →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="interview-header">
+        <span class="interview-title">🎯 Interview-Level Scenario Questions</span>
+        <span class="interview-badge">High Frequency</span>
+      </div>
+      <div class="qa-accordion">
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q3: Why is Star Schema strongly preferred over Snowflake Schema in Power BI?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong> Power BI's in-memory storage engine (<strong>VertiPaq</strong>) is an in-memory columnar database. In a Star Schema:</p>
+            <ul>
+              <li>Dimensions are denormalized, meaning fewer table joins are needed when evaluating DAX measures.</li>
+              <li>VertiPaq compresses duplicate strings across columns using dictionary encoding with extreme speed.</li>
+              <li>In a Snowflake Schema, joining normalized sub-dimension tables introduces relationship overhead and complicates DAX filter propagation without saving meaningful RAM.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q4: How do you handle Role-Playing Dimensions (e.g. Order Date vs Ship Date)?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong> There are two architectural solutions:</p>
+            <ol>
+              <li><strong>Physical Table Duplication:</strong> Create two separate date tables (<code>DimOrderDate</code> and <code>DimShipDate</code>). Simple for business users in self-service reporting, but duplicates data model size.</li>
+              <li><strong>Inactive Relationship + DAX USERELATIONSHIP (Recommended):</strong> Keep a single master <code>DimDate</code> table. Establish one active relationship with <code>OrderDate</code> and an inactive relationship with <code>ShipDate</code>. In DAX, activate it dynamically:</li>
+            </ol>
+            <div class="q-code">Sales by Ship Date = 
+CALCULATE(
+    [Total Sales],
+    USERELATIONSHIP(FactSales[ShipDateKey], DimDate[DateKey])
+)</div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- TRACK 3 -->
+    <h2 class="track">Phase 3: DAX Calculations &amp; Context<span class="domain">Exam Domain: Model the Data (DAX Deep-Dive)</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 3 &amp; 4</span></div>
+      <h3>DAX Mastery: Row Context, Filter Context &amp; Time Intelligence</h3>
+      <p class="phase-desc">Understand the mathematical foundation of DAX. Master CALCULATE, filter modification, context transition, and robust time-intelligence formulas.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips">
+        <li>Calculated Column vs Measure</li>
+        <li>Filter Context vs Row Context</li>
+        <li>Context Transition</li>
+        <li>CALCULATE &amp; FILTER</li>
+        <li>ALL vs ALLEXCEPT vs ALLSELECTED</li>
+        <li>Time Intelligence (YTD, MTD, SAMEPERIODLASTYEAR)</li>
+        <li>Semi-Additive Measures (Inventory balance)</li>
+        <li>KEEPFILTERS</li>
+      </ul>
+
+      <div class="vlist">
+        <a class="vcard" href="https://www.youtube.com/watch?v=FjSZp2VvG_A" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="https://img.youtube.com/vi/FjSZp2VvG_A/hqdefault.jpg" alt="DAX Tutorial" loading="lazy">
+            <div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+          </div>
+          <div class="body">
+            <div class="card-head"><span class="num">03</span><span class="tag">Alberto Ferrari</span></div>
+            <p class="name">Mastering DAX – Filter Context &amp; Evaluation Order</p>
+            <p class="oneline">The definitive mental model for row context, filter context, and CALCULATE modifiers.</p>
+            <span class="go">Watch on YouTube →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="interview-header">
+        <span class="interview-title">🎯 Interview-Level Scenario Questions</span>
+        <span class="interview-badge">High Frequency</span>
+      </div>
+      <div class="qa-accordion">
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q5: Explain Calculated Columns vs Measures. Which consumes RAM vs Disk?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong></p>
+            <ul>
+              <li><strong>Calculated Column:</strong> Evaluated during data refresh row-by-row. Stored permanently inside the VertiPaq database on disk and loaded into RAM. Increases file size and refresh time. Use only when needed as a slicer or relationship key.</li>
+              <li><strong>Measure:</strong> Evaluated on the fly at query time in response to user slicers and visual filter contexts. Consumes zero disk storage and releases RAM immediately after visual rendering.</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q6: What is Context Transition in DAX and when does it occur?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong> Context Transition is the process where DAX automatically transforms an existing <strong>Row Context</strong> into an equivalent <strong>Filter Context</strong>.</p>
+            <p>It is triggered whenever <code>CALCULATE()</code> or <code>CALCULATETABLE()</code> is called within a row context (or whenever any measure is referenced inside an iterator like <code>SUMX</code> or a calculated column, because every measure contains an implicit <code>CALCULATE</code>).</p>
+            <div class="q-tip">⚠️ <strong>Critical Pitfall:</strong> Calling a measure in a calculated column on a table without a primary key can filter on all duplicate attribute values, leading to erroneous results.</div>
+          </div>
+        </details>
+
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q7: How do you write Year-over-Year (YoY) Sales Growth % in DAX?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <div class="q-code">Total Sales = SUM(FactSales[SalesAmount])
+
+Sales SPLY = 
+CALCULATE(
+    [Total Sales],
+    SAMEPERIODLASTYEAR(DimDate[Date])
+)
+
+YoY Growth % = 
+DIVIDE(
+    [Total Sales] - [Sales SPLY],
+    [Sales SPLY],
+    BLANK()
+)</div>
+            <p><strong>Rules for Time Intelligence:</strong></p>
+            <ul>
+              <li>The Date table must have continuous dates with no missing days.</li>
+              <li>The Date table must be marked as an official Date Table in Power BI.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- TRACK 4 -->
+    <h2 class="track">Phase 4: Security, UX &amp; Enterprise Governance<span class="domain">Exam Domain: Visualize and Deploy (25–30%)</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 5 &amp; 6</span></div>
+      <h3>Dynamic RLS, Performance Analyzer &amp; Service Architecture</h3>
+      <p class="phase-desc">Implement row-level security with corporate Active Directory, optimize DAX query execution plans, and schedule automated enterprise deployments.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips">
+        <li>Dynamic Row-Level Security (RLS)</li>
+        <li>USERPRINCIPALNAME &amp; Mapping Tables</li>
+        <li>Object-Level Security (OLS)</li>
+        <li>Performance Analyzer</li>
+        <li>DAX Studio &amp; VertiPaq Analyzer</li>
+        <li>Incremental Refresh (RangeStart / RangeEnd)</li>
+        <li>On-Premises Data Gateway</li>
+        <li>Workspace Roles &amp; Deployment Pipelines</li>
+      </ul>
+
+      <div class="vlist">
+        <a class="vcard" href="https://www.youtube.com/watch?v=F3G6e7V2D3k" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="https://img.youtube.com/vi/F3G6e7V2D3k/hqdefault.jpg" alt="Power BI Performance Optimization" loading="lazy">
+            <div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+          </div>
+          <div class="body">
+            <div class="card-head"><span class="num">04</span><span class="tag">Curibal / Avi Singh</span></div>
+            <p class="name">Power BI Performance Optimization &amp; DAX Studio Masterclass</p>
+            <p class="oneline">Find query bottlenecks, reduce card render times, and configure incremental refresh.</p>
+            <span class="go">Watch on YouTube →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="interview-header">
+        <span class="interview-title">🎯 Interview-Level Scenario Questions</span>
+        <span class="interview-badge">High Frequency</span>
+      </div>
+      <div class="qa-accordion">
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q8: How do you implement Dynamic Row-Level Security (RLS) with user mapping?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong></p>
+            <ol>
+              <li>Create a Security Mapping table (<code>UserSecurity</code>) containing <code>UserEmail</code> and <code>RegionID</code>.</li>
+              <li>Establish a 1-to-Many relationship between <code>UserSecurity</code> and <code>DimRegion</code> (enabling "Apply security filter in both directions" if filtering upwards).</li>
+              <li>In Power BI Desktop, go to <em>Modeling → Manage Roles</em>, create role <code>RegionalUser</code>, and write the DAX filter on <code>UserSecurity</code>:</li>
+            </ol>
+            <div class="q-code">[UserEmail] = USERPRINCIPALNAME()</div>
+            <p>When published to Power BI Service, assign the Azure AD security group to this role. Power BI automatically filters rows matching the logged-in user's corporate email.</p>
+          </div>
+        </details>
+
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q9: How do you configure Incremental Refresh and what are the prerequisites?</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <p><strong>Answer:</strong> Incremental Refresh stores historical partitions and only refreshes recent data.</p>
+            <p><strong>Setup Steps:</strong></p>
+            <ol>
+              <li>Define two Power Query Date/Time parameters named exactly: <code>RangeStart</code> and <code>RangeEnd</code>.</li>
+              <li>Filter the fact table transaction date column using: <code>Date &gt;= RangeStart and Date &lt; RangeEnd</code>.</li>
+              <li>Verify that <strong>Query Folding</strong> is active on this filter step (mandatory!).</li>
+              <li>In Power BI Desktop, right-click the table and choose <em>Incremental Refresh</em>. Specify historical retention (e.g. 3 years) and refresh interval (e.g. past 7 days).</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="q-card">
+          <summary class="q-summary">
+            <span>Q10: DirectQuery vs Import Mode vs Dual (Composite) Mode — Compare them.</span>
+            <span class="q-toggle-icon">▼</span>
+          </summary>
+          <div class="q-answer">
+            <table style="width:100%; border-collapse: collapse; font-size: 13px; margin-top:8px;">
+              <tr style="border-bottom: 1px solid var(--edge); text-align:left;">
+                <th style="padding:6px;">Mode</th><th style="padding:6px;">Data Location</th><th style="padding:6px;">Performance</th><th style="padding:6px;">Best Use Case</th>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--edge);">
+                <td style="padding:6px; font-weight:700;">Import</td><td>VertiPaq Memory</td><td>Fastest (In-Memory)</td><td>Default standard (&lt; 1–10 GB)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--edge);">
+                <td style="padding:6px; font-weight:700;">DirectQuery</td><td>Source Database</td><td>Depends on DB</td><td>Real-time requirements / &gt;100GB</td>
+              </tr>
+              <tr>
+                <td style="padding:6px; font-weight:700;">Dual (Composite)</td><td>Hybrid Cache</td><td>Optimal hybrid</td><td>Large models combining aggregated cache with drillthrough</td>
+              </tr>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- TEST YOURSELF -->
+    <h2 class="track">Test Yourself &amp; Exam Ready</h2>
+    <section class="phase phase-exam">
+      <div class="phase-head"><span class="pill pill-teal">Exam Capstone</span></div>
+      <h3>Microsoft PL-300 Certification &amp; Mock Exams</h3>
+      <p class="phase-desc">Review official Microsoft exam sandbox, DAX query performance scoring, and end-to-end dashboard delivery.</p>
+      <div class="vlist">
+        <a class="vcard" href="https://www.youtube.com/watch?v=1FwXy0U_UoI" target="_blank" rel="noopener">
+          <div class="thumb">
+            <img src="https://img.youtube.com/vi/1FwXy0U_UoI/hqdefault.jpg" alt="PL-300 Exam Prep" loading="lazy">
+            <div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+          </div>
+          <div class="body">
+            <div class="card-head"><span class="num">05</span><span class="tag">freeCodeCamp</span></div>
+            <p class="name">Microsoft PL-300 Power BI Data Analyst Full Course &amp; Practice Questions</p>
+            <p class="oneline">Complete review covering every objective domain tested on the PL-300 certification exam.</p>
+            <span class="go">Watch on YouTube →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <h2 class="track">Explore More Career Roadmaps</h2>
+    <div class="rgrid">
+      <a class="rcard" href="index.html">
+        <div class="card-head"><span class="tag" style="color: #6d8dff; font-weight:700;">Databricks Track</span></div>
+        <p class="name">Spark &amp; Databricks 7-Week Roadmap</p>
+        <p class="oneline">Delta Lake, Unity Catalog, Auto Loader, Lakeflow, and PySpark pipelines.</p>
+        <span class="go">Open Roadmap →</span>
+      </a>
+      <a class="rcard" href="sql-interview-master.html">
+        <div class="card-head"><span class="tag" style="color: #3fd399; font-weight:700;">SQL Archive</span></div>
+        <p class="name">174 Company SQL Questions + 50 Solved Problems</p>
+        <p class="oneline">Real questions from Capgemini, Deloitte, Cognizant, Infosys &amp; NTT DATA.</p>
+        <span class="go">Explore Questions →</span>
+      </a>
+      <a class="rcard" href="de-vocabulary.html">
+        <div class="card-head"><span class="tag" style="color: #f2c94c; font-weight:700;">Glossary</span></div>
+        <p class="name">200 Data Engineering Terms</p>
+        <p class="oneline">Essential terms and real use cases for data engineers and analysts.</p>
+        <span class="go">Open Reference →</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <span>Power BI Master Roadmap &amp; Interview Hub · 6 weeks curriculum tailored for Microsoft PL-300 certification and senior analytics roles. Zero-dependency static site ready for GitHub Pages.</span>
+  </footer>
+</div>
+
+<script>
+  // Theme Toggle Persistence
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '🌙';
+      themeLabel.textContent = 'Dark';
+    } else if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      themeIcon.textContent = '☀️';
+      themeLabel.textContent = 'Light';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      themeIcon.textContent = prefersDark ? '🌙' : '☀️';
+      themeLabel.textContent = 'System';
+    }
+  }
+
+  const savedTheme = localStorage.getItem('de_theme') || 'auto';
+  applyTheme(savedTheme === 'auto' ? null : savedTheme);
+
+  toggleBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    let next = 'dark';
+    if (current === 'dark') next = 'light';
+    else if (current === 'light') next = 'dark';
+    else {
+      next = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark';
+    }
+    localStorage.setItem('de_theme', next);
+    applyTheme(next);
+  });
+</script>
+</body>
+</html>

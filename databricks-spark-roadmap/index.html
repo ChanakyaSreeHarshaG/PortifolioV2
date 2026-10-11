@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark &amp; Databricks Roadmap | Data Engineering Hub</title>
+<meta name="description" content="A 7-week Spark and Databricks roadmap for the Data Engineer Associate exam, with curated free videos, real architecture, and interview prep.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-a: #e8eeff; --bg-b: #f4f0ff; --bg-c: #e6f7f1;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b;
+    --glass: rgba(255,255,255,0.68);
+    --glass-strong: rgba(255,255,255,0.85);
+    --glass-line: rgba(255,255,255,0.85);
+    --edge: rgba(24,86,255,0.14);
+    --shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --ink: #141414; --muted: #4a5163;
+    --accent: #1856ff; --accent-ink: #ffffff; --accent-2: #0a8f55; --amber: #a85d0a;
+    --play-bg: rgba(20,22,28,0.65);
+    --orb-op: 0.35;
+    --nav-bg: rgba(255,255,255,0.75);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-a: #0a0e1c; --bg-b: #120d24; --bg-c: #07181a;
+      --glass: rgba(24,30,48,0.55); --glass-strong: rgba(30,38,60,0.72);
+      --glass-line: rgba(255,255,255,0.14); --edge: rgba(130,160,255,0.2);
+      --shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+      --ink: #eef0f7; --muted: #a3acc2;
+      --accent: #6d8dff; --accent-ink: #0c1220; --accent-2: #3fd399; --amber: #e3a15c;
+      --play-bg: rgba(0,0,0,0.6); --orb-op: 0.4;
+      --nav-bg: rgba(16,21,37,0.75);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-a: #0a0e1c; --bg-b: #120d24; --bg-c: #07181a;
+    --glass: rgba(24,30,48,0.55); --glass-strong: rgba(30,38,60,0.72);
+    --glass-line: rgba(255,255,255,0.14); --edge: rgba(130,160,255,0.2);
+    --shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+    --ink: #eef0f7; --muted: #a3acc2;
+    --accent: #6d8dff; --accent-ink: #0c1220; --accent-2: #3fd399; --amber: #e3a15c;
+    --play-bg: rgba(0,0,0,0.6); --orb-op: 0.4;
+    --nav-bg: rgba(16,21,37,0.75);
+  }
+  :root[data-theme="light"] {
+    --bg-a: #e8eeff; --bg-b: #f4f0ff; --bg-c: #e6f7f1;
+    --glass: rgba(255,255,255,0.68); --glass-strong: rgba(255,255,255,0.85);
+    --glass-line: rgba(255,255,255,0.85); --edge: rgba(24,86,255,0.14);
+    --shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --ink: #141414; --muted: #4a5163;
+    --accent: #1856ff; --accent-ink: #ffffff; --accent-2: #0a8f55; --amber: #a85d0a;
+    --play-bg: rgba(20,22,28,0.65); --orb-op: 0.35;
+    --nav-bg: rgba(255,255,255,0.75);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg-a); scroll-behavior: smooth; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--ink);
+    background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+    font-family: "Plus Jakarta Sans", ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--orb-op); }
+  .o1 { width: 480px; height: 480px; background: var(--o1); top: -120px; left: -100px; }
+  .o2 { width: 440px; height: 440px; background: var(--o2); top: 38%; right: -140px; }
+  .o3 { width: 400px; height: 400px; background: var(--o3); bottom: -120px; left: 20%; }
+  
+  .top-nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--glass-line);
+    padding: 12px 24px;
+  }
+  .nav-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .nav-link {
+    font-size: 13.5px; font-weight: 600; text-decoration: none; color: var(--muted);
+    transition: color 0.15s ease;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--accent); }
+  .theme-btn {
+    border: 1px solid var(--edge); background: var(--glass-strong); color: var(--ink);
+    border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .theme-btn:hover { border-color: var(--accent); transform: scale(1.02); }
+
+  .wrap { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 40px 24px 72px; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--glass-line); }
+  .eyebrow, h1, h2.track, h3, .num, .tag, .pill, .go, .chips li, .cta .sub { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .eyebrow { margin: 0 0 14px; font-size: 12px; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; }
+  h1 { margin: 0 0 14px; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; }
+  header > p:not(.eyebrow) { margin: 0 0 24px; max-width: 62ch; color: var(--muted); font-size: 16.5px; line-height: 1.6; }
+  
+  .header-badges { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .badge-link {
+    display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    font-size: 12.5px; font-weight: 600; padding: 6px 14px; border-radius: 999px;
+    background: var(--glass-strong); border: 1px solid var(--edge); color: var(--ink);
+    transition: all 0.2s ease;
+  }
+  .badge-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  .cta { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 600; text-decoration: none; padding: 13px 22px; border-radius: 12px; line-height: 1.2; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
+  .cta svg { flex: none; }
+  .cta .sub { font-weight: 400; opacity: 0.85; font-size: 12.5px; }
+  h2.track { margin: 44px 0 14px; font-size: 20px; letter-spacing: -0.01em; display: flex; flex-direction: column; gap: 4px; }
+  h2.track .domain { font-size: 12px; font-weight: 500; letter-spacing: 0.04em; color: var(--accent-2); }
+  
+  .glass, .phase, .vcard, .rcard {
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--glass-line);
+    box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .phase { border-radius: 20px; padding: 26px; margin-bottom: 18px; }
+  .phase-head { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .pill { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); }
+  .pill-2 { background: transparent; color: var(--ink); border: 1px solid var(--edge); }
+  h3 { margin: 0 0 8px; font-size: 21px; letter-spacing: -0.01em; }
+  .phase-desc { margin: 0 0 14px; color: var(--muted); line-height: 1.6; font-size: 15px; max-width: 62ch; }
+  .chips-label { margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .chips { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips li { font-size: 12px; padding: 6px 11px; border-radius: 999px; background: var(--glass-strong); border: 1px solid var(--edge); }
+  .vlist, .rgrid { display: flex; flex-direction: column; gap: 12px; }
+  .rgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .vcard, .rcard { display: grid; text-decoration: none; color: inherit; border-radius: 16px; overflow: hidden; background: var(--glass-strong); }
+  .vcard { grid-template-columns: 200px 1fr; gap: 18px; padding: 12px; align-items: center; }
+  .rcard { padding: 20px; gap: 8px; align-content: start; }
+  .thumb { position: relative; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; background: #000; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .play svg { width: 48px; }
+  .body { display: flex; flex-direction: column; gap: 6px; padding: 4px 8px 4px 0; }
+  .card-head { display: flex; align-items: baseline; gap: 10px; }
+  .num { font-size: 12px; font-weight: 700; color: var(--accent); }
+  .tag { font-size: 11.5px; color: var(--muted); letter-spacing: 0.04em; }
+  .name { margin: 0; font-size: 15.5px; font-weight: 700; line-height: 1.35; }
+  .oneline { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+  .go { font-size: 12.5px; font-weight: 700; color: var(--accent); }
+  .rcard .name { font-size: 16px; }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .vcard, .rcard, .cta { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
+    .vcard:hover, .rcard:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--accent) 60%, transparent); }
+  }
+  .vcard:focus-visible, .rcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  footer { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--glass-line); font-size: 13.5px; color: var(--muted); }
+  @media (max-width: 560px) {
+    .vcard { grid-template-columns: 1fr; }
+    .body { padding: 0 4px 6px; }
+    .phase { padding: 20px 16px; }
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass, .phase, .vcard, .rcard { background: var(--glass-strong); }
+  }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<nav class="top-nav">
+  <div class="nav-inner">
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">⚡ Databricks &amp; Spark</a>
+      <a href="powerbi-roadmap.html" class="nav-link">📊 Power BI Roadmap</a>
+      <a href="sql-interview-master.html" class="nav-link">💡 174+ SQL Questions</a>
+      <a href="de-vocabulary.html" class="nav-link">📚 200 DE Vocabulary</a>
+    </div>
+    <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+      <span id="themeIcon">🌓</span> <span id="themeLabel">Theme</span>
+    </button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">DATABRICKS DATA ENGINEER ASSOCIATE · 7 WEEKS</p>
+    <h1>Spark &amp; Databricks Roadmap</h1>
+    <p>Seven weeks that go from the basics to running pipelines for real. Each week has one topic list and one or two videos. Watch, build something small, move on. Finish with the exam recap.</p>
+    
+    <div class="header-badges">
+      <a href="powerbi-roadmap.html" class="badge-link">🚀 New: 6-Week Power BI Roadmap</a>
+      <a href="sql-interview-master.html" class="badge-link">🎯 9 Companies Master SQL Archive</a>
+      <a href="de-vocabulary.html" class="badge-link">📖 200 Core Terms Reference</a>
+    </div>
+
+    <a class="cta" href="https://www.instagram.com/techwithprateek" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85C2.35 3.9 3.87 2.35 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16Zm0-2.16C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.35 2.63 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.63 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.63-6.78-6.98-6.98C15.67.01 15.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.41-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0Z"/></svg>
+      <span>Follow @techwithprateek<br><span class="sub">More data engineering roadmaps &amp; career guides</span></span>
+    </a>
+  </header>
+
+  <main>
+    <h2 class="track">Start here: the basics<span class="domain">Exam domain: Databricks Intelligence Platform</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 1</span></div>
+      <h3>Python + SQL foundations</h3>
+      <p class="phase-desc">Two languages carry the whole roadmap. Get fluent enough to read a query and a script without stopping.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>Python basics</li><li>SQL joins &amp; aggregates</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/rfscVS0vtbw/hqdefault.jpg" alt="Learn Python Course" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">01</span><span class="tag">freeCodeCamp</span></div>
+          <p class="name">Learn Python – Full Course for Beginners</p>
+          <p class="oneline">Variables, loops, functions and data structures — all the Python you need before touching PySpark.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      <a class="vcard" href="https://www.youtube.com/watch?v=7S_tz1z_5bA" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/7S_tz1z_5bA/hqdefault.jpg" alt="SQL Course for Beginners" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">02</span><span class="tag">Programming with Mosh</span></div>
+          <p class="name">SQL Course for Beginners</p>
+          <p class="oneline">Joins, aggregations, subqueries and window-style thinking. Spark SQL and Delta DML are just SQL on a bigger engine.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 2</span></div>
+      <h3>Spark and PySpark on Databricks</h3>
+      <p class="phase-desc">The engine under everything. Learn the DataFrame API first, then why shuffles are expensive and how to read the Spark UI.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>DataFrames</li><li>Joins</li><li>Aggregations</li><li>Dedup</li><li>Shuffle</li><li>Tuning</li><li>Spark UI</li><li>Serverless vs job vs all-purpose compute</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=94w6hPk7nkM" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/94w6hPk7nkM/hqdefault.jpg" alt="PySpark Tutorial" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">03</span><span class="tag">Ansh Lamba</span></div>
+          <p class="name">PySpark Tutorial – Full Course (From Zero to Pro!)</p>
+          <p class="oneline">DataFrames, joins, aggregations, dedup, then shuffle and tuning. Keep the Spark UI open while you follow along.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <h2 class="track">Store and transform your data<span class="domain">Exam domain: Data Processing &amp; Transformations</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 3</span></div>
+      <h3>Lakehouse, Delta Lake, medallion</h3>
+      <p class="phase-desc">Delta is the storage layer the exam keeps returning to. Build bronze, silver and gold layers by hand.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>Delta DDL/DML</li><li>Bronze / silver / gold</li><li>Liquid Clustering</li><li>Views</li><li>Materialized views</li><li>Streaming tables</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=8IjCyvyAPpM" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/8IjCyvyAPpM/hqdefault.jpg" alt="Delta Lake Masterclass" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">04</span><span class="tag">Afaque Ahmad</span></div>
+          <p class="name">Delta Lake Masterclass – Azure Databricks | PySpark</p>
+          <p class="oneline">Delta internals, DDL/DML, time travel and the bronze → silver → gold flow, from zero to expert.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <h2 class="track">Bring data in<span class="domain">Exam domain: Development &amp; Ingestion</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 4</span></div>
+      <h3>Ingestion</h3>
+      <p class="phase-desc">Getting data in: pick the right tool for batch, streaming or incremental loads.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>Auto Loader</li><li>COPY INTO</li><li>Lakeflow Connect</li><li>JDBC / REST</li><li>Batch vs streaming vs incremental</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=sjItHOjZsY4" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/sjItHOjZsY4/hqdefault.jpg" alt="COPY INTO command" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">05</span><span class="tag">Ease With Data</span></div>
+          <p class="name">COPY INTO command – Idempotent, Exactly-Once Pipelines</p>
+          <p class="oneline">How COPY INTO tracks file metadata so a re-run never double-loads. Part of a Databricks playlist (video 23).</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      <a class="vcard" href="https://www.youtube.com/watch?v=g7d1U2_dWS8" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/g7d1U2_dWS8/hqdefault.jpg" alt="Auto Loader Schema Evolution" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">06</span><span class="tag">Ease With Data</span></div>
+          <p class="name">Auto Loader – Schema Evolution &amp; File Detection Modes</p>
+          <p class="oneline">The default incremental file-ingestion tool on the exam. Know the schema evolution modes cold (video 24).</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <h2 class="track">Keep data safe and trusted<span class="domain">Exam domain: Data Governance &amp; Quality</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 5</span></div>
+      <h3>Unity Catalog and access control</h3>
+      <p class="phase-desc">Who can see what. Expect scenario questions on privileges and table types.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>Catalog → schema → table</li><li>Managed vs external tables</li><li>GRANT</li><li>REVOKE</li><li>DENY</li><li>Row filters</li><li>Column masks</li><li>ABAC</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=P5pEeR3xQpI" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/P5pEeR3xQpI/hqdefault.jpg" alt="Databricks Unity Catalog" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">07</span><span class="tag">Ansh Lamba</span></div>
+          <p class="name">Databricks Full Course (With Unity Catalog)</p>
+          <p class="oneline">Catalog → schema → table hierarchy, managed vs external tables, grants and governance in a real workspace.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <h2 class="track">Run it for real<span class="domain">Exam domain: Productionizing Data Pipelines</span></h2>
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 6</span></div>
+      <h3>Pipelines and orchestration</h3>
+      <p class="phase-desc">Turn notebooks into production pipelines with quality checks and schedules.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>Lakeflow Spark Declarative Pipelines</li><li>Data quality checks</li><li>Lakeflow Jobs: DAG tasks</li><li>Retries</li><li>Branching</li><li>Looping</li><li>Scheduled trigger</li><li>File arrival trigger</li><li>Table update trigger</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=761SQ9Hxbic" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/761SQ9Hxbic/hqdefault.jpg" alt="Databricks Tutorial Project" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">08</span><span class="tag">codebasics</span></div>
+          <p class="name">Databricks Tutorial – Free Edition, End-to-End Data + AI Project</p>
+          <p class="oneline">Build a full pipeline on the free tier: declarative pipelines, jobs and orchestration in one project.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <section class="phase">
+      <div class="phase-head"><span class="pill">Week 7</span></div>
+      <h3>Ship it</h3>
+      <p class="phase-desc">Deploy with bundles, monitor what you run, then prove it with an end-to-end project and mock exams.</p>
+      <p class="chips-label">Key topics to focus on</p>
+      <ul class="chips"><li>Declarative Automation Bundles</li><li>Dev / test / prod</li><li>CLI</li><li>CI/CD</li><li>Run history</li><li>Skew</li><li>Spilling</li><li>OOM</li><li>End-to-end project</li><li>Mock exams</li></ul>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=vy4G86q1rQY" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/vy4G86q1rQY/hqdefault.jpg" alt="Databricks End-To-End Project" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">09</span><span class="tag">Afaque Ahmad</span></div>
+          <p class="name">Databricks End-To-End Project – Streaming, Lakeflow, Unity Catalog</p>
+          <p class="oneline">Put everything together: streaming, Lakeflow, Unity Catalog and BI in one capstone-style build.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <h2 class="track">Test yourself</h2>
+    <section class="phase phase-exam">
+      <div class="phase-head"><span class="pill">After Week 7</span></div>
+      <h3>Certification recap</h3>
+      <p class="phase-desc">Watch this last, then take mock exams and go back to whichever phase scored lowest.</p>
+      <div class="vlist">
+      <a class="vcard" href="https://www.youtube.com/watch?v=0Hd5vYqin7w" target="_blank" rel="noopener">
+        <div class="thumb"><img src="https://img.youtube.com/vi/0Hd5vYqin7w/hqdefault.jpg" alt="Certification Course" loading="lazy"><div class="play"><svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.5-5.2-5.4-6C55.8.3 34 .3 34 .3s-21.8 0-27.1 1.4c-2.9.8-5.2 3.1-6 6C0 13 0 24 0 24s0 11 .9 16.3c.8 2.9 2.5 5.2 5.4 6C11.7 47.7 34 47.7 34 47.7s21.8 0 27.1-1.4c2.9-.8 4.6-3.1 5.4-6C67.4 35 67.4 24 67.4 24s0-11-.9-16.3z" fill="var(--play-bg)"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div></div>
+        <div class="body">
+          <div class="card-head"><span class="num">10</span><span class="tag">freeCodeCamp</span></div>
+          <p class="name">Databricks Data Engineer Associate Certification Course – Pass the Exam!</p>
+          <p class="oneline">Your exam recap. Watch it last, then take mock exams and revisit weak domains.</p>
+          <span class="go">Watch on YouTube →</span>
+        </div>
+      </a>
+      </div>
+    </section>
+
+    <h2 class="track">Featured Data Analytics Guides &amp; Archives</h2>
+    <div class="rgrid">
+      <a class="rcard" href="powerbi-roadmap.html">
+        <div class="card-head"><span class="tag" style="color: #f2c94c; font-weight:700;">Complete Roadmap</span></div>
+        <p class="name">Power BI &amp; DAX 6-Week Roadmap</p>
+        <p class="oneline">From M code &amp; Star Schema to advanced DAX, RLS, and interview questions.</p>
+        <span class="go">Explore Roadmap →</span>
+      </a>
+      <a class="rcard" href="sql-interview-master.html">
+        <div class="card-head"><span class="tag" style="color: #6d8dff; font-weight:700;">Interview Archive</span></div>
+        <p class="name">174 Company SQL Questions + 50 Solved Problems</p>
+        <p class="oneline">Real questions from Capgemini, Deloitte, Cognizant, Infosys &amp; NTT DATA.</p>
+        <span class="go">Practice SQL →</span>
+      </a>
+      <a class="rcard" href="de-vocabulary.html">
+        <div class="card-head"><span class="tag" style="color: #3fd399; font-weight:700;">Reference</span></div>
+        <p class="name">200 Core Data Engineering Vocabulary Terms</p>
+        <p class="oneline">Lakehouse, CDC, Kafka, Airflow, Catalyst, ACID &amp; Spark architecture with use cases.</p>
+        <span class="go">Open Dictionary →</span>
+      </a>
+      <a class="rcard" href="guides/databricks-vs-snowflake/index.html">
+        <div class="card-head"><span class="tag">Comparison Guide</span></div>
+        <p class="name">Databricks vs Snowflake</p>
+        <p class="oneline">Which platform to learn first, and what each one is best at.</p>
+        <span class="go">Open Guide →</span>
+      </a>
+      <a class="rcard" href="guides/sql-patterns/index.html">
+        <div class="card-head"><span class="tag">Cheat sheet</span></div>
+        <p class="name">8 SQL Patterns</p>
+        <p class="oneline">Interview-style SQL patterns to sharpen Week 1 queries.</p>
+        <span class="go">Open Patterns →</span>
+      </a>
+      <a class="rcard" href="guides/learn-python/index.html">
+        <div class="card-head"><span class="tag">Guide</span></div>
+        <p class="name">Learn Python Free</p>
+        <p class="oneline">A slower, structured Python track if Week 1 feels fast.</p>
+        <span class="go">Open Python →</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <span>Guide replica designed for GitHub Pages hosting · 10 videos, 7 weeks: basics first, then data, security, and production. Includes Power BI roadmap and SQL master archives.</span>
+  </footer>
+</div>
+
+<script>
+  // Theme Toggle Persistence
+  const toggleBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeLabel = document.getElementById('themeLabel');
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeIcon.textContent = '🌙';
+      themeLabel.textContent = 'Dark';
+    } else if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      themeIcon.textContent = '☀️';
+      themeLabel.textContent = 'Light';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      themeIcon.textContent = prefersDark ? '🌙' : '☀️';
+      themeLabel.textContent = 'System';
+    }
+  }
+
+  const savedTheme = localStorage.getItem('de_theme') || 'auto';
+  applyTheme(savedTheme === 'auto' ? null : savedTheme);
+
+  toggleBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    let next = 'dark';
+    if (current === 'dark') next = 'light';
+    else if (current === 'light') next = 'dark';
+    else {
+      next = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark';
+    }
+    localStorage.setItem('de_theme', next);
+    applyTheme(next);
+  });
+</script>
+</body>
+</html>

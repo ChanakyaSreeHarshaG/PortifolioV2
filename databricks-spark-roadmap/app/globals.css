@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-a: #e8eeff;
+    --bg-b: #f4f0ff;
+    --bg-c: #e6f7f1;
+    --o1: #1856ff;
+    --o2: #8a6dff;
+    --o3: #07ca6b;
+  }
+
+  :root[data-theme="dark"] {
+    --bg-a: #0a0e1c;
+    --bg-b: #120d24;
+    --bg-c: #07181a;
+  }
+}
+
+body {
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}

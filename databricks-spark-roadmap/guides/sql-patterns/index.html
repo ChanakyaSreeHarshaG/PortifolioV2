@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8 SQL Patterns for Data Analyst &amp; Data Engineer Interviews | @techwithprateek</title>
+<meta name="description" content="A short, scannable cheat sheet of the 8 SQL patterns that cover most data analyst and data engineer interview questions — concept, syntax, and the one gotcha that trips people up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-a: #e8eeff; --bg-b: #f4f0ff; --bg-c: #e6f7f1;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.35;
+    --glass: rgba(255,255,255,0.62); --glass-strong: rgba(255,255,255,0.78);
+    --glass-line: rgba(255,255,255,0.85); --edge: rgba(24,86,255,0.14);
+    --shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --paper: #e8eeff; --card: rgba(255,255,255,0.66); --ink: #141414; --muted: #4a5163;
+    --line: rgba(24,86,255,0.14); --accent: #1856ff; --accent-ink: #ffffff;
+    --amber: #b96a12; --code-bg: #f8fafc; --code-ink: #29304a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-a: #0a0e1c; --bg-b: #120d24; --bg-c: #07181a;
+      --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.4;
+      --glass: rgba(24,30,48,0.55); --glass-strong: rgba(30,38,60,0.72);
+      --glass-line: rgba(255,255,255,0.14); --edge: rgba(130,160,255,0.2);
+      --shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+      --paper: #0a0e1c; --card: rgba(24,30,48,0.6); --ink: #eef0f7; --muted: #a3acc2;
+      --line: rgba(130,160,255,0.2); --accent: #6d8dff; --accent-ink: #0c1220;
+      --amber: #e3a15c; --code-bg: #12151d; --code-ink: #cbd3ea;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-a: #0a0e1c; --bg-b: #120d24; --bg-c: #07181a;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.4;
+    --glass: rgba(24,30,48,0.55); --glass-strong: rgba(30,38,60,0.72);
+    --glass-line: rgba(255,255,255,0.14); --edge: rgba(130,160,255,0.2);
+    --shadow: 0 8px 32px -12px rgba(0,0,0,0.6);
+    --paper: #0a0e1c; --card: rgba(24,30,48,0.6); --ink: #eef0f7; --muted: #a3acc2;
+    --line: rgba(130,160,255,0.2); --accent: #6d8dff; --accent-ink: #0c1220;
+    --amber: #e3a15c; --code-bg: #12151d; --code-ink: #cbd3ea;
+  }
+  :root[data-theme="light"] {
+    --bg-a: #e8eeff; --bg-b: #f4f0ff; --bg-c: #e6f7f1;
+    --o1: #1856ff; --o2: #8a6dff; --o3: #07ca6b; --orb-op: 0.35;
+    --glass: rgba(255,255,255,0.62); --glass-strong: rgba(255,255,255,0.78);
+    --glass-line: rgba(255,255,255,0.85); --edge: rgba(24,86,255,0.14);
+    --shadow: 0 8px 32px -12px rgba(30,50,120,0.28);
+    --paper: #e8eeff; --card: rgba(255,255,255,0.66); --ink: #141414; --muted: #4a5163;
+    --line: rgba(24,86,255,0.14); --accent: #1856ff; --accent-ink: #ffffff;
+    --amber: #b96a12; --code-bg: #f8fafc; --code-ink: #29304a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "Plus Jakarta Sans", ui-sans-serif, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bg { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--orb-op); }
+  .o1 { width: 460px; height: 460px; background: var(--o1); top: -120px; left: -100px; }
+  .o2 { width: 420px; height: 420px; background: var(--o2); top: 38%; right: -140px; }
+  .o3 { width: 380px; height: 380px; background: var(--o3); bottom: -120px; left: 20%; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
+    background: var(--glass-strong); border-bottom: 1px solid var(--glass-line);
+    padding: 12px 24px;
+  }
+  .topbar-inner {
+    max-width: 920px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-back { text-decoration: none; font-size: 13.5px; font-weight: 600; color: var(--muted); }
+  .nav-back:hover { color: var(--accent); }
+  .theme-toggle {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 99px; width: 34px; height: 34px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 40px 24px 72px; }
+  a { color: var(--accent); }
+  header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace; font-size: 12.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px;
+  }
+  h1 {
+    font-family: "JetBrains Mono", monospace; font-size: clamp(28px, 5vw, 40px);
+    font-weight: 700; letter-spacing: -0.01em; margin: 0 0 14px;
+  }
+  header p { font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 62ch; margin: 0 0 24px; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px; background: var(--accent);
+    color: var(--accent-ink); font-size: 15px; font-weight: 600; text-decoration: none;
+    padding: 13px 22px; border-radius: 12px; line-height: 1.2; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .cta .sub { font-weight: 400; opacity: 0.85; font-size: 12.5px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--accent);
+    border-radius: 16px; padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px;
+    -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%);
+    box-shadow: var(--shadow); transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .card-head { display: flex; align-items: baseline; gap: 10px; }
+  .num {
+    font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--accent);
+    border: 1px solid var(--line); border-radius: 4px; padding: 2px 7px;
+  }
+  .name { font-size: 18px; font-weight: 700; }
+  .oneline { font-size: 14.5px; line-height: 1.55; color: var(--muted); margin: 0; }
+  code.snippet {
+    display: block; font-family: "JetBrains Mono", monospace; font-size: 13px;
+    line-height: 1.6; background: var(--code-bg); color: var(--code-ink);
+    border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+    overflow-x: auto; white-space: pre;
+  }
+  .gotcha { font-size: 13.5px; line-height: 1.55; margin: 0; padding-left: 16px; position: relative; color: var(--ink); }
+  .gotcha::before { content: "!"; position: absolute; left: 0; top: 0; color: var(--amber); font-weight: 700; font-family: monospace; }
+  
+  footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="../../index.html" class="nav-back">← Back to Roadmaps</a>
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">SQL Interview Cheat Sheet</p>
+    <h1>8 Essential SQL Patterns</h1>
+    <p>SQL is the highest-ROI skill in a Data Analyst or Data Engineer interview. Almost every live coding question you will encounter is one of these 8 patterns wearing a different business scenario.</p>
+    <a class="cta" href="../../sql-interview-master.html">
+      <span>Explore Full 174+ Question Master Archive<br><span class="sub">Company-specific questions from Capgemini, Deloitte, Infosys, etc.</span></span>
+    </a>
+  </header>
+
+  <div class="grid">
+    <article class="card">
+      <div class="card-head"><span class="num">01</span><span class="name">Running Totals</span></div>
+      <p class="oneline">Cumulative sum as you move through ordered rows — each row's total includes everything before it.</p>
+      <code class="snippet">SUM(x) OVER (ORDER BY d)</code>
+      <p class="gotcha">Ties in <b>ORDER BY</b> get summed together in one step unless you force <b>ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</b>.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">02</span><span class="name">Deduplication</span></div>
+      <p class="oneline">Keep exactly one row per key, drop the rest — rank duplicates, then filter to rank 1.</p>
+      <code class="snippet">ROW_NUMBER() OVER (PARTITION BY k ORDER BY tiebreak)</code>
+      <p class="gotcha">No stable tiebreaker means the survivor is arbitrary — add the primary key as a final sort column.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">03</span><span class="name">Gaps &amp; Islands</span></div>
+      <p class="oneline">Find streaks of consecutive values, or the missing values between them, in an ordered sequence.</p>
+      <code class="snippet">d - ROW_NUMBER() OVER (ORDER BY d) AS grp</code>
+      <p class="gotcha">Only works on genuinely sequential data — truncate timestamps to the grain you care about first.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">04</span><span class="name">Join Patterns</span></div>
+      <p class="oneline">The join type <em>is</em> the business question: what to do when a match is missing.</p>
+      <code class="snippet">LEFT JOIN b ON a.k=b.k WHERE b.k IS NULL</code>
+      <p class="gotcha">Filtering a <b>LEFT JOIN</b> in <b>WHERE</b> silently turns it into an <b>INNER JOIN</b> — filter the right table in <b>ON</b> instead.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">05</span><span class="name">Aggregations</span></div>
+      <p class="oneline">Collapse many rows into one summary row per group — the backbone of most dashboard metrics.</p>
+      <code class="snippet">GROUP BY g HAVING SUM(x) &gt; n</code>
+      <p class="gotcha"><b>WHERE</b> filters rows before grouping; <b>HAVING</b> filters after. You can't put an aggregate in <b>WHERE</b>.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">06</span><span class="name">Subqueries</span></div>
+      <p class="oneline">A query nested inside another — correlated ones re-run per outer row, non-correlated run once.</p>
+      <code class="snippet">WHERE salary &gt; (SELECT AVG(salary) WHERE dept=e.dept)</code>
+      <p class="gotcha"><b>NOT IN</b> silently returns zero rows if the subquery list contains a <b>NULL</b> — prefer <b>NOT EXISTS</b>.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">07</span><span class="name">CTE</span></div>
+      <p class="oneline">Name each intermediate step so a complex query reads top-to-bottom instead of inside-out.</p>
+      <code class="snippet">WITH step1 AS (...), step2 AS (...) SELECT ...</code>
+      <p class="gotcha">A CTE isn't automatically materialized or cached — referencing it twice may recompute it, engine-dependent.</p>
+    </article>
+
+    <article class="card">
+      <div class="card-head"><span class="num">08</span><span class="name">Ranking / Top-N</span></div>
+      <p class="oneline">Top N rows per group — something a plain <b>GROUP BY</b> can't return, since it only gives an aggregate.</p>
+      <code class="snippet">RANK() OVER (PARTITION BY g ORDER BY x DESC)</code>
+      <p class="gotcha">Can't filter the rank alias in the same <b>SELECT</b> that defines it — wrap it in a CTE, then filter the outer query.</p>
+    </article>
+  </div>
+
+  <footer>
+    <span>8 core patterns for data engineering &amp; analytics interviews · Ready for GitHub Pages</span>
+  </footer>
+</div>
+
+<script>
+const THEME_KEY = "de_theme";
+const saved = localStorage.getItem(THEME_KEY);
+const btn = document.getElementById("themeToggle");
+function apply(mode) {
+  if (mode === "dark") document.documentElement.setAttribute("data-theme", "dark");
+  else if (mode === "light") document.documentElement.setAttribute("data-theme", "light");
+  else document.documentElement.removeAttribute("data-theme");
+  btn.textContent = (mode || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark" ? "☀️" : "🌙";
+}
+apply(saved);
+btn.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = current === "dark" ? "light" : "dark";
+  localStorage.setItem(THEME_KEY, next);
+  apply(next);
+});
+</script>
+</body>
+</html>

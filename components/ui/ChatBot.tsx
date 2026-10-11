@@ -156,7 +156,7 @@ export function ChatBot() {
                   <Sparkles className="w-4 h-4 text-teal" />
                 </div>
                 <div>
-                  <h4 className="chat-title">Chanakya's AI</h4>
+                  <h4 className="chat-title">Chanakya&apos;s AI</h4>
                   <div className="chat-status">
                     <span className="pulse-dot-green"></span>
                     <span>Assistant · Online</span>

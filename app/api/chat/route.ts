@@ -90,7 +90,7 @@ ${myData}
         } else if (errorJson.error?.message) {
           userFriendlyMessage = `AI Error: ${errorJson.error.message}`;
         }
-      } catch (e) {
+      } catch {
         // ignore parsing errors
       }
 
