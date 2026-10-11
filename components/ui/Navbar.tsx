@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { Menu, X, Sparkles } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 const navItems = [
@@ -10,7 +11,7 @@ const navItems = [
   { label: 'Skills', href: '#skills' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Roadmaps', href: '#roadmaps' },
+  { label: 'Roadmaps', href: '/roadmaps' },
   { label: 'Certifications', href: '#certifications' },
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
@@ -96,19 +97,42 @@ export function Navbar() {
 
           {/* Desktop Nav Links */}
           <ul className="nav-links">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={(e) => handleLinkClick(e, item.href)}
-                  className={`nav-link ${
-                    activeSection === item.href.replace('#', '') ? 'active' : ''
-                  }`}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
+            {navItems.map((item) => {
+              const isRoute = item.href.startsWith('/');
+              const isRoadmap = item.href === '/roadmaps';
+
+              if (isRoute) {
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`nav-link inline-flex items-center gap-1.5 ${
+                        isRoadmap
+                          ? 'px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold border border-teal-500/25 hover:bg-teal-500/20 hover:border-teal-500 transition-all'
+                          : ''
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      {isRoadmap && <Sparkles className="w-3.5 h-3.5 text-teal-500" />}
+                    </Link>
+                  </li>
+                );
+              }
+
+              return (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={(e) => handleLinkClick(e, item.href)}
+                    className={`nav-link ${
+                      activeSection === item.href.replace('#', '') ? 'active' : ''
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           {/* Theme and Hamburger controls */}
@@ -129,17 +153,35 @@ export function Navbar() {
 
       {/* Mobile Drawer Menu */}
       <ul className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`} id="mobile-menu">
-        {navItems.map((item) => (
-          <li key={item.href}>
-            <a
-              href={item.href}
-              onClick={(e) => handleLinkClick(e, item.href)}
-              className="mobile-menu-link"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {navItems.map((item) => {
+          const isRoute = item.href.startsWith('/');
+          if (isRoute) {
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mobile-menu-link flex items-center justify-between font-semibold text-teal-600 dark:text-teal-400"
+                >
+                  <span>{item.label}</span>
+                  <Sparkles className="w-4 h-4 text-teal-500" />
+                </Link>
+              </li>
+            );
+          }
+
+          return (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                onClick={(e) => handleLinkClick(e, item.href)}
+                className="mobile-menu-link"
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

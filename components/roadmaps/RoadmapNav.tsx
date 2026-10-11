@@ -11,6 +11,7 @@ export default function RoadmapNav() {
   const { theme, toggleTheme } = useTheme();
 
   const navItems = [
+    { href: '/roadmaps', label: 'All Roadmaps', icon: Sparkles, activeColor: 'bg-teal-600 text-white' },
     { href: '/guides/databricks-spark-roadmap', label: 'Databricks & Spark', icon: Sparkles, activeColor: 'bg-blue-600 text-white' },
     { href: '/guides/powerbi-roadmap', label: 'Power BI Roadmap', icon: BarChart3, activeColor: 'bg-amber-600 text-white' },
     { href: '/guides/sql-interview-master', label: '174+ SQL Archive', icon: Database, activeColor: 'bg-teal-600 text-white' },

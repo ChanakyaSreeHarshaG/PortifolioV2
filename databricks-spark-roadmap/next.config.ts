@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
         source: '/guides/de-vocabulary',
         destination: '/de-vocabulary',
       },
+      {
+        source: '/roadmaps',
+        destination: '/',
+      },
     ];
   },
 };
