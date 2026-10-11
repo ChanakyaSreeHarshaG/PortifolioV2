@@ -55,11 +55,32 @@
   --font-space-grotesk: var(--font-space-grotesk);
 }
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, .dark, .dark *));
+
 /* Base resets & styles */
-* {
-  box-sizing: border-box;
+@layer base {
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote, dl, dd {
   margin: 0;
-  padding: 0;
+}
+
+/* Centering and layout guarantees */
+.roadmap-container {
+  width: 100%;
+  max-width: 920px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1.25rem !important;
+  padding-right: 1.25rem !important;
+}
+
+.mx-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 html {
@@ -292,14 +313,16 @@ a {
   right: 0;
   height: 75px;
   z-index: 1000;
+  background-color: var(--color-nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
   transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
-  border-bottom: 1px solid transparent;
 }
 .navbar.scrolled {
   background-color: var(--color-nav-bg);
   border-bottom-color: var(--color-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px var(--color-shadow);
 }
 
 .nav-container {
@@ -328,7 +351,7 @@ a {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
+  gap: 1.15rem;
   list-style: none;
 }
 

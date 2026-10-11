@@ -52,7 +52,7 @@ export default function DatabricksVsSnowflakePage() {
       <OrbsBackground />
       <RoadmapNav />
 
-      <main className="relative z-10 max-w-4xl mx-auto px-5 py-12">
+      <main className="relative z-10 roadmap-container py-10 sm:py-14">
         <header className="mb-10 pb-8 border-b border-slate-200/80 dark:border-slate-800/80">
           <Link
             href="/guides/databricks-spark-roadmap"

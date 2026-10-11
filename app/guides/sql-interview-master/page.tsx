@@ -44,7 +44,7 @@ export default function SqlInterviewMasterPage() {
       <OrbsBackground />
       <RoadmapNav />
 
-      <main className="relative z-10 max-w-4xl mx-auto px-5 py-12">
+      <main className="relative z-10 roadmap-container py-10 sm:py-14">
         <header className="mb-10 pb-8 border-b border-slate-200/80 dark:border-slate-800/80">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-mono font-bold uppercase tracking-wider mb-4">
             <Building2 className="w-3.5 h-3.5" />

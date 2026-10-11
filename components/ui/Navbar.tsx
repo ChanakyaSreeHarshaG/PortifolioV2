@@ -10,7 +10,7 @@ const navItems = [
   { label: 'Skills', href: '#skills' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Roadmaps', href: '/guides/databricks-spark-roadmap' },
+  { label: 'Roadmaps', href: '#roadmaps' },
   { label: 'Certifications', href: '#certifications' },
   { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
