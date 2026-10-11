@@ -19,12 +19,14 @@ interface ResultsTableProps {
     message?: string;
   };
   isLoading: boolean;
+  onNextQuestion?: () => void;
 }
 
 export default function ResultsTable({
   result,
   verification,
   isLoading,
+  onNextQuestion,
 }: ResultsTableProps) {
   if (isLoading) {
     return (
@@ -39,9 +41,19 @@ export default function ResultsTable({
     <div className="flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
       {/* Verification Status Alert */}
       {verification.state === 'correct' && (
-        <div className="px-4 py-2.5 bg-emerald-500/10 border-b border-emerald-500/20 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-          <span>{verification.message || '🎉 Perfect! Your query produced the exact expected output.'}</span>
+        <div className="px-4 py-3 bg-emerald-500/10 border-b border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+            <span>{verification.message || '🎉 Perfect! Your query produced the exact expected output.'}</span>
+          </div>
+          {onNextQuestion && (
+            <button
+              onClick={onNextQuestion}
+              className="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all text-xs cursor-pointer shadow-xs shrink-0"
+            >
+              Next Question →
+            </button>
+          )}
         </div>
       )}
 

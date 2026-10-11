@@ -77,7 +77,28 @@ export default function SqlPracticePage() {
     message?: string;
   }>({ state: 'idle' });
 
-  const [solvedIds, setSolvedIds] = useState<Set<string>>(new Set());
+  const [solvedIds, setSolvedIds] = useState<Set<string>>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('sql_practice_solved_ids');
+        if (saved) return new Set(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to load solved IDs from localStorage', e);
+      }
+    }
+    return new Set();
+  });
+
+  // Save solved IDs to localStorage whenever updated
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('sql_practice_solved_ids', JSON.stringify(Array.from(solvedIds)));
+      } catch (e) {
+        console.error('Failed to save solved IDs to localStorage', e);
+      }
+    }
+  }, [solvedIds]);
 
   // SQLite references
   const sqlModuleRef = useRef<any>(null);
@@ -178,78 +199,85 @@ export default function SqlPracticePage() {
     }
   }, [currentQuestion?.id]);
 
-  // Run User SQL Query
-  const handleRunQuery = (customSql?: string) => {
+  // Unified Run Query & Solution Verification Handler
+  const handleExecuteQuery = (customSql?: string) => {
     const sqlToRun = customSql || sqlCode;
-    if (!sqlToRun.trim()) return;
+    if (!sqlToRun.trim()) {
+      setVerification({
+        state: 'error',
+        message: 'Please write an SQL query in the editor first.',
+      });
+      return;
+    }
 
     const db = dbInstanceRef.current;
-    if (!db) return;
+    if (!db) {
+      setVerification({
+        state: 'error',
+        message: 'SQLite WebAssembly engine is initializing. Please wait a moment...',
+      });
+      return;
+    }
 
     setIsRunning(true);
-    setVerification({ state: 'idle' });
 
     setTimeout(() => {
       const startTime = performance.now();
       try {
-        const results = db.exec(sqlToRun);
+        const userRes = db.exec(sqlToRun);
         const elapsed = Math.round(performance.now() - startTime);
 
-        if (!results || results.length === 0) {
+        if (!userRes || userRes.length === 0) {
+          // If query produced 0 rows, check whether solution expects 0 rows
+          const expectedRes = currentQuestion ? db.exec(currentQuestion.solutionSql) : null;
+          const expectedRows = expectedRes && expectedRes.length > 0 ? expectedRes[0].values.length : 0;
+
+          if (expectedRows === 0 && expectedRes) {
+            setVerification({
+              state: 'correct',
+              message: '🎉 Correct! Your query satisfies all problem constraints and matches the expected answer.',
+            });
+            if (currentQuestion) {
+              setSolvedIds((prev) => new Set([...prev, currentQuestion.id]));
+            }
+          } else {
+            setVerification({
+              state: 'mismatch',
+              message: `Your query returned 0 rows, but the solution expects ${expectedRows} record(s).`,
+            });
+          }
+
           setQueryResult({
             columns: [],
             values: [],
             executionTimeMs: elapsed,
           });
-        } else {
-          setQueryResult({
-            columns: results[0].columns,
-            values: results[0].values,
-            executionTimeMs: elapsed,
-          });
-        }
-      } catch (err: any) {
-        setQueryResult({
-          columns: [],
-          values: [],
-          error: err.message,
-        });
-      } finally {
-        setIsRunning(false);
-      }
-    }, 10);
-  };
-
-  // Check Solution against expected query
-  const handleCheckSolution = () => {
-    if (!currentQuestion) return;
-    const db = dbInstanceRef.current;
-    if (!db) return;
-
-    setIsRunning(true);
-
-    setTimeout(() => {
-      try {
-        const userRes = db.exec(sqlCode);
-        const expectedRes = db.exec(currentQuestion.solutionSql);
-
-        if (!userRes || userRes.length === 0) {
-          setVerification({
-            state: 'mismatch',
-            message: 'Your query returned 0 rows, but the solution expects records.',
-          });
-          setQueryResult({ columns: [], values: [], executionTimeMs: 0 });
           return;
         }
 
         const u = userRes[0];
-        const e = expectedRes[0];
-
         setQueryResult({
           columns: u.columns,
           values: u.values,
-          executionTimeMs: 12,
+          executionTimeMs: elapsed,
         });
+
+        if (!currentQuestion) {
+          setVerification({ state: 'idle' });
+          return;
+        }
+
+        // Compare against expected solution query
+        const expectedRes = db.exec(currentQuestion.solutionSql);
+        if (!expectedRes || expectedRes.length === 0) {
+          setVerification({
+            state: 'mismatch',
+            message: 'Row count mismatch: Solution produces 0 rows.',
+          });
+          return;
+        }
+
+        const e = expectedRes[0];
 
         // 1. Check Row count
         if (u.values.length !== e.values.length) {
@@ -269,10 +297,20 @@ export default function SqlPracticePage() {
           return;
         }
 
-        // 3. Normalized Content Check
+        // 3. Robust Normalized Content Comparison
+        const normalizeCell = (cell: any) => {
+          if (cell === null || cell === undefined) return 'NULL';
+          const str = String(cell).trim();
+          const num = Number(str);
+          if (!isNaN(num) && str !== '') {
+            return String(Math.round(num * 10000) / 10000);
+          }
+          return str.toLowerCase();
+        };
+
         const normalizeValues = (rows: any[][]) =>
           rows
-            .map((row) => row.map((cell) => (cell === null ? 'NULL' : String(cell).toLowerCase().trim())).join('###'))
+            .map((row) => row.map(normalizeCell).join('###'))
             .sort()
             .join('@@@');
 
@@ -285,7 +323,7 @@ export default function SqlPracticePage() {
         } else {
           setVerification({
             state: 'mismatch',
-            message: 'Row count matches, but the returned values or calculations differ from the expected output.',
+            message: 'Row count matches, but returned calculations or values differ from expected output.',
           });
         }
       } catch (err: any) {
@@ -304,11 +342,25 @@ export default function SqlPracticePage() {
     }, 15);
   };
 
-  // Preview top rows of any table from Schema Explorer
+  // Preview top rows of any table from Schema Explorer without failing question check
   const handlePreviewTable = (tableName: string) => {
     const previewSql = `SELECT * FROM ${tableName} LIMIT 5;`;
     setSqlCode(previewSql);
-    handleRunQuery(previewSql);
+    const db = dbInstanceRef.current;
+    if (!db) return;
+    try {
+      const res = db.exec(previewSql);
+      if (res && res.length > 0) {
+        setQueryResult({
+          columns: res[0].columns,
+          values: res[0].values,
+          executionTimeMs: 5,
+        });
+        setVerification({ state: 'idle' });
+      }
+    } catch (e: any) {
+      setQueryResult({ columns: [], values: [], error: e.message });
+    }
   };
 
   const totalBankQuestions =
@@ -454,6 +506,7 @@ export default function SqlPracticePage() {
             <SchemaExplorer
               databases={DATABASES}
               activeDb={activeDb}
+              currentQuestion={currentQuestion}
               onSelectDb={handleSelectDb}
               onPreviewTable={handlePreviewTable}
             />
@@ -483,8 +536,8 @@ export default function SqlPracticePage() {
               <SqlEditor
                 sql={sqlCode}
                 onChange={setSqlCode}
-                onRun={() => handleRunQuery()}
-                onCheck={handleCheckSolution}
+                onRun={() => handleExecuteQuery()}
+                onCheck={() => handleExecuteQuery()}
                 onReset={() => {
                   setSqlCode('');
                   setVerification({ state: 'idle' });
@@ -500,6 +553,7 @@ export default function SqlPracticePage() {
                 result={queryResult}
                 verification={verification}
                 isLoading={isRunning}
+                onNextQuestion={() => setQuestionIndex((prev) => Math.min(filteredQuestions.length - 1, prev + 1))}
               />
             </div>
           </div>
