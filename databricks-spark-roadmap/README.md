@@ -7,7 +7,7 @@ A modern, high-performance web application built with **Next.js 16 (App Router)*
 ## 🌟 What's Included
 
 1. **⚡ Spark & Databricks 7-Week Roadmap (`/` or `/guides/databricks-spark-roadmap`)**
-   - Exact replica of the popular [techwithprateek.com](https://techwithprateek.com/guides/databricks-spark-roadmap/) design.
+   - High-fidelity interactive roadmap design.
    - 7 structured weeks across all 5 Databricks Associate exam domains.
    - 10 curated free YouTube video cards with high-definition thumbnails and direct links.
    - Glassmorphic styling with ambient blur orbs and responsive mobile-first grid.
@@ -33,7 +33,7 @@ A modern, high-performance web application built with **Next.js 16 (App Router)*
    - Real-time search by keyword and company filter tags.
 
 4. **📚 200 Core Data Engineering Vocabulary Terms (`/de-vocabulary` or `/guides/de-vocabulary`)**
-   - Complete reference of 200 core terms curated by `DATAWITH_RAI`.
+   - Complete reference of 200 core terms and architectures.
    - Clear definitions and practical real-world production use cases.
    - Categorized across 12 domains: Spark & Distributed Systems, Storage & Performance, Streaming & Kafka, ETL & Airflow, Data Governance & Quality, and SQL/ACID.
    - Instant live search and category chips.

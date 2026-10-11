@@ -12,7 +12,7 @@ export default function RoadmapsSection() {
       badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
       icon: Sparkles,
       iconColor: 'text-blue-500',
-      description: 'The complete associate data engineer roadmap replicated from techwithprateek. Covers Spark internals, Lakehouse architecture, PySpark DataFrames, Structured Streaming, and Delta Lake.',
+      description: 'The complete associate data engineer roadmap. Covers Spark internals, Lakehouse architecture, PySpark DataFrames, Structured Streaming, and Delta Lake.',
       topics: ['Apache Spark Internals', 'Lakehouse & Medallion', 'Structured Streaming', 'Delta Lake & Unity Catalog'],
       href: '/guides/databricks-spark-roadmap',
       btnText: 'Explore Databricks Roadmap',

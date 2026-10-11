@@ -18,7 +18,7 @@ export default function RoadmapsHubPage() {
       badgeColor: 'bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700',
       icon: Sparkles,
       iconColor: 'text-blue-600 dark:text-blue-400',
-      description: 'The definitive Associate Data Engineer study guide replicated from techwithprateek. Covers Spark internals, Lakehouse architecture, PySpark DataFrames, Structured Streaming, and Delta Lake.',
+      description: 'The definitive Associate Data Engineer study guide. Covers Spark internals, Lakehouse architecture, PySpark DataFrames, Structured Streaming, and Delta Lake.',
       topics: [
         'Apache Spark Internals & Cluster Architecture',
         'Delta Lake ACID Transactions & Time Travel',
