@@ -2,27 +2,65 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
-import { DATABASES, SQL_PRACTICE_QUESTIONS, DatabaseDefinition, SqlQuestion } from '@/data/sqlPracticeData';
+import {
+  DATABASES,
+  SQL_PRACTICE_QUESTIONS,
+  SQL_PATTERNS,
+  PATTERN_QUESTIONS,
+  DatabaseDefinition,
+  SqlQuestion,
+  SqlPatternDefinition,
+} from '@/data/sqlPracticeData';
 import SchemaExplorer from '@/components/sql-practice/SchemaExplorer';
 import QuestionCard from '@/components/sql-practice/QuestionCard';
 import SqlEditor from '@/components/sql-practice/SqlEditor';
 import ResultsTable, { QueryResult, VerificationState } from '@/components/sql-practice/ResultsTable';
 import RoadmapNav from '@/components/roadmaps/RoadmapNav';
 import OrbsBackground from '@/components/roadmaps/OrbsBackground';
-import { Terminal, Database, Sparkles, Filter, RefreshCw, Trophy, ArrowLeft, ExternalLink } from 'lucide-react';
+import {
+  Terminal,
+  Database,
+  Sparkles,
+  Filter,
+  RefreshCw,
+  Trophy,
+  Layers,
+  Code2,
+  CheckCircle2,
+  BookOpen,
+  ChevronRight,
+  Flame,
+} from 'lucide-react';
 
 export default function SqlPracticePage() {
+  // Practice Track Toggle: 'standard' (72 authentic sql-practice questions) vs 'patterns' (200 repeating interview patterns)
+  const [practiceMode, setPracticeMode] = useState<'standard' | 'patterns'>('standard');
+  const [selectedPatternId, setSelectedPatternId] = useState<string>(SQL_PATTERNS[0].id);
+
   const [activeDb, setActiveDb] = useState<DatabaseDefinition>(DATABASES[0]);
   const [selectedDifficulty, setSelectedDifficulty] = useState<'All' | 'Easy' | 'Medium' | 'Hard'>('All');
-  
-  // Active questions for selected database and difficulty
+
+  // Currently active pattern definition
+  const currentPattern = useMemo(() => {
+    return SQL_PATTERNS.find((p) => p.id === selectedPatternId) || SQL_PATTERNS[0];
+  }, [selectedPatternId]);
+
+  // Questions filtered based on mode and difficulty
   const filteredQuestions = useMemo(() => {
-    return SQL_PRACTICE_QUESTIONS.filter((q) => {
-      const matchDb = q.database === activeDb.id;
-      const matchDiff = selectedDifficulty === 'All' || q.difficulty === selectedDifficulty;
-      return matchDb && matchDiff;
-    });
-  }, [activeDb, selectedDifficulty]);
+    if (practiceMode === 'patterns') {
+      return PATTERN_QUESTIONS.filter((q) => {
+        const matchPattern = q.category.startsWith(`Pattern ${currentPattern.number}:`);
+        const matchDiff = selectedDifficulty === 'All' || q.difficulty === selectedDifficulty;
+        return matchPattern && matchDiff;
+      });
+    } else {
+      return SQL_PRACTICE_QUESTIONS.filter((q) => {
+        const matchDb = q.database === activeDb.id;
+        const matchDiff = selectedDifficulty === 'All' || q.difficulty === selectedDifficulty;
+        return matchDb && matchDiff;
+      });
+    }
+  }, [practiceMode, currentPattern, activeDb, selectedDifficulty]);
 
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const currentQuestion: SqlQuestion | undefined = filteredQuestions[questionIndex] || filteredQuestions[0];
@@ -108,6 +146,26 @@ export default function SqlPracticePage() {
     initDb(newDb);
     setQueryResult(null);
     setVerification({ state: 'idle' });
+  };
+
+  // Switch Track Mode handler
+  const handleSwitchMode = (mode: 'standard' | 'patterns') => {
+    setPracticeMode(mode);
+    setQuestionIndex(0);
+    setQueryResult(null);
+    setVerification({ state: 'idle' });
+
+    if (mode === 'patterns') {
+      // Switch active db to Enterprise / Patterns Master Sandbox
+      const patternsDb = DATABASES.find((d) => d.id === 'enterprise') || DATABASES[1];
+      setActiveDb(patternsDb);
+      initDb(patternsDb);
+    } else {
+      // Switch back to Hospital
+      const hospitalDb = DATABASES[0];
+      setActiveDb(hospitalDb);
+      initDb(hospitalDb);
+    }
   };
 
   // Sync starter code when question changes
@@ -252,6 +310,9 @@ export default function SqlPracticePage() {
     handleRunQuery(previewSql);
   };
 
+  const totalBankQuestions =
+    practiceMode === 'patterns' ? PATTERN_QUESTIONS.length : SQL_PRACTICE_QUESTIONS.length;
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 relative selection:bg-teal-500 selection:text-white transition-colors duration-200">
       <OrbsBackground />
@@ -259,28 +320,115 @@ export default function SqlPracticePage() {
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Top Header Bar */}
-        <header className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200 dark:border-slate-800">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-teal-100 dark:bg-teal-950/80 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-700">
-                <Terminal className="w-3.5 h-3.5" />
-                <span>IN-BROWSER SQL TERMINAL · WEBASSEMBLY SQLITE</span>
-              </span>
-              <span className="text-xs text-slate-400 font-mono hidden sm:inline">
-                {engineReady ? '● SQLite Engine Ready' : '○ Loading Engine...'}
-              </span>
+        <header className="mb-6 pb-5 border-b border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-teal-100 dark:bg-teal-950/80 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-700">
+                  <Terminal className="w-3.5 h-3.5" />
+                  <span>IN-BROWSER SQL TERMINAL · WEBASSEMBLY SQLITE</span>
+                </span>
+                <span className="text-xs text-slate-400 font-mono hidden sm:inline">
+                  {engineReady ? '● SQLite Engine Ready' : '○ Loading Engine...'}
+                </span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                SQL Practice Terminal
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                Master 72+ authentic questions from{' '}
+                <a
+                  href="https://www.sql-practice.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-teal-600 font-medium"
+                >
+                  sql-practice.com
+                </a>{' '}
+                and all 20 repeating SQL interview patterns with real-time browser execution.
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              SQL Practice Terminal
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-              Inspired by <a href="https://www.sql-practice.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-teal-600">sql-practice.com</a>. Write and run queries directly in your browser with instant validation.
-            </p>
+
+            {/* Mode Toggle & Progress Meta */}
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Primary Mode Toggle: Standard vs Patterns */}
+              <div className="flex items-center p-1 rounded-xl bg-slate-200/80 dark:bg-slate-900 border border-slate-300 dark:border-slate-750 text-xs font-semibold shadow-xs">
+                <button
+                  onClick={() => handleSwitchMode('standard')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    practiceMode === 'standard'
+                      ? 'bg-white dark:bg-slate-800 text-teal-700 dark:text-teal-300 shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Standard (72 Qs)</span>
+                </button>
+                <button
+                  onClick={() => handleSwitchMode('patterns')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    practiceMode === 'patterns'
+                      ? 'bg-teal-600 text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Flame className="w-3.5 h-3.5 text-amber-300" />
+                  <span>20 Interview Patterns (200 Qs)</span>
+                </button>
+              </div>
+
+              {/* Solved Counter */}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono">
+                <Trophy className="w-4 h-4 text-amber-500" />
+                <span>
+                  Solved:{' '}
+                  <strong className="text-teal-600 dark:text-teal-400">{solvedIds.size}</strong> /{' '}
+                  {totalBankQuestions}
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Difficulty & Progress Meta */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1 bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold">
+          {/* Secondary Sub-Bar: Pattern Selector OR Difficulty Selector */}
+          <div className="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            {practiceMode === 'patterns' ? (
+              /* Pattern Selector Dropdown & Technique Badge */
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-xs font-mono font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider flex items-center gap-1">
+                    <Layers className="w-3.5 h-3.5" /> Pattern:
+                  </span>
+                  <select
+                    value={selectedPatternId}
+                    onChange={(e) => {
+                      setSelectedPatternId(e.target.value);
+                      setQuestionIndex(0);
+                    }}
+                    className="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer shadow-xs max-w-[280px] sm:max-w-none"
+                  >
+                    {SQL_PATTERNS.map((pat) => (
+                      <option key={pat.id} value={pat.id}>
+                        #{pat.number}. {pat.name} (10 Qs)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-mono bg-white/60 dark:bg-slate-900/60 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-800 overflow-x-auto scrollbar-none">
+                  <span className="font-bold text-slate-800 dark:text-slate-200 shrink-0">Technique:</span>
+                  <span className="text-teal-600 dark:text-teal-400 shrink-0">{currentPattern.technique}</span>
+                </div>
+              </div>
+            ) : (
+              /* Standard Mode Subtitle */
+              <div className="text-xs text-slate-500 font-mono">
+                Showing authentic questions for{' '}
+                <strong className="text-slate-700 dark:text-slate-300">{activeDb.name}</strong>
+              </div>
+            )}
+
+            {/* Difficulty Pills */}
+            <div className="flex items-center gap-1 bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold shrink-0 self-start sm:self-auto">
               {(['All', 'Easy', 'Medium', 'Hard'] as const).map((diff) => (
                 <button
                   key={diff}
@@ -297,13 +445,6 @@ export default function SqlPracticePage() {
                   {diff}
                 </button>
               ))}
-            </div>
-
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono">
-              <Trophy className="w-4 h-4 text-amber-500" />
-              <span>
-                Solved: <strong className="text-teal-600 dark:text-teal-400">{solvedIds.size}</strong> / {SQL_PRACTICE_QUESTIONS.length}
-              </span>
             </div>
           </div>
         </header>
@@ -371,7 +512,7 @@ export default function SqlPracticePage() {
         {/* Bottom Quick Reference Bar */}
         <footer className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
           <p>
-            Client-Side SQLite in WebAssembly · All queries execute locally in your browser with zero latency.
+            Client-Side SQLite in WebAssembly · All 272 queries execute locally in your browser with zero latency.
           </p>
           <div className="flex items-center gap-4">
             <Link href="/guides/sql-interview-master" className="hover:text-teal-600 transition-colors">
