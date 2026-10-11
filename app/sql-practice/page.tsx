@@ -15,6 +15,7 @@ import SchemaExplorer from '@/components/sql-practice/SchemaExplorer';
 import QuestionCard from '@/components/sql-practice/QuestionCard';
 import SqlEditor from '@/components/sql-practice/SqlEditor';
 import ResultsTable, { QueryResult, VerificationState } from '@/components/sql-practice/ResultsTable';
+import QuestionNavigator from '@/components/sql-practice/QuestionNavigator';
 import RoadmapNav from '@/components/roadmaps/RoadmapNav';
 import OrbsBackground from '@/components/roadmaps/OrbsBackground';
 import {
@@ -168,10 +169,10 @@ export default function SqlPracticePage() {
     }
   };
 
-  // Sync starter code when question changes
+  // Clear editor when question changes so user starts clean and writes query
   useEffect(() => {
     if (currentQuestion) {
-      setSqlCode(currentQuestion.starterSql);
+      setSqlCode('');
       setVerification({ state: 'idle' });
       setQueryResult(null);
     }
@@ -318,7 +319,7 @@ export default function SqlPracticePage() {
       <OrbsBackground />
       <RoadmapNav />
 
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Top Header Bar */}
         <header className="mb-6 pb-5 border-b border-slate-200 dark:border-slate-800">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -455,10 +456,10 @@ export default function SqlPracticePage() {
           </div>
         )}
 
-        {/* Main 3-Column / 2-Panel Layout */}
+        {/* Main 3-Column Layout: Schema (Left), Editor & Results (Center), Question Navigator (Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column: Schema Explorer (3 cols) */}
-          <div className="lg:col-span-3 h-[680px]">
+          <div className="order-2 lg:order-1 lg:col-span-3 h-[700px] lg:sticky lg:top-6">
             <SchemaExplorer
               databases={DATABASES}
               activeDb={activeDb}
@@ -467,8 +468,8 @@ export default function SqlPracticePage() {
             />
           </div>
 
-          {/* Right Area: Question Card + Editor + Results (9 cols) */}
-          <div className="lg:col-span-9 flex flex-col gap-5">
+          {/* Center Column: Question Card + Editor + Results (6 cols) */}
+          <div className="order-1 lg:order-2 lg:col-span-6 flex flex-col gap-5">
             {/* Question Card */}
             {currentQuestion ? (
               <QuestionCard
@@ -487,13 +488,17 @@ export default function SqlPracticePage() {
             )}
 
             {/* SQL Code Editor */}
-            <div className="h-[260px]">
+            <div className="h-[270px]">
               <SqlEditor
                 sql={sqlCode}
                 onChange={setSqlCode}
                 onRun={() => handleRunQuery()}
                 onCheck={handleCheckSolution}
-                onReset={() => currentQuestion && setSqlCode(currentQuestion.starterSql)}
+                onReset={() => {
+                  setSqlCode('');
+                  setVerification({ state: 'idle' });
+                  setQueryResult(null);
+                }}
                 isRunning={isRunning}
               />
             </div>
@@ -506,6 +511,21 @@ export default function SqlPracticePage() {
                 isLoading={isRunning}
               />
             </div>
+          </div>
+
+          {/* Right Column: Question Navigator with Question Numbers (3 cols) */}
+          <div className="order-3 lg:order-3 lg:col-span-3 h-[700px] lg:sticky lg:top-6">
+            <QuestionNavigator
+              questions={filteredQuestions}
+              currentIndex={questionIndex}
+              solvedIds={solvedIds}
+              onSelectQuestion={(idx) => {
+                setQuestionIndex(idx);
+                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+            />
           </div>
         </div>
 
