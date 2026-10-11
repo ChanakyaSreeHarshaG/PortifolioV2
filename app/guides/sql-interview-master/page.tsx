@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import RoadmapNav from '@/components/roadmaps/RoadmapNav';
 import OrbsBackground from '@/components/roadmaps/OrbsBackground';
 import { COMPANY_QUESTIONS, SOLVED_QUESTIONS } from '@/data/sqlInterviewData';
-import { Search, Building2, Code, Lightbulb, Zap } from 'lucide-react';
+import { Search, Building2, Code, Lightbulb, Zap, Terminal, ArrowRight } from 'lucide-react';
 
 export default function SqlInterviewMasterPage() {
   const [activeTab, setActiveTab] = useState<'companies' | 'solved' | 'patterns'>('companies');
@@ -58,6 +59,26 @@ export default function SqlInterviewMasterPage() {
           <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed mb-6">
             174 verified technical interview questions from Capgemini, Deloitte, Infosys, Cognizant, NTT DATA, and Grid Dynamics, accompanied by 50 hands-on solved problems with runnable queries and cheat sheets.
           </p>
+
+          {/* Live Practice Playground CTA Banner */}
+          <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-teal-500/10 via-slate-100/50 to-blue-500/10 dark:from-teal-950/30 dark:via-slate-900/60 dark:to-blue-950/30 border border-teal-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0">
+                <Terminal className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">Want to practice and run queries live?</h4>
+                <p className="text-xs text-slate-600 dark:text-slate-400">Launch our in-browser SQLite terminal with hospital and enterprise databases.</p>
+              </div>
+            </div>
+            <Link
+              href="/sql-practice"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs shrink-0 transition-all shadow-sm hover:scale-105"
+            >
+              <span>Launch SQL Terminal</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
 
           {/* Quick Metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">

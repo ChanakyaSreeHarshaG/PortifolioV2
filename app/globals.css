@@ -678,11 +678,106 @@ a {
 }
 
 /* PROJECTS */
+.projects-header-wrapper {
+  margin-bottom: 2rem;
+}
+.topic-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+.topic-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.topic-tab-btn:hover {
+  color: var(--color-text);
+  border-color: var(--color-teal);
+  background: var(--color-accent-glow);
+}
+.topic-tab-btn.active {
+  color: #fff;
+  background: var(--color-teal);
+  border-color: var(--color-teal);
+  box-shadow: 0 0 16px var(--color-accent-glow);
+}
+[data-theme="light"] .topic-tab-btn.active {
+  color: #ffffff;
+  background: var(--color-teal);
+  border-color: var(--color-teal);
+}
+.topic-tab-count {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: inherit;
+  font-weight: 600;
+}
+[data-theme="light"] .topic-tab-btn:not(.active) .topic-tab-count {
+  background: rgba(0, 0, 0, 0.06);
+}
+.topic-group-container {
+  margin-bottom: 3.5rem;
+}
+.topic-group-container:last-child {
+  margin-bottom: 1rem;
+}
+.topic-section-header {
+  margin: 1.5rem 0 1.5rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.topic-section-title {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.topic-section-tag {
+  font-size: 0.82rem;
+  color: var(--color-teal);
+}
+.topic-section-count {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 500;
+}
+.topic-badge {
+  font-family: monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
 .featured-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
 }
 .project-card {
   display: flex;

@@ -66,9 +66,12 @@ export function Modal({ isOpen, onClose, project }: ModalProps) {
             
             <div className="modal-body">
               <div className="modal-header">
-                <span className="modal-date">
-                  <Calendar className="w-4 h-4 inline mr-1 -mt-0.5" /> {project.date}
-                </span>
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <span className="modal-date">
+                    <Calendar className="w-4 h-4 inline mr-1 -mt-0.5" /> {project.date}
+                  </span>
+                  <span className="topic-badge">{project.topic}</span>
+                </div>
                 <h3 className="modal-title h2">{project.title}</h3>
               </div>
               
@@ -77,10 +80,10 @@ export function Modal({ isOpen, onClose, project }: ModalProps) {
                 dangerouslySetInnerHTML={{ __html: project.longDescription }}
               />
 
-              <div className="modal-arch-container">
-                <h4 className="modal-arch-title">{project.diagramTitle || 'Architecture Diagram'}</h4>
-                <div className="arch-placeholder-box">
-                  {project.archSrc ? (
+              {project.archSrc && (
+                <div className="modal-arch-container">
+                  <h4 className="modal-arch-title">{project.diagramTitle || 'Architecture Diagram'}</h4>
+                  <div className="arch-placeholder-box">
                     <Image 
                       src={project.archSrc} 
                       alt={`${project.diagramTitle || 'Architecture Diagram'} for ${project.title}`} 
@@ -89,15 +92,9 @@ export function Modal({ isOpen, onClose, project }: ModalProps) {
                       className="arch-img"
                       unoptimized
                     />
-                  ) : (
-                    <div className="arch-fallback" style={{ display: 'flex' }}>
-                      <ImageIcon className="w-10 h-10 arch-fallback-icon animate-pulse" />
-                      <span className="arch-fallback-text">{project.diagramTitle || 'Architecture Diagram'}</span>
-                      <span className="arch-fallback-sub">To add your diagram, edit the <code>archSrc</code> property inside the JavaScript code block of <code>portfolio.html</code></span>
-                    </div>
-                  )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div>
                 <h4 className="modal-arch-title" style={{ marginBottom: '0.75rem' }}>Technology Stack</h4>

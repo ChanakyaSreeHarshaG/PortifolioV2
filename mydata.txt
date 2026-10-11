@@ -4,8 +4,8 @@ G. CHANAKYA SREE HARSHA - PERSONAL DATA & PROFESSIONAL PORTFOLIO
 GENERAL PROFILE & BIO
 =========================================
 Full Name: G. Chanakya Sree Harsha
-Professional Title: Data Analyst, SQL & Power BI Developer
-Short Bio: "I turn messy data into decisions that actually make sense."
+Professional Title: Business Analyst · Data & Analytics
+Short Bio: "I’m a Computer Science graduate with experience working on data analysis, SQL, Power BI, and business reporting. I enjoy turning raw data and business requirements into clear insights, reports, and practical solutions."
 Summary: G. Chanakya Sree Harsha is a Computer Science Graduate (B.Tech, 2025) with hands-on experience transforming raw data into actionable business insights through SQL, Python, Power BI, and data warehousing projects. He specializes in building analytics solutions like Enterprise Data Warehouses using Medallion Architecture, Financial Performance Dashboards, and Marketing Analytics solutions. He has strong competencies in data modeling, ETL/ELT workflows, KPI calculations, cohort analysis, and statistical data analysis.
 
 =========================================
@@ -22,13 +22,13 @@ Resume Path: /Resume/chanakyaSreeHarsha.pdf
 =========================================
 CORE SKILLS
 =========================================
-* Programming & Querying: SQL, T-SQL (Transact-SQL), Python, DAX (Data Analysis Expressions), Power Query
-* Python Libraries: Pandas, NumPy
+* Programming & Querying: SQL, T-SQL (Transact-SQL), Python, DAX (Data Analysis Expressions), Power Query, Spark SQL
+* Big Data & Data Engineering: Databricks, PySpark, ETL Pipelines, Medallion Architecture (Bronze -> Silver -> Gold), Data Warehousing, Star Schema, Snowflake Schema
+* Python Libraries: Pandas, NumPy, Scikit-Learn, TensorFlow
 * Business Intelligence & Visualization: Power BI, Tableau, Advanced Excel
-* Data Engineering Concepts: ETL, Data Warehousing, Star Schema, Snowflake Schema, Medallion Architecture (Bronze -> Silver -> Gold layers), Exploratory Data Analysis (EDA)
 * Cloud & Version Control: AWS S3, Git, GitHub
-* Artificial Intelligence & Machine Learning (Self-Initiated): Deep Learning, Natural Language Processing (NLP), LSTM networks, Machine Learning
-* Analytical Concepts: Statistical Data Analysis, Business Intelligence (BI), Data Visualization, Business Metrics/KPI tracking
+* Artificial Intelligence & Machine Learning (Self-Initiated): Deep Learning, Natural Language Processing (NLP), LSTM networks, Text Classification, TF-IDF
+* Analytical Concepts: Statistical Data Analysis, Business Intelligence (BI), Data Visualization, Business Metrics/KPI tracking, Cohort Analysis
 
 =========================================
 WORK EXPERIENCE
@@ -43,17 +43,38 @@ Key Contributions & Achievements:
 * Optimized ETL pipelines and automated Power BI dashboards, reducing manual reporting effort by nearly 40%.
 
 =========================================
-PROJECTS
+PROJECTS (ORGANIZED BY TOPIC)
 =========================================
 
-1. Enterprise Data Warehouse — Medallion Architecture (January 2026)
+--- TOPIC 1: DATA ENGINEERING ---
+
+1. DineDash — Food Delivery Data Engineering & Analytics (2026)
+* Category: Data Engineering
+* Description: End-to-end food delivery data pipeline built on Databricks using Medallion Architecture (Bronze → Silver → Gold) and Spark SQL, transforming operational logs into star-schema models for Power BI analytics.
+* Architecture: Bronze layer ingests 7 operational datasets (Customers, Restaurants, Delivery Agents, Locations, Menu Items, Orders, Order Items). Silver layer cleans, deduplicates, and normalizes timestamps and nested structures. Gold layer models dimensional star schema fact/dimension tables.
+* Orchestration: Multi-stage workflow orchestrated with Databricks Jobs.
+* Technologies: Databricks, Spark SQL, PySpark, Medallion Architecture, Star Schema, ETL, Power BI.
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/DineDash-End-to-End-Data-Engineering-Power-BI-Analytics
+
+2. Enterprise Data Warehouse — Medallion Architecture (January 2026)
+* Category: Data Engineering
 * Description: Designed and implemented a SQL-based Enterprise Data Warehouse using the Medallion Architecture pattern.
 * Data Flow: Ingested raw transactional records from CRM/ERP systems into the Bronze layer, conformed and cleaned data in the Silver layer, and modeled conformed Star Schema fact/dimension tables in the Gold layer for corporate sales analytics.
 * Metrics: Integrates incremental load ETL procedures with auditing.
 * Technologies: SQL Server, T-SQL, ETL, Star Schema, Data Warehousing, Medallion Architecture.
 * GitHub Repository: https://github.com/ChanakyaSreeHarshaG/SQl-Data_Warehouse_Project
 
-2. Social Media Ad Campaign Dashboard (June 2026)
+--- TOPIC 2: BUSINESS INTELLIGENCE & DASHBOARDS ---
+
+3. customer_chrun_prediction (May 2026 – June 2026)
+* Category: Business Intelligence (Dashboard Project)
+* Description: End-to-end customer churn analytics pipeline analyzing 3.9K+ records to identify churn risk. Covers Python Jupyter EDA, 10 SQL business questions, and an interactive Power BI dashboard to guide customer retention strategies.
+* Technologies: Power BI, SQL Server, Python, Pandas, DAX, Data Modeling, EDA.
+* Dashboard Link: https://app.powerbi.com/groups/me/reports/9fdd4630-f352-461d-ae29-d27c093d2029?pbi_source=desktop
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/customer_chrun_prediction
+
+4. Social Media Ad Campaign Dashboard (June 2026)
+* Category: Business Intelligence (Dashboard Project)
 * Description: Created an end-to-end Power BI marketing dashboard analyzing ad campaigns in a simulated Meta environment.
 * Features: Models central Fact tables and Dimensions (Campaigns, Ad Sets, Time, Platforms) into a Star Schema. Calculates metrics like Cost per Click (CPC), Click-through Rate (CTR), Cost per Acquisition (CPA), and Return on Ad Spend (ROAS).
 * Metrics: Average ROAS of 4.2x, CPC of $0.18.
@@ -61,23 +82,29 @@ PROJECTS
 * Dashboard Link: https://app.powerbi.com/groups/me/reports/a598e58c-a636-4eaa-9510-ae8a25e6dddb/9777a38c9b4384394b2b?experience=power-bi
 * GitHub Repository: https://github.com/ChanakyaSreeHarshaG/Social_Media_Ad_Campaign_Dashboard
 
-3. Financial Performance Intelligence Dashboard (June 2026)
+5. Financial Performance Intelligence Dashboard (June 2026)
+* Category: Business Intelligence (Dashboard Project)
 * Description: Power BI dashboard tracking transactional counts, amounts, fees, and tax distributions across segments and states.
 * Features: Star Schema design, geography map-based visual analytics, and segment-wise fee audits.
 * Technologies: Power BI, DAX, Power Query, Data Modeling, Star Schema, Financial Analytics.
 * Dashboard Link: https://app.powerbi.com/groups/me/reports/791875ae-53d8-4c7c-bd41-61c3c54ed9cd/7b820328ab5a8e1804b9?experience=power-bi
 * GitHub Repository: https://github.com/ChanakyaSreeHarshaG/Financial-Performance-Intelligence-Dashboard
 
-4. Customer Churn Prediction (May 2026 – June 2026)
-* Description: Analyzed 3.9K+ records to identify customer churn risk. Covers Python Jupyter EDA, 10 advanced SQL questions, and an interactive dashboard.
-* Technologies: Python, Pandas, NumPy, SQL Server, Power BI, EDA, Statistical Analysis.
-* Dashboard Link: https://app.powerbi.com/groups/me/reports/9fdd4630-f352-461d-ae29-d27c093d2029?pbi_source=desktop
-* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/customer_chrun_prediction
+--- TOPIC 3: ANALYTICS & MACHINE LEARNING ---
 
-5. EDA & Advanced Analytics on Data Warehouse (May 2026)
-* Description: Set of T-SQL audit and analytics scripts operating on the Gold layer of the sales data warehouse.
-* Technologies: T-SQL, SQL Server, Data Analytics, EDA, Database Querying.
-* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/EDA-data_warehouse_project-
+6. Fake News Detection & Misinformation Classifier (2026)
+* Category: Analytics & Machine Learning
+* Description: AI-powered misinformation detection system analyzing news articles to classify authentic vs. fake content using NLP, TF-IDF vectorization, and deep learning architectures.
+* Metrics: Benchmarked Logistic Regression (92%), Naive Bayes (88%), Random Forest (94%), and LSTM (96% accuracy).
+* Technologies: Python, NLP, TF-IDF, Scikit-Learn, LSTM, Machine Learning.
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/Fake-News-Detection
+
+7. Next Word Prediction using Deep Learning (2026)
+* Category: Analytics & Machine Learning
+* Description: NLP sequence modeling system predicting the next probable token using LSTM neural networks on a 12,000+ vocabulary corpus, demonstrating core generative language modeling concepts.
+* Metrics: 84% LSTM accuracy across 85,000+ sequences.
+* Technologies: Python, Deep Learning, LSTM, NLP, TensorFlow, Generative AI.
+* GitHub Repository: https://github.com/ChanakyaSreeHarshaG/Next-word-prediction
 
 =========================================
 CERTIFICATIONS

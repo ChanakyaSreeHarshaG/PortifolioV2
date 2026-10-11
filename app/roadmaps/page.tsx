@@ -148,6 +148,13 @@ export default function RoadmapsHubPage() {
               <span>Power BI &amp; DAX</span>
             </Link>
             <Link
+              href="/sql-practice"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-teal-500/10 border border-teal-500/40 text-teal-700 dark:text-teal-300 hover:bg-teal-500/20 transition-all shadow-sm"
+            >
+              <Terminal className="w-3.5 h-3.5 text-teal-500" />
+              <span>Live SQL Terminal</span>
+            </Link>
+            <Link
               href="/guides/sql-interview-master"
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-teal-500 hover:text-teal-600 dark:hover:text-teal-400 transition-all shadow-sm"
             >
@@ -163,6 +170,30 @@ export default function RoadmapsHubPage() {
             </Link>
           </div>
         </header>
+
+        {/* Interactive SQL Playground Callout Banner */}
+        <div className="mb-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-teal-900/40 via-slate-900 to-blue-950/40 border border-teal-500/30 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+          <div className="relative z-10 max-w-xl">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-teal-500/20 text-teal-300 border border-teal-500/40 mb-3">
+              <Terminal className="w-3.5 h-3.5" />
+              <span>LIVE IN-BROWSER SQL TERMINAL</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
+              Practice SQL Like sql-practice.com
+            </h2>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Run real queries in your browser powered by WebAssembly SQLite. Practice on hospital healthcare data and enterprise schemas with automated test validation!
+            </p>
+          </div>
+
+          <Link
+            href="/sql-practice"
+            className="relative z-10 shrink-0 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-sm transition-all shadow-lg hover:shadow-teal-500/30 hover:scale-105 cursor-pointer"
+          >
+            <span>Launch SQL Terminal</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
 
         {/* 4 Feature Roadmaps Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">

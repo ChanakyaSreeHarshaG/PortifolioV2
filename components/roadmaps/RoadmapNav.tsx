@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, BarChart3, Database, BookOpen, ArrowLeft, Sun, Moon } from 'lucide-react';
+import { Sparkles, BarChart3, Database, BookOpen, ArrowLeft, Sun, Moon, Terminal } from 'lucide-react';
 import { useTheme } from '@/components/ui/ThemeToggle';
 
 export default function RoadmapNav() {
@@ -12,6 +12,7 @@ export default function RoadmapNav() {
 
   const navItems = [
     { href: '/roadmaps', label: 'All Roadmaps', icon: Sparkles, activeColor: 'bg-teal-600 text-white' },
+    { href: '/sql-practice', label: 'SQL Terminal', icon: Terminal, activeColor: 'bg-teal-600 text-white' },
     { href: '/guides/databricks-spark-roadmap', label: 'Databricks & Spark', icon: Sparkles, activeColor: 'bg-blue-600 text-white' },
     { href: '/guides/powerbi-roadmap', label: 'Power BI Roadmap', icon: BarChart3, activeColor: 'bg-amber-600 text-white' },
     { href: '/guides/sql-interview-master', label: '174+ SQL Archive', icon: Database, activeColor: 'bg-teal-600 text-white' },
