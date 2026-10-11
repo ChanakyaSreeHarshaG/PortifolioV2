@@ -2,7 +2,7 @@ import { SqlQuestion } from '../sqlPracticeData';
 
 export const HOSPITAL_QUESTIONS: SqlQuestion[] = [
   // ==========================================
-  // 🏥 EASY (1 to 16) - Authentic sql-practice.com
+  // 🏥 EASY (1 to 16) - Healthcare Patient Queries
   // ==========================================
   {
     id: 'hosp-easy-1',
@@ -182,7 +182,7 @@ export const HOSPITAL_QUESTIONS: SqlQuestion[] = [
   },
 
   // ==========================================
-  // 🏥 MEDIUM (17 to 41) - Authentic sql-practice.com
+  // 🏥 MEDIUM (17 to 41) - Relational Aggregations & Joins
   // ==========================================
   {
     id: 'hosp-med-17',
@@ -461,7 +461,7 @@ export const HOSPITAL_QUESTIONS: SqlQuestion[] = [
   },
 
   // ==========================================
-  // 🏥 HARD (42 to 52) - Authentic sql-practice.com
+  // 🏥 HARD (42 to 52) - Advanced SQL & Window Analytics
   // ==========================================
   {
     id: 'hosp-hard-42',

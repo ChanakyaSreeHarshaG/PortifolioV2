@@ -337,16 +337,7 @@ export default function SqlPracticePage() {
                 SQL Practice Terminal
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                Master 72+ authentic questions from{' '}
-                <a
-                  href="https://www.sql-practice.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-teal-600 font-medium"
-                >
-                  sql-practice.com
-                </a>{' '}
-                and all 20 repeating SQL interview patterns with real-time browser execution.
+                Master 270+ hands-on SQL challenges across Healthcare, Enterprise relational schemas, and all 20 core interview patterns with real-time browser execution.
               </p>
             </div>
 

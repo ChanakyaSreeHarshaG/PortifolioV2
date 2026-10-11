@@ -179,7 +179,7 @@ export default function RoadmapsHubPage() {
               <span>LIVE IN-BROWSER SQL TERMINAL</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-              Practice SQL Like sql-practice.com
+              Interactive SQL Practice Terminal
             </h2>
             <p className="text-sm text-slate-300 leading-relaxed">
               Run real queries in your browser powered by WebAssembly SQLite. Practice on hospital healthcare data and enterprise schemas with automated test validation!

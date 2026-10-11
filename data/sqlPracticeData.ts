@@ -39,7 +39,7 @@ export interface DatabaseDefinition {
   tables: SqlTableSchema[];
 }
 
-// 🏥 Hospital Database DDL & Seed (sql-practice.com authentic)
+// 🏥 Hospital Database DDL & Seed (Healthcare Relational Schema)
 export const HOSPITAL_INIT_SQL = `
 CREATE TABLE IF NOT EXISTS province_names (
   province_id TEXT PRIMARY KEY,
@@ -142,7 +142,7 @@ export const DATABASES: DatabaseDefinition[] = [
   {
     id: 'hospital',
     name: 'Hospital Patient Database',
-    badge: 'sql-practice.com Classic (52 Qs)',
+    badge: 'Healthcare Analytics (52 Qs)',
     description: 'The iconic healthcare schema featuring patients, admissions, doctors, and Canadian province regions.',
     initSql: HOSPITAL_INIT_SQL,
     tables: [
