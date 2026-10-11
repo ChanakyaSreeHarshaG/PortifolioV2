@@ -4,7 +4,9 @@ export const PATTERNS_INIT_SQL = `
 -- 1. Departments Table
 CREATE TABLE IF NOT EXISTS departments (
   dept_id INTEGER PRIMARY KEY,
+  department_id INTEGER GENERATED ALWAYS AS (dept_id) VIRTUAL,
   dept_name TEXT NOT NULL,
+  department_name TEXT GENERATED ALWAYS AS (dept_name) VIRTUAL,
   location TEXT NOT NULL
 );
 
@@ -18,11 +20,13 @@ INSERT INTO departments (dept_id, dept_name, location) VALUES
 -- 2. Employees Table (with Managers, Salaries, Dates)
 CREATE TABLE IF NOT EXISTS employees (
   emp_id INTEGER PRIMARY KEY,
+  employee_id INTEGER GENERATED ALWAYS AS (emp_id) VIRTUAL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   email TEXT NOT NULL,
   salary INTEGER NOT NULL,
   dept_id INTEGER NOT NULL,
+  department_id INTEGER GENERATED ALWAYS AS (dept_id) VIRTUAL,
   manager_id INTEGER,
   hire_date TEXT NOT NULL
 );
@@ -240,6 +244,45 @@ INSERT INTO daily_metrics (metric_date, visits, signups, checkouts, revenue) VAL
 ('2023-09-06', 1600, 270, 70, 7500.00),
 ('2023-09-07', 1750, 310, 85, 9200.00),
 ('2023-09-08', 1300, 190, 48, 5100.00);
+
+-- 10. Projects Table (Enterprise Strategic Initiatives)
+CREATE TABLE IF NOT EXISTS projects (
+  project_id INTEGER PRIMARY KEY,
+  project_name TEXT NOT NULL,
+  budget REAL NOT NULL
+);
+
+INSERT INTO projects (project_id, project_name, budget) VALUES
+(1, 'Apollo Cloud Infrastructure', 250000.00),
+(2, 'NextGen AI Assistant', 320000.00),
+(3, 'Global Security Compliance', 120000.00),
+(4, 'Mobile Enterprise Suite', 180000.00),
+(5, 'Autonomous Logistics Engine', 290000.00);
+
+-- 11. Employee Projects (Project Workload & Staff Allocations)
+CREATE TABLE IF NOT EXISTS employee_projects (
+  employee_id INTEGER NOT NULL,
+  project_id INTEGER NOT NULL,
+  hours_allocated INTEGER NOT NULL,
+  PRIMARY KEY (employee_id, project_id)
+);
+
+INSERT INTO employee_projects (employee_id, project_id, hours_allocated) VALUES
+(101, 1, 40),
+(101, 2, 25),
+(102, 1, 35),
+(103, 2, 60),
+(104, 2, 55),
+(105, 2, 30),
+(106, 2, 45),
+(107, 1, 50),
+(108, 1, 45),
+(112, 3, 40),
+(113, 3, 30),
+(115, 4, 35),
+(116, 4, 40),
+(118, 5, 50),
+(119, 5, 30);
 `;
 
 export const PATTERNS_TABLE_SCHEMAS: SqlTableSchema[] = [
@@ -248,11 +291,13 @@ export const PATTERNS_TABLE_SCHEMAS: SqlTableSchema[] = [
     description: 'Corporate staff directory with salaries, managers, department assignments, and hire dates.',
     columns: [
       { name: 'emp_id', type: 'INTEGER', isPk: true },
+      { name: 'employee_id', type: 'INTEGER (alias)' },
       { name: 'first_name', type: 'TEXT' },
       { name: 'last_name', type: 'TEXT' },
       { name: 'email', type: 'TEXT' },
       { name: 'salary', type: 'INTEGER' },
       { name: 'dept_id', type: 'INTEGER', isFk: true, references: 'departments.dept_id' },
+      { name: 'department_id', type: 'INTEGER (alias)' },
       { name: 'manager_id', type: 'INTEGER' },
       { name: 'hire_date', type: 'TEXT' }
     ]
@@ -262,7 +307,9 @@ export const PATTERNS_TABLE_SCHEMAS: SqlTableSchema[] = [
     description: 'Department units and regional office headquarters.',
     columns: [
       { name: 'dept_id', type: 'INTEGER', isPk: true },
+      { name: 'department_id', type: 'INTEGER (alias)' },
       { name: 'dept_name', type: 'TEXT' },
+      { name: 'department_name', type: 'TEXT (alias)' },
       { name: 'location', type: 'TEXT' }
     ]
   },
@@ -307,6 +354,17 @@ export const PATTERNS_TABLE_SCHEMAS: SqlTableSchema[] = [
     ]
   },
   {
+    tableName: 'order_items',
+    description: 'Line item records per order with product IDs, quantities purchased, and unit prices.',
+    columns: [
+      { name: 'item_id', type: 'INTEGER', isPk: true },
+      { name: 'order_id', type: 'INTEGER', isFk: true, references: 'orders.order_id' },
+      { name: 'product_id', type: 'INTEGER', isFk: true, references: 'products.product_id' },
+      { name: 'quantity', type: 'INTEGER' },
+      { name: 'unit_price', type: 'REAL' }
+    ]
+  },
+  {
     tableName: 'user_logins',
     description: 'User access history tracking login streaks, cohorts, and gaps-and-islands.',
     columns: [
@@ -345,6 +403,24 @@ export const PATTERNS_TABLE_SCHEMAS: SqlTableSchema[] = [
       { name: 'signups', type: 'INTEGER' },
       { name: 'checkouts', type: 'INTEGER' },
       { name: 'revenue', type: 'REAL' }
+    ]
+  },
+  {
+    tableName: 'projects',
+    description: 'Strategic cross-functional initiatives and budget allocations.',
+    columns: [
+      { name: 'project_id', type: 'INTEGER', isPk: true },
+      { name: 'project_name', type: 'TEXT' },
+      { name: 'budget', type: 'REAL' }
+    ]
+  },
+  {
+    tableName: 'employee_projects',
+    description: 'Resource allocations detailing staff hours committed to strategic projects.',
+    columns: [
+      { name: 'employee_id', type: 'INTEGER', isPk: true, isFk: true, references: 'employees.employee_id' },
+      { name: 'project_id', type: 'INTEGER', isPk: true, isFk: true, references: 'projects.project_id' },
+      { name: 'hours_allocated', type: 'INTEGER' }
     ]
   }
 ];

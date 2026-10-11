@@ -10,10 +10,10 @@ export const NORTHWIND_QUESTIONS: SqlQuestion[] = [
     difficulty: 'Easy',
     category: 'Filtering',
     title: 'High-Earning Engineers',
-    description: 'Show first_name, last_name, and salary of all employees in Engineering (department_id = 10) earning more than 135,000. Order by salary descending.',
-    hint: 'Combine department_id = 10 AND salary > 135000 in your WHERE clause.',
-    starterSql: "SELECT first_name, last_name, salary\nFROM employees\nWHERE department_id = 10 AND salary > 135000\nORDER BY salary DESC;",
-    solutionSql: "SELECT first_name, last_name, salary\nFROM employees\nWHERE department_id = 10 AND salary > 135000\nORDER BY salary DESC;"
+    description: 'Show first_name, last_name, and salary of all employees in Engineering (department_id = 1) earning more than 135,000. Order by salary descending.',
+    hint: 'Combine department_id = 1 AND salary > 135000 in your WHERE clause.',
+    starterSql: "SELECT first_name, last_name, salary\nFROM employees\nWHERE department_id = 1 AND salary > 135000\nORDER BY salary DESC;",
+    solutionSql: "SELECT first_name, last_name, salary\nFROM employees\nWHERE department_id = 1 AND salary > 135000\nORDER BY salary DESC;"
   },
   {
     id: 'ent-easy-2',
@@ -53,11 +53,11 @@ export const NORTHWIND_QUESTIONS: SqlQuestion[] = [
     database: 'enterprise',
     difficulty: 'Easy',
     category: 'Pattern Matching',
-    title: 'TechCorp Email Domain Verification',
-    description: "Show employee_id, first_name, and email of all staff whose email address ends with '@techcorp.io'.",
-    hint: "Use LIKE '%@techcorp.io'.",
-    starterSql: "SELECT employee_id, first_name, email\nFROM employees\nWHERE email LIKE '%@techcorp.io';",
-    solutionSql: "SELECT employee_id, first_name, email\nFROM employees\nWHERE email LIKE '%@techcorp.io';"
+    title: 'Enterprise Email Domain Verification',
+    description: "Show employee_id, first_name, and email of all staff whose email address ends with '@enterprise.io'.",
+    hint: "Use LIKE '%@enterprise.io'.",
+    starterSql: "SELECT employee_id, first_name, email\nFROM employees\nWHERE email LIKE '%@enterprise.io';",
+    solutionSql: "SELECT employee_id, first_name, email\nFROM employees\nWHERE email LIKE '%@enterprise.io';"
   },
   {
     id: 'ent-easy-6',

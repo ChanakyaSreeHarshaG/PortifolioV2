@@ -22,7 +22,7 @@ export default function SchemaExplorer({
   // Detect tables relevant to the current question dynamically
   const relevantTableNames = useMemo(() => {
     if (!currentQuestion) return [];
-    const searchCorpus = `${currentQuestion.solutionSql} ${currentQuestion.description} ${currentQuestion.title}`.toLowerCase();
+    const searchCorpus = `${currentQuestion.solutionSql} ${currentQuestion.starterSql || ''} ${currentQuestion.description} ${currentQuestion.title}`.toLowerCase();
     
     return activeDb.tables
       .filter((t) => {
@@ -34,6 +34,11 @@ export default function SchemaExplorer({
 
   // Mode: 'question' (show only tables needed for this question) vs 'all' (show all tables)
   const [filterMode, setFilterMode] = useState<'question' | 'all'>('question');
+
+  // Always reset to 'question' mode whenever question changes so only related tables are shown
+  useEffect(() => {
+    setFilterMode('question');
+  }, [currentQuestion?.id]);
 
   // Track expanded tables
   const [expandedTables, setExpandedTables] = useState<Record<string, boolean>>({});
@@ -51,10 +56,13 @@ export default function SchemaExplorer({
     }
   }, [currentQuestion?.id, activeDb.id, relevantTableNames]);
 
-  // Tables to render based on filterMode
+  // Tables to render based on filterMode: strictly only related tables in question mode
   const displayedTables = useMemo(() => {
-    if (filterMode === 'question' && relevantTableNames.length > 0) {
-      return activeDb.tables.filter((t) => relevantTableNames.includes(t.tableName));
+    if (filterMode === 'question') {
+      if (relevantTableNames.length > 0) {
+        return activeDb.tables.filter((t) => relevantTableNames.includes(t.tableName));
+      }
+      return [];
     }
     return activeDb.tables;
   }, [activeDb.tables, filterMode, relevantTableNames]);
@@ -94,7 +102,7 @@ export default function SchemaExplorer({
           {relevantTableNames.length > 0 && (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-teal-100 dark:bg-teal-950/80 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-700">
               <Sparkles className="w-2.5 h-2.5" />
-              <span>Dynamic</span>
+              <span>Related ({relevantTableNames.length})</span>
             </span>
           )}
         </div>
@@ -121,29 +129,43 @@ export default function SchemaExplorer({
         <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-600 dark:text-slate-400">
             {filterMode === 'question' && relevantTableNames.length > 0 ? (
-              <span className="font-semibold text-teal-600 dark:text-teal-400">
-                {relevantTableNames.length} Relevant Table{relevantTableNames.length === 1 ? '' : 's'}
+              <span className="font-semibold text-teal-600 dark:text-teal-400 flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-teal-500" />
+                <span>{relevantTableNames.length} Question Table{relevantTableNames.length === 1 ? '' : 's'}</span>
               </span>
+            ) : filterMode === 'question' && relevantTableNames.length === 0 ? (
+              <span className="text-slate-400 italic">Pure In-Memory Query</span>
             ) : (
               <span>All {activeDb.tables.length} Tables</span>
             )}
           </div>
 
-          {relevantTableNames.length > 0 && activeDb.tables.length > relevantTableNames.length && (
-            <button
-              onClick={() => setFilterMode(filterMode === 'question' ? 'all' : 'question')}
-              className="text-[11px] font-mono font-medium text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 underline cursor-pointer"
-            >
-              {filterMode === 'question'
-                ? `Show all (${activeDb.tables.length})`
-                : `Question tables (${relevantTableNames.length})`}
-            </button>
-          )}
+          <button
+            onClick={() => setFilterMode(filterMode === 'question' ? 'all' : 'question')}
+            className="text-[11px] font-mono font-medium text-slate-500 hover:text-teal-600 dark:hover:text-teal-400 underline cursor-pointer"
+          >
+            {filterMode === 'question'
+              ? `Show all (${activeDb.tables.length})`
+              : `Question only (${relevantTableNames.length})`}
+          </button>
         </div>
       </div>
 
       {/* Tables & Columns Tree */}
       <div className="flex-1 overflow-y-auto p-3 space-y-2.5 scrollbar-thin">
+        {displayedTables.length === 0 && (
+          <div className="p-4 text-center rounded-xl bg-white dark:bg-slate-950/60 border border-dashed border-slate-300 dark:border-slate-800 text-xs text-slate-500">
+            <Sparkles className="w-5 h-5 mx-auto mb-2 text-teal-500" />
+            <p className="font-semibold text-slate-700 dark:text-slate-300">Pure In-Memory Query</p>
+            <p className="text-[11px] text-slate-500 mt-1">This challenge generates rows dynamically using CTEs without requiring physical base tables.</p>
+            <button
+              onClick={() => setFilterMode('all')}
+              className="mt-3 px-3 py-1 text-[11px] font-mono font-medium rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-teal-600 cursor-pointer"
+            >
+              Browse All Tables ({activeDb.tables.length})
+            </button>
+          </div>
+        )}
         {displayedTables.map((table: SqlTableSchema) => {
           const isExpanded = !!expandedTables[table.tableName];
           const isRelevant = relevantTableNames.includes(table.tableName);

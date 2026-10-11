@@ -56,12 +56,11 @@ export default function SqlPracticePage() {
       });
     } else {
       return SQL_PRACTICE_QUESTIONS.filter((q) => {
-        const matchDb = q.database === activeDb.id;
         const matchDiff = selectedDifficulty === 'All' || q.difficulty === selectedDifficulty;
-        return matchDb && matchDiff;
+        return matchDiff;
       });
     }
-  }, [practiceMode, currentPattern, activeDb, selectedDifficulty]);
+  }, [practiceMode, currentPattern, selectedDifficulty]);
 
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const currentQuestion: SqlQuestion | undefined = filteredQuestions[questionIndex] || filteredQuestions[0];
@@ -132,8 +131,12 @@ export default function SqlPracticePage() {
         if (!isMounted) return;
         sqlModuleRef.current = SQL;
 
-        // Init database with active schema
-        initDb(activeDb, SQL);
+        // Init database with active question schema
+        const targetDb = currentQuestion
+          ? (DATABASES.find((d) => d.id === currentQuestion.database) || activeDb)
+          : activeDb;
+        setActiveDb(targetDb);
+        initDb(targetDb, SQL);
         setEngineReady(true);
       } catch (err: any) {
         if (!isMounted) return;
@@ -164,7 +167,6 @@ export default function SqlPracticePage() {
 
   const handleSelectDb = (newDb: DatabaseDefinition) => {
     setActiveDb(newDb);
-    setQuestionIndex(0);
     initDb(newDb);
     setQueryResult(null);
     setVerification({ state: 'idle' });
@@ -189,6 +191,17 @@ export default function SqlPracticePage() {
       initDb(hospitalDb);
     }
   };
+
+  // Auto-sync SQLite database and active schema whenever current question changes
+  useEffect(() => {
+    if (currentQuestion) {
+      const targetDb = DATABASES.find((d) => d.id === currentQuestion.database) || DATABASES[0];
+      if (activeDb.id !== targetDb.id) {
+        setActiveDb(targetDb);
+        initDb(targetDb);
+      }
+    }
+  }, [currentQuestion?.id, currentQuestion?.database, activeDb.id]);
 
   // Clear editor when question changes so user starts clean and writes query
   useEffect(() => {
@@ -377,12 +390,9 @@ export default function SqlPracticePage() {
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-teal-100 dark:bg-teal-950/80 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-700">
-                  <Terminal className="w-3.5 h-3.5" />
-                  <span>IN-BROWSER SQL TERMINAL · WEBASSEMBLY SQLITE</span>
-                </span>
-                <span className="text-xs text-slate-400 font-mono hidden sm:inline">
-                  {engineReady ? '● SQLite Engine Ready' : '○ Loading Engine...'}
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono flex items-center gap-1.5 font-medium">
+                  <span className={`w-2 h-2 rounded-full ${engineReady ? 'bg-emerald-500' : 'bg-amber-400 animate-pulse'}`} />
+                  {engineReady ? 'SQLite Engine Ready' : 'Loading Engine...'}
                 </span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -465,9 +475,12 @@ export default function SqlPracticePage() {
               </div>
             ) : (
               /* Standard Mode Subtitle */
-              <div className="text-xs text-slate-500 font-mono">
-                Showing authentic questions for{' '}
-                <strong className="text-slate-700 dark:text-slate-300">{activeDb.name}</strong>
+              <div className="text-xs text-slate-500 font-mono flex items-center gap-2">
+                <span>All Practice Questions ({filteredQuestions.length})</span>
+                <span className="text-slate-400">·</span>
+                <span className="text-teal-600 dark:text-teal-400 font-semibold">
+                  {currentQuestion?.database === 'hospital' ? 'Healthcare Schema' : 'Enterprise Master Schema'}
+                </span>
               </div>
             )}
 

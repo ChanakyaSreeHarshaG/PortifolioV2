@@ -895,9 +895,9 @@ export const PATTERN_QUESTIONS: SqlQuestion[] = [
     category: 'Pattern 8: Consecutive Sequences',
     title: 'Find Sequence Gaps in Order IDs',
     description: 'Identify if any order_id is missing between MIN(order_id) and MAX(order_id) for completed orders.',
-    hint: 'Compare LEAD(order_id) - order_id > 1 to detect a jump.',
-    starterSql: "SELECT order_id AS gap_starts_after, LEAD(order_id) OVER (ORDER BY order_id) AS next_id\nFROM orders\nWHERE LEAD(order_id) OVER (ORDER BY order_id) - order_id > 1;",
-    solutionSql: "SELECT order_id AS gap_starts_after, LEAD(order_id) OVER (ORDER BY order_id) AS next_id\nFROM orders\nWHERE LEAD(order_id) OVER (ORDER BY order_id) - order_id > 1;"
+    hint: 'Compare LEAD(order_id) - order_id > 1 in a CTE to detect a jump.',
+    starterSql: "WITH NextOrders AS (\n  SELECT order_id AS gap_starts_after, LEAD(order_id) OVER (ORDER BY order_id) AS next_id\n  FROM orders\n)\nSELECT gap_starts_after, next_id\nFROM NextOrders\nWHERE next_id - gap_starts_after > 1;",
+    solutionSql: "WITH NextOrders AS (\n  SELECT order_id AS gap_starts_after, LEAD(order_id) OVER (ORDER BY order_id) AS next_id\n  FROM orders\n)\nSELECT gap_starts_after, next_id\nFROM NextOrders\nWHERE next_id - gap_starts_after > 1;"
   },
   {
     id: 'pat-8-7',
@@ -906,9 +906,9 @@ export const PATTERN_QUESTIONS: SqlQuestion[] = [
     category: 'Pattern 8: Consecutive Sequences',
     title: 'Consecutive Days with Revenue >= 5000',
     description: 'Find consecutive dates where revenue was at least $5,000 for at least 2 days in a row.',
-    hint: 'Check revenue >= 5000 and LEAD(revenue) >= 5000.',
-    starterSql: "SELECT metric_date AS start_date, revenue AS start_revenue\nFROM daily_metrics\nWHERE revenue >= 5000\n  AND LEAD(revenue) OVER (ORDER BY metric_date) >= 5000;",
-    solutionSql: "SELECT metric_date AS start_date, revenue AS start_revenue\nFROM daily_metrics\nWHERE revenue >= 5000\n  AND LEAD(revenue) OVER (ORDER BY metric_date) >= 5000;"
+    hint: 'Check revenue >= 5000 and LEAD(revenue) >= 5000 in a CTE.',
+    starterSql: "WITH NextMetrics AS (\n  SELECT metric_date AS start_date, revenue AS start_revenue,\n    LEAD(revenue) OVER (ORDER BY metric_date) AS next_revenue\n  FROM daily_metrics\n  WHERE revenue >= 5000\n)\nSELECT start_date, start_revenue\nFROM NextMetrics\nWHERE next_revenue >= 5000;",
+    solutionSql: "WITH NextMetrics AS (\n  SELECT metric_date AS start_date, revenue AS start_revenue,\n    LEAD(revenue) OVER (ORDER BY metric_date) AS next_revenue\n  FROM daily_metrics\n  WHERE revenue >= 5000\n)\nSELECT start_date, start_revenue\nFROM NextMetrics\nWHERE next_revenue >= 5000;"
   },
   {
     id: 'pat-8-8',
